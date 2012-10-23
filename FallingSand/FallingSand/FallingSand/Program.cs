@@ -10,7 +10,7 @@ namespace FallingSand
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            using (FSGGame game = new FSGGame())
             {
                 game.Run();
             }

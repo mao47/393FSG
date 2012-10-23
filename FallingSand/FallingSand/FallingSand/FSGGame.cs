@@ -8,21 +8,24 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using FallingSand.Screens;
 
 namespace FallingSand
 {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class FSGGame : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        ScreenContainer screens;
 
-        public Game1()
+        public FSGGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            screens = new ScreenContainer();
         }
 
         /// <summary>
@@ -71,7 +74,7 @@ namespace FallingSand
                 this.Exit();
 
             // TODO: Add your update logic here
-
+            screens.Update();
             base.Update(gameTime);
         }
 
@@ -84,7 +87,7 @@ namespace FallingSand
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            screens.Draw();
             base.Draw(gameTime);
         }
     }
