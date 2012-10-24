@@ -110,7 +110,7 @@
     <Compile Include="GameElements\GameWorld.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="FSGGame.cs" />
     <Compile Include="Screens\Screen.cs" />
     <Compile Include="Screens\ScreenContainer.cs" />
   </ItemGroup>
