@@ -17,10 +17,12 @@ namespace FallingSand
     /// </summary>
     public class FSGGame : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        ScreenContainer screens;
-
+        public static List<Color> testColors = new List<Color> { Color.Red, Color.Orange, Color.Yellow, Color.Green, Color.Blue, Color.Indigo, Color.Violet };
+        public static int testColorIndex = 0;
+        public static GraphicsDeviceManager graphics;
+        public static SpriteBatch spriteBatch;
+        public static ScreenContainer screens;
+        public static SpriteFont Font;
         public FSGGame()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -51,6 +53,7 @@ namespace FallingSand
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            Font = Content.Load<SpriteFont>("Font1");
         }
 
         /// <summary>
@@ -69,8 +72,11 @@ namespace FallingSand
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            if (screens.Count == 0)
+                screens.Play(new TitleScreen(screens));
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
+                || ExitStatus)
                 this.Exit();
 
             // TODO: Add your update logic here
@@ -84,11 +90,13 @@ namespace FallingSand
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(testColors[testColorIndex % testColors.Count]);
 
             // TODO: Add your drawing code here
             screens.Draw();
             base.Draw(gameTime);
         }
+
+        public static bool ExitStatus { get; set; }
     }
 }
