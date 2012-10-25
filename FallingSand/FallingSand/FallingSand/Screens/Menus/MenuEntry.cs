@@ -88,7 +88,8 @@ namespace FallingSand.Screens.Menus
         public virtual void Draw()
         {
             FSGGame.spriteBatch.Begin();
-            FSGGame.spriteBatch.DrawString(FSGGame.Font, this.text, this.position, textColor, 0, Vector2.Zero, oscScale.Value, SpriteEffects.None, 0);
+
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, this.text, this.position, textColor, 0, FSGGame.Font.MeasureString(this.text)/2f, oscScale.Value, SpriteEffects.None, 0);
             FSGGame.spriteBatch.End();
         }
     }

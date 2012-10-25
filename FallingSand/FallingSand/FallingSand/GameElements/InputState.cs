@@ -44,14 +44,14 @@ namespace FallingSand.GameElements
 
         }
 
-        internal bool Down()
+        public bool Down()
         {
             if (state.IsKeyDown(Keys.Down))
                 return true;
             return false;
         }
 
-        internal bool Up()
+        public bool Up()
         {
             if (state.IsKeyDown(Keys.Up))
                 return true;
