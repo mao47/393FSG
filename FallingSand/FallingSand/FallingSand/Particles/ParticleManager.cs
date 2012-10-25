@@ -44,6 +44,12 @@ namespace FallingSand.GameElements.Particles
             //TODO: Collision
         }
 
+        public void Draw()
+        {
+            //This line is from the book, PoinList isn't there for some reason
+            //graphicsDevice.DrawUserPrimitives<Particle>(PrimitiveType.PointList, particles.ToArray(), 0, particles.Count);
+        }
+
         public void addParticle(Vector2 position, Vector2 direction, float size, Particle_Type type)
         {
             Particle p;
