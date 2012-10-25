@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using FallingSand.Screens;
-//using FallingSand.Particles;
+using FallingSand.Particles;
 using Microsoft.Xna.Framework.GamerServices;
 
 namespace FallingSand.GameElements

@@ -6,7 +6,7 @@ using System.Collections;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace FallingSand.GameElements.Particles
+namespace FallingSand.Particles
 {
     class ParticleManager
     {

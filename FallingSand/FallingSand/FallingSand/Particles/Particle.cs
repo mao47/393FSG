@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace FallingSand.GameElements.Particles
+namespace FallingSand.Particles
 {
     public enum Particle_Type{
         Sand,
