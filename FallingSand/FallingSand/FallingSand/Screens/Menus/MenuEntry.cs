@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using FallingSand.Screens.Menus.MenuDelegates;
 using FallingSand.GameElements;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace FallingSand.Screens.Menus
 {
@@ -16,6 +17,8 @@ namespace FallingSand.Screens.Menus
         private IMenuDelegate menuDelegate;
 
         private Color textColor;
+        private OscillatingFloat oscScale;
+
         /// <summary>
         /// Gets the text to display for this entry.
         /// </summary>
@@ -50,6 +53,7 @@ namespace FallingSand.Screens.Menus
             this.text = text;
             this.position = position;
             this.textColor = Color.White;
+            oscScale = new OscillatingFloat(1, (float).15, (float).5);
         }
 
         /// <summary>
@@ -64,22 +68,27 @@ namespace FallingSand.Screens.Menus
             }
         }
 
-        public virtual void Update(bool highlighted)
+        public virtual void Update(GameTime gameTime, bool highlighted)
         {
             if (highlighted)
             {
                 //show that its highlighted
                 this.textColor = Color.Black;
+                oscScale.Update(gameTime);
             }
             else
-                this.textColor = Color.White;
+            {
+                if (Math.Abs(oscScale.Value - oscScale.Middle) > .01)
+                    oscScale.Update(gameTime);
 
+                this.textColor = Color.White;
+            }
         }
 
         public virtual void Draw()
         {
             FSGGame.spriteBatch.Begin();
-            FSGGame.spriteBatch.DrawString(FSGGame.Font, this.text, this.position, textColor);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, this.text, this.position, textColor, 0, Vector2.Zero, oscScale.Value, SpriteEffects.None, 0);
             FSGGame.spriteBatch.End();
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace FallingSand.Screens
 {
@@ -105,7 +106,7 @@ namespace FallingSand.Screens
         /// <summary>
         /// Updates this instance.
         /// </summary>
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             this.Kill();
             this.Add();
@@ -114,7 +115,7 @@ namespace FallingSand.Screens
             // screen is found that is not "fading out".
             for (int i = Count - 1; i >= 0; i--)
             {
-                this[i].Update();
+                this[i].Update(gameTime);
                 if (!this[i].FadingOut)
                 {
                     break;

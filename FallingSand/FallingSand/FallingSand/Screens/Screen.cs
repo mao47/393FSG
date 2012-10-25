@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace FallingSand.Screens
 {
@@ -59,7 +60,7 @@ namespace FallingSand.Screens
         /// <summary>
         /// Updates this instance.
         /// </summary>
-        public virtual void Update()
+        public virtual void Update(GameTime gameTime)
         {
 
         }

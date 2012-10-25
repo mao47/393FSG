@@ -46,9 +46,9 @@ namespace FallingSand.Screens
         /// Updates this instance. This makes sure that GameClock is paused,
         /// and it also updates the menu.
         /// </summary>
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
-            base.Update();
+            base.Update(gameTime);
             //this.initialTime = Game1.screens.screenChanged;
             // Only pause the gameclock if the screen is not fading out.
             if (!this.FadingOut)
@@ -60,7 +60,7 @@ namespace FallingSand.Screens
                 //GameClock.Unpause();
             }
 
-            this.menu.Update();
+            this.menu.Update(gameTime);
         }
 
         private Vector2 robotLocation = new Vector2(200, 65);

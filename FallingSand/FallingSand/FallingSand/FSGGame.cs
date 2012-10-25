@@ -80,7 +80,7 @@ namespace FallingSand
                 this.Exit();
 
             // TODO: Add your update logic here
-            screens.Update();
+            screens.Update(gameTime);
             base.Update(gameTime);
         }
 

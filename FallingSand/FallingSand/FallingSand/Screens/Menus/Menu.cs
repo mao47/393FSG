@@ -85,7 +85,7 @@ namespace FallingSand.Screens.Menus
         /// up or down selection, and if so, it tries to change the
         /// highlighted menu entry accordingly.
         /// </summary>
-        public virtual void Update()
+        public virtual void Update(GameTime gameTime)
         {
             InputState input = Controls.GetInput();
             if (DateTime.Now.Ticks > duration + lastMove)
@@ -111,12 +111,12 @@ namespace FallingSand.Screens.Menus
             {
                 if (this.CurrentSelected == i)
                 {
-                    this[this.CurrentSelected].Update(true);
+                    this[this.CurrentSelected].Update(gameTime, true);
                     //if (DateTime.Now.Ticks > duration + FSGGame.screens.screenChanged)
                         this[this.CurrentSelected].TryRunDelegate();
                 }
                 else
-                    this[i].Update(false);
+                    this[i].Update(gameTime, false);
             }
 
         }

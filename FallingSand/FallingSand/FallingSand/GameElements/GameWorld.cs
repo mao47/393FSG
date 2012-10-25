@@ -188,7 +188,7 @@ namespace FallingSand.GameElements
             //gameSaver.Update();
             //audio.Update(gameTime);
             //controller.Update();
-            screens.Update();
+            screens.Update(gameTime);
             //background.Update();
         }
 
