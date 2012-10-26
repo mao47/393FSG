@@ -15,7 +15,10 @@ namespace FallingSand.Particles
         float size;
         VertexDeclaration vertexDeclaration;
         GraphicsDevice graphicsDevice;
+        int lastRound = 0;
+
         static Random rnd = new Random();
+        static int roundTime = 100;//ms
 
         public ParticleManager(GraphicsDevice gd, int maxPart, float particleSize)
         {
@@ -28,20 +31,25 @@ namespace FallingSand.Particles
 
         public void Update(GameTime gameTime)
         {
-            for (int i = 0; i < particles.Count; i++)
+            lastRound += gameTime.ElapsedGameTime.Milliseconds;
+            while (lastRound >= roundTime)
             {
-                Particle p = (Particle)particles[i];
-                p.position += p.direction;
-                //TODO: Check if p is still there
-                if (false)
+                lastRound -= roundTime;
+                for (int i = 0; i < particles.Count; i++)
                 {
-                    particles.RemoveAt(i);
-                    i--;
+                    Particle p = (Particle)particles[i];
+                    p.position += p.direction;
+                    //TODO: Check if p is still there
+                    if (false)
+                    {
+                        particles.RemoveAt(i);
+                        i--;
+                    }
+                    else
+                        particles[i] = p;
                 }
-                else
-                    particles[i] = p;
+                //TODO: Collision
             }
-            //TODO: Collision
         }
 
         public void Draw()
