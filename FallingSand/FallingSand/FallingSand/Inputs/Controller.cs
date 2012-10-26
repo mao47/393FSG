@@ -214,7 +214,7 @@ namespace FallingSand.Inputs
             this.rumblePack.Update();
 
 
-            
+            GetActions();
             
             #region TimerUpdate
             this.updateCycle++;

@@ -30,7 +30,9 @@ namespace FallingSand.Screens
         /// </summary>
         public override void Draw()
         {
-            
+            FSGGame.spriteBatch.Begin();
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "LIKE A BAOWSSS", Vector2.One * 100f, Color.White);
+            FSGGame.spriteBatch.End();
         }
     }
 }
