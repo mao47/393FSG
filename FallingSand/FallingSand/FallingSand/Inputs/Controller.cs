@@ -244,11 +244,12 @@ namespace FallingSand.Inputs
 
             this.packet.Clear();
 
+#if XBOX            
             if (Guide.IsVisible)
             {
                 return;
             }
-
+#endif
             GamePadState gamePadState = GamePad.GetState(this.playerIndex);
 
 #if !XBOX
