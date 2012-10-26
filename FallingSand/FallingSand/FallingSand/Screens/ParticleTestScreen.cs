@@ -10,7 +10,7 @@ namespace FallingSand.Screens
     class ParticleTestScreen : Screen
     {
         private ParticleManager pm;
-
+        private int brushSize = 5;
 
         public ParticleTestScreen(ScreenContainer container)
             : base(container)
@@ -40,7 +40,21 @@ namespace FallingSand.Screens
             if (FSGGame.controller.ContainsBool(Inputs.ActionType.Select))
             {
                 Vector2 temp = FSGGame.controller.CursorPosition();
-                pm.addParticle(temp, Vector2.Zero, 1, Particle_Type.Sand);
+                temp.X -= brushSize;
+                temp.Y -= brushSize;
+                Vector2 temp2;
+                
+                for (int x = 0; x < 2 * brushSize; x++)
+                {
+
+                    for (int y = 0; y < 2 * brushSize; y++)
+                    {
+                        temp2.X = temp.X + x;
+                        temp2.Y = temp.Y + y;
+                        pm.addParticle(temp2, Vector2.Zero, 1, Particle_Type.Sand);
+                    }
+                }
+                
             }
         }
 
