@@ -33,6 +33,11 @@ namespace FallingSand.Inputs
         #endregion
         
         #region PressRecorders
+        private int previousMouseX;
+        private int previousMouseY;
+        private bool previousMouseLeft;
+        private bool previousMouseRight;
+
         /// <summary>
         /// This is used to recored if the previous controller configuration contained this action.
         /// </summary>
@@ -151,6 +156,10 @@ namespace FallingSand.Inputs
             this.previousY = false;
             this.previousRB = false;
             this.previousLB = false;
+            this.previousMouseLeft = false;
+            this.previousMouseRight = false;
+            this.previousMouseX = Mouse.GetState().X;
+            this.previousMouseY = Mouse.GetState().Y;
             #endregion
         }
 
@@ -229,6 +238,7 @@ namespace FallingSand.Inputs
 
 #if !XBOX
             KeyboardState keyboardState = Keyboard.GetState();
+            MouseState mouseState = Mouse.GetState();
 #endif
 
             #region SelectionDOWN
@@ -413,7 +423,7 @@ namespace FallingSand.Inputs
             }
 
 #if !XBOX
-            if (keyboardState.IsKeyDown(Keys.Enter)
+            if ((keyboardState.IsKeyDown(Keys.Enter) || mouseState.LeftButton==ButtonState.Pressed)
                 && (this.lastSelect > 15 || !this.previousSelect))
             {
                 this.packet.Select = true;
@@ -422,7 +432,7 @@ namespace FallingSand.Inputs
             }
 
             if (!gamePadState.IsConnected &&
-                keyboardState.IsKeyUp(Keys.Enter))
+                (keyboardState.IsKeyUp(Keys.Enter) && mouseState.LeftButton==ButtonState.Released))
             {
                 this.previousSelect = false;
             }
