@@ -62,10 +62,13 @@ namespace FallingSand.Screens.Menus
         /// </summary>
         public void TryRunDelegate()
         {
-            if (Controls.GetInput().Enter())
+            //if (Controls.GetInput().Enter())
+            if(FSGGame.controller.ContainsBool(Inputs.ActionType.Select))
             {
                 this.menuDelegate.Run();
             }
+            
+
         }
 
         public virtual void Update(GameTime gameTime, bool highlighted)
@@ -88,7 +91,6 @@ namespace FallingSand.Screens.Menus
         public virtual void Draw()
         {
             FSGGame.spriteBatch.Begin();
-
             FSGGame.spriteBatch.DrawString(FSGGame.Font, this.text, this.position, textColor, 0, FSGGame.Font.MeasureString(this.text)/2f, oscScale.Value, SpriteEffects.None, 0);
             FSGGame.spriteBatch.End();
         }

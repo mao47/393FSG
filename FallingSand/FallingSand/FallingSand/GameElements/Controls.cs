@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace FallingSand.GameElements
 {
+    /// <summary>
+    /// OLD
+    /// </summary>
     public class Controls
     {
         public static InputState GetInput()

@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using FallingSand.Screens;
+using FallingSand.Inputs;
 
 namespace FallingSand
 {
@@ -23,11 +24,14 @@ namespace FallingSand
         public static SpriteBatch spriteBatch;
         public static ScreenContainer screens;
         public static SpriteFont Font;
+        public static Controller controller;
         public FSGGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             screens = new ScreenContainer();
+            controller = new Controller(PlayerIndex.One);
+            this.Components.Add(new GamerServicesComponent(this));
         }
 
         /// <summary>
@@ -72,6 +76,7 @@ namespace FallingSand
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            controller.Update();
             if (screens.Count == 0)
                 screens.Play(new TitleScreen(screens));
             // Allows the game to exit

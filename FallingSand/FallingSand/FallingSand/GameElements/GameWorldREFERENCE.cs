@@ -18,7 +18,7 @@ namespace FallingSand.GameElements
     /// Thus, just say GameWorld.variable from anywhere to get easy access to that
     /// variable.
     /// </summary>
-    public class GameWorld : Game
+    public class GameWorldREFERENCE : Game
     {
         /// <summary>
         /// Gets the Graphics Device, used for getting information about the
@@ -77,7 +77,7 @@ namespace FallingSand.GameElements
         /// <summary>
         /// Initializes a new instance of the <see cref="GameWorld"/> class.
         /// </summary>
-        public GameWorld()
+        public GameWorldREFERENCE()
             : base()
         {
             GraphicsDeviceManager manager = new GraphicsDeviceManager(this);
