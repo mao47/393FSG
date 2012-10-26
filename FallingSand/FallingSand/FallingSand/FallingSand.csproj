@@ -124,11 +124,13 @@
     <Compile Include="Screens\Menus\MenuEntry.cs" />
     <Compile Include="Screens\Menus\TitleMenu.cs" />
     <Compile Include="Screens\OscillatingFloat.cs" />
+    <Compile Include="Screens\ParticleTestScreen.cs" />
     <Compile Include="Screens\Screen.cs" />
     <Compile Include="Screens\ScreenContainer.cs" />
     <Compile Include="Screens\TitleScreen.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="buglist.txt" />
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
   </ItemGroup>

@@ -19,6 +19,16 @@ namespace FallingSand.Screens.Menus.MenuDelegates
                 FSGGame.testColorIndex = 0;
             else
                 FSGGame.testColorIndex++;
+
+
+            //hack a test screen together. not sure if a better way to do this.
+            // ill look into it. -mao
+            if (FSGGame.screens.Count > 0)
+            {
+                FSGGame.screens[FSGGame.screens.Count - 1].Disposed = true;
+            }
+
+            FSGGame.screens.Play(new ParticleTestScreen(FSGGame.screens)); // The number passed here must be unique per game.
         }
 
     }

@@ -73,7 +73,7 @@ namespace FallingSand.Screens
             // Write "RecordRobot" at the center of the screen.
             FSGGame.spriteBatch.Begin();
             //FSGGame.spriteBatch.Draw(Textures.TitleRobot, robotLocation, Color.White);
-            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Record Robot", this.textDrawPosition, Color.White);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "S A N D", this.textDrawPosition, Color.White);
             FSGGame.spriteBatch.End();
             // Draw menu
             this.menu.Draw();

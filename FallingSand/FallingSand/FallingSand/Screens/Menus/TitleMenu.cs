@@ -22,7 +22,7 @@ namespace FallingSand.Screens.Menus
            // MenuEntry howto = new MenuEntry("How to Play", position + new Vector2(0, spacing), new HowToPlayDelegate());
 
            // MenuEntry toSettings = new MenuEntry("Settings", position + new Vector2(0, spacing * 2), new SettingsDelegate());
-
+            
             MenuEntry quit = new MenuEntry("Quit", position + new Vector2(0, spacing * 3), new QuitGameDelegate());
 
             resume.UpperMenu = quit;
