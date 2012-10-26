@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using FallingSand.Screens;
 using FallingSand.Inputs;
+using FallingSand.Particles;
 
 namespace FallingSand
 {
@@ -23,6 +24,7 @@ namespace FallingSand
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
         public static ScreenContainer screens;
+        public static ParticleManager partMan;
         public static SpriteFont Font;
         private static Texture2D pointer;
         public static Controller controller;
@@ -31,6 +33,7 @@ namespace FallingSand
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             screens = new ScreenContainer();
+            partMan = new ParticleManager(graphics.GraphicsDevice, 10000, 1f);
             controller = new Controller(PlayerIndex.One);
             this.Components.Add(new GamerServicesComponent(this));
         }
