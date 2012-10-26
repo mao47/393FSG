@@ -98,12 +98,13 @@ namespace FallingSand
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(testColors[testColorIndex % testColors.Count]);
-            spriteBatch.Begin();
-            spriteBatch.Draw(pointer, controller.CursorPosition(), Color.White);
-            spriteBatch.End();
+
             // TODO: Add your drawing code here
             screens.Draw();
-
+            spriteBatch.Begin();
+            spriteBatch.Draw(pointer, controller.CursorPosition(), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f); 
+            //spriteBatch.Draw(pointer, controller.CursorPosition(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+            spriteBatch.End();
             base.Draw(gameTime);
         }
 
