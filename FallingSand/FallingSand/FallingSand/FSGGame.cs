@@ -27,6 +27,7 @@ namespace FallingSand
         public static ParticleManager partMan;
         public static SpriteFont Font;
         private static Texture2D pointer;
+        public static Texture2D white;
         public static Controller controller;
         public FSGGame()
         {
@@ -63,6 +64,7 @@ namespace FallingSand
             // TODO: use this.Content to load your game content here
             Font = Content.Load<SpriteFont>("Font1");
             pointer = Content.Load<Texture2D>("TestPointer");
+            white = Content.Load<Texture2D>("1x1white");
         }
 
         /// <summary>
