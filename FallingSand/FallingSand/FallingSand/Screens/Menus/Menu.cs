@@ -87,22 +87,15 @@ namespace FallingSand.Screens.Menus
         /// </summary>
         public virtual void Update(GameTime gameTime)
         {
-            InputState input = Controls.GetInput();
-            if (DateTime.Now.Ticks > duration + lastMove)
-            {
-                this.CanMoveAgain = true;
-                this.lastMove = DateTime.Now.Ticks;
-            }
-            if (input.Up() && this.CanMoveAgain)
+            
+            if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionUp))
             {
                 this.TrySet(this[this.CurrentSelected].UpperMenu);
-                this.CanMoveAgain = false;
             }
 
-            else if (input.Down() && this.CanMoveAgain)
+            else if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionDown))
             {
                 this.TrySet(this[this.CurrentSelected].LowerMenu);
-                this.CanMoveAgain = false;
             }
 
 
@@ -112,7 +105,6 @@ namespace FallingSand.Screens.Menus
                 if (this.CurrentSelected == i)
                 {
                     this[this.CurrentSelected].Update(gameTime, true);
-                    //if (DateTime.Now.Ticks > duration + FSGGame.screens.screenChanged)
                         this[this.CurrentSelected].TryRunDelegate();
                 }
                 else
