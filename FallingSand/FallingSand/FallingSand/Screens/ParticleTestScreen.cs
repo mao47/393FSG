@@ -16,7 +16,7 @@ namespace FallingSand.Screens
         public ParticleTestScreen(ScreenContainer container)
             : base(container)
         {
-            pm = new ParticleManager(FSGGame.graphics.GraphicsDevice, 100000, 1);
+            pm = new ParticleManager(new Rectangle(0, 0, 800, 400), FSGGame.graphics.GraphicsDevice, 100000, 1);
             pm.addSource(new Vector2(400, 0), 1, Particle_Type.Sand);
             pm.addSource(new Vector2(450, 0), 2, Particle_Type.Sand);
             pm.addSource(new Vector2(500, 0), 3, Particle_Type.Sand);

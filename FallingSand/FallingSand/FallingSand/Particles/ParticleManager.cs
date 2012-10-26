@@ -17,15 +17,18 @@ namespace FallingSand.Particles
         VertexDeclaration vertexDeclaration;//May not be needed
         GraphicsDevice graphicsDevice;
         int lastRound = 0;
+        Rectangle boundry;
 
         static Random rnd = new Random();
         static int roundTime = 100;//ms
+        static int boundryBuffer = 10;//Buffer outside the boundry where the particles are still tracked
         static float Gravity = 1;//arbitrary, adjust as needed
 
         public Texture2D white;
 
-        public ParticleManager(GraphicsDevice gd, int maxPart, float particleSize)
+        public ParticleManager(Rectangle boundries, GraphicsDevice gd, int maxPart, float particleSize)
         {
+            boundry = boundries;
             graphicsDevice = gd;
             maxParticles = maxPart;//Not Currently used
             size = particleSize;//Not Currently used
@@ -53,9 +56,9 @@ namespace FallingSand.Particles
                     if (p.type != Particle_Type.Wall)//If not not (not a typo) affected by gravity
                         p.direction.Y += Gravity;
                     p.position += p.direction;
-                    //TODO: Check if p is still in the viewing box
-                    
-                    if (false)
+                    //Check if p is still in the viewing box
+                    Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
+                    if (!boundry.Intersects(surround))
                     {
                         particles.RemoveAt(i);
                         i--;
@@ -89,7 +92,10 @@ namespace FallingSand.Particles
             p.direction = direction;
             p.pointSize = size;
             p.type = type;
-            particles.Add(p);
+            //Check if p is in the viewing box
+            Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
+            if (boundry.Intersects(surround))
+                particles.Add(p);
         }
 
     }
