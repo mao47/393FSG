@@ -109,8 +109,6 @@
   <ItemGroup>
     <Compile Include="Inputs\ActionType.cs" />
     <Compile Include="Inputs\Controller.cs" />
-    <Compile Include="GameElements\Controls.cs" />
-    <Compile Include="GameElements\InputState.cs" />
     <Compile Include="Inputs\ControllerPacket.cs" />
     <Compile Include="Inputs\RumblePack.cs" />
     <Compile Include="Particles\ParticleManager.cs" />
