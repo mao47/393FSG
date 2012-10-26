@@ -11,11 +11,11 @@ namespace FallingSand.Particles
         Sand,
         Wall
     }
-
+    //If the Particle will be drawn using textures, than there is no advantage of not making it a class
     struct Particle
     {
         public Vector2 position;
-        public Vector2 direction;
+        public Vector2 direction;//Velocity
         public float pointSize;
         public Particle_Type type;
 

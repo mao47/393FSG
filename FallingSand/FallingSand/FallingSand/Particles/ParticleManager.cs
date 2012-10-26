@@ -12,23 +12,23 @@ namespace FallingSand.Particles
     {
         ArrayList particles = new ArrayList();
         ArrayList sources = new ArrayList();
-        int maxParticles;
+        int maxParticles;//Max Number
         float size;
-        VertexDeclaration vertexDeclaration;
+        VertexDeclaration vertexDeclaration;//May not be needed
         GraphicsDevice graphicsDevice;
         int lastRound = 0;
 
         static Random rnd = new Random();
         static int roundTime = 100;//ms
-        static float Gravity = 1;
+        static float Gravity = 1;//arbitrary, adjust as needed
 
         public Texture2D white;
 
         public ParticleManager(GraphicsDevice gd, int maxPart, float particleSize)
         {
             graphicsDevice = gd;
-            maxParticles = maxPart;
-            size = particleSize;
+            maxParticles = maxPart;//Not Currently used
+            size = particleSize;//Not Currently used
 
             vertexDeclaration = new VertexDeclaration(Particle.vertexElements);
             white = FSGGame.white;
@@ -37,23 +37,24 @@ namespace FallingSand.Particles
         public void Update(GameTime gameTime)
         {
             lastRound += gameTime.ElapsedGameTime.Milliseconds;
-            while (lastRound >= roundTime)
+            while (lastRound >= roundTime)//updates for the number of rounds needed (possibly should only go once)
             {
                 lastRound -= roundTime;
-                for (int i = 0; i < sources.Count; i++)
+                for (int i = 0; i < sources.Count; i++)//Add particles from sources
                 {
                     Source s = (Source)sources[i];
                     if (s.isTimeForNewParticle())
                         addParticle(s.position, new Vector2(0), size, s.type);
                     sources[i] = s;
                 }
-                for (int i = 0; i < particles.Count; i++)
+                for (int i = 0; i < particles.Count; i++)//Update the particles
                 {
                     Particle p = (Particle)particles[i];
-                    if (p.type != Particle_Type.Wall)
+                    if (p.type != Particle_Type.Wall)//If not not (not a typo) affected by gravity
                         p.direction.Y += Gravity;
                     p.position += p.direction;
-                    //TODO: Check if p is still there
+                    //TODO: Check if p is still in the viewing box
+                    
                     if (false)
                     {
                         particles.RemoveAt(i);
@@ -63,11 +64,12 @@ namespace FallingSand.Particles
                         particles[i] = p;
                 }
                 //TODO: Collision
+                //TODO: Remove particles due to intereactions
             }
         }
 
         public void Draw()
-        {
+        {//TODO: Different textrue/color for each particle
             FSGGame.spriteBatch.Begin();
             foreach (Particle p in particles)
                 FSGGame.spriteBatch.Draw(white, p.position, Color.White);
