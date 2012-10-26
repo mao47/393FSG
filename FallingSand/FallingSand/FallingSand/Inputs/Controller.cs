@@ -37,6 +37,7 @@ namespace FallingSand.Inputs
         private int previousMouseY;
         private bool previousMouseLeft;
         private bool previousMouseRight;
+        private bool mouseMoved;
 
         /// <summary>
         /// This is used to recored if the previous controller configuration contained this action.
@@ -104,6 +105,8 @@ namespace FallingSand.Inputs
         private bool previousLB;
         #endregion
 
+        private Vector2 mousePosition;
+
         /// <summary>
         /// The ulong containing the pressed button states.
         /// </summary>
@@ -134,6 +137,7 @@ namespace FallingSand.Inputs
             this.packet = new ControllerPacket();
             this.playerIndex = playerIndex;
             this.rumblePack = new RumblePack(this.playerIndex);
+            this.mousePosition = new Vector2();
 
             #region TimerInitiallization
             this.updateCycle = 0;
@@ -160,6 +164,7 @@ namespace FallingSand.Inputs
             this.previousMouseRight = false;
             this.previousMouseX = Mouse.GetState().X;
             this.previousMouseY = Mouse.GetState().Y;
+            this.mouseMoved = false;
             #endregion
         }
 
@@ -208,11 +213,21 @@ namespace FallingSand.Inputs
             this.CheckAndSetActive();
             this.rumblePack.Update();
 
+
+            
+            
             #region TimerUpdate
             this.updateCycle++;
             this.lastSelectionMovement++;
             this.lastSelect++;
             #endregion
+        }
+
+        public Vector2 CursorPosition()
+        {
+            mousePosition.X = previousMouseX;
+            mousePosition.Y = previousMouseY;
+            return mousePosition;
         }
 
         /// <summary>
@@ -239,6 +254,14 @@ namespace FallingSand.Inputs
 #if !XBOX
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouseState = Mouse.GetState();
+            if (previousMouseX != mouseState.X || previousMouseY != mouseState.Y)
+            {
+                this.mouseMoved = true;
+                previousMouseX = mouseState.X;
+                previousMouseY = mouseState.Y;
+            }
+            else
+                this.mouseMoved = false;
 #endif
 
             #region SelectionDOWN
@@ -1021,6 +1044,7 @@ namespace FallingSand.Inputs
                 case ActionType.SelectionLeft: return this.packet.SelectionLeft;
                 case ActionType.SelectionRight: return this.packet.SelectionRight;
                 case ActionType.SelectionUp: return this.packet.SelectionUp;
+                case ActionType.MouseMoved: return this.mouseMoved;
             }
 
             return this.ContainsFloat(actionType) == 1;

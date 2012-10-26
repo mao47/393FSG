@@ -47,12 +47,18 @@ namespace FallingSand.Screens.Menus
         /// <value>The position.</value>
         public Vector2 position { get; private set; }
 
+        /// <summary>
+        /// Rectanglular size of text (at default size and 0 rotation)
+        /// </summary>
+        public Vector2 textSize { get; private set; }
+
         public MenuEntry(string text, Vector2 position, IMenuDelegate menuDelegate)
         {
             this.menuDelegate = menuDelegate;
             this.text = text;
             this.position = position;
             this.textColor = Color.White;
+            this.textSize = FSGGame.Font.MeasureString(this.text);
             oscScale = new OscillatingFloat(1, (float).15, (float).5);
         }
 
@@ -91,7 +97,7 @@ namespace FallingSand.Screens.Menus
         public virtual void Draw()
         {
             FSGGame.spriteBatch.Begin();
-            FSGGame.spriteBatch.DrawString(FSGGame.Font, this.text, this.position, textColor, 0, FSGGame.Font.MeasureString(this.text)/2f, oscScale.Value, SpriteEffects.None, 0);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, this.text, this.position, textColor, 0, this.textSize/2f, oscScale.Value, SpriteEffects.None, 0);
             FSGGame.spriteBatch.End();
         }
     }

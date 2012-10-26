@@ -24,6 +24,7 @@ namespace FallingSand
         public static SpriteBatch spriteBatch;
         public static ScreenContainer screens;
         public static SpriteFont Font;
+        private static Texture2D pointer;
         public static Controller controller;
         public FSGGame()
         {
@@ -58,6 +59,7 @@ namespace FallingSand
 
             // TODO: use this.Content to load your game content here
             Font = Content.Load<SpriteFont>("Font1");
+            pointer = Content.Load<Texture2D>("TestPointer");
         }
 
         /// <summary>
@@ -99,6 +101,9 @@ namespace FallingSand
 
             // TODO: Add your drawing code here
             screens.Draw();
+            spriteBatch.Begin();
+            spriteBatch.Draw(pointer, controller.CursorPosition(), Color.White);
+            spriteBatch.End();
             base.Draw(gameTime);
         }
 

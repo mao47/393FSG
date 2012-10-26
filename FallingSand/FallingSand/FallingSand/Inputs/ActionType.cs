@@ -40,6 +40,7 @@ namespace FallingSand.Inputs
         LookHorizontal,
         LookVertical,
         RightTrigger,
-        LeftTrigger
+        LeftTrigger,
+        MouseMoved
     }
 }

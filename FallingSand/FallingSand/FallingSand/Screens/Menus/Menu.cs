@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using FallingSand.GameElements;
+using FallingSand.Inputs;
 
 namespace FallingSand.Screens.Menus
 {
@@ -88,14 +89,33 @@ namespace FallingSand.Screens.Menus
         public virtual void Update(GameTime gameTime)
         {
             
-            if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionUp))
+            if (FSGGame.controller.ContainsBool(ActionType.SelectionUp))
             {
                 this.TrySet(this[this.CurrentSelected].UpperMenu);
             }
 
-            else if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionDown))
+            else if (FSGGame.controller.ContainsBool(ActionType.SelectionDown))
             {
                 this.TrySet(this[this.CurrentSelected].LowerMenu);
+            }
+            else //if (FSGGame.controller.ContainsBool(ActionType.MouseMoved))
+            {
+                Vector2 cursor = FSGGame.controller.CursorPosition();
+                for (int i = 0; i < this.Count; i++)
+                {
+                    if (this.CurrentSelected != i)
+                    {
+                        Vector2 size = this[i].textSize / 2f;
+                        Vector2 topLeft = this[i].position - size;
+                        Vector2 bottomRight = this[i].position + size;
+                        if (topLeft.X < cursor.X && bottomRight.X > cursor.X
+                            && topLeft.Y < cursor.Y && bottomRight.Y > cursor.Y)
+                        {
+                            CurrentSelected = i;
+                            break;
+                        }
+                    }
+                }
             }
 
 
