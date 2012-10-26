@@ -10,7 +10,7 @@ namespace FallingSand.Screens
     class ParticleTestScreen : Screen
     {
         private ParticleManager pm;
-
+        private Particle_Type currentParticle;
 
         public ParticleTestScreen(ScreenContainer container)
             : base(container)
@@ -21,6 +21,7 @@ namespace FallingSand.Screens
             pm.addSource(new Vector2(500, 0), 3, Particle_Type.Sand);
             pm.addSource(new Vector2(550, 0), 4, Particle_Type.Sand);
             pm.addSource(new Vector2(600, 0), 5, Particle_Type.Sand);
+            currentParticle = Particle_Type.Sand;
         }
 
         /// <summary>
@@ -40,7 +41,15 @@ namespace FallingSand.Screens
             if (FSGGame.controller.ContainsBool(Inputs.ActionType.Select))
             {
                 Vector2 temp = FSGGame.controller.CursorPosition();
-                pm.addParticle(temp, Vector2.Zero, 1, Particle_Type.Sand);
+                pm.addParticle(temp, Vector2.Zero, 1, currentParticle);
+            }
+
+            if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionLeft))   //if left arrow is pressed
+            {
+                if (currentParticle > 0)
+                    currentParticle--;
+                else
+                    currentParticle = Particle_Type.Wall;
             }
         }
 
