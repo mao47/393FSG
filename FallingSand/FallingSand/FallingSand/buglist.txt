@@ -1,0 +1,1 @@
+﻿1	clicking input occurs even when mouse is off screen or game doesn't have focus
