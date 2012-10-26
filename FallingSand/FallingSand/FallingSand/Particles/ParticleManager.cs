@@ -92,5 +92,10 @@ namespace FallingSand.Particles
             particles.Add(p);
         }
 
+        private void checkCollisions(Particle p)
+        {
+            
+        }
+
     }
 }
