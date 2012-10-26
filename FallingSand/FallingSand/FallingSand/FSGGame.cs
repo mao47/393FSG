@@ -24,7 +24,7 @@ namespace FallingSand
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
         public static ScreenContainer screens;
-        public static ParticleManager partMan;
+        //public static ParticleManager partMan;
         public static SpriteFont Font;
         private static Texture2D pointer;
         public static Texture2D white;
@@ -34,7 +34,7 @@ namespace FallingSand
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             screens = new ScreenContainer();
-            partMan = new ParticleManager(graphics.GraphicsDevice, 10000, 1f);
+            //partMan = new ParticleManager(graphics.GraphicsDevice, 10000, 1f);
             controller = new Controller(PlayerIndex.One);
             this.Components.Add(new GamerServicesComponent(this));
         }
