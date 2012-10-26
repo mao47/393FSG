@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using FallingSand.Particles;
 
 namespace FallingSand.Screens
 {
@@ -15,7 +16,7 @@ namespace FallingSand.Screens
 
 
         }
-
+        ParticleManager manager;
         /// <summary>
         /// Updates this instance. This makes sure that GameClock is paused,
         /// and it also updates the menu.
@@ -23,6 +24,13 @@ namespace FallingSand.Screens
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            if (FSGGame.controller.ContainsBool(Inputs.ActionType.Select))
+            {
+                Vector2 temp = FSGGame.controller.CursorPosition();
+                manager.addParticle(temp, Vector2.Zero, 1, Particle_Type.Sand);
+            }
+
         }
 
         /// <summary>
