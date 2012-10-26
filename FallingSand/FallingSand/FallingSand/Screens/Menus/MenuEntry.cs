@@ -82,7 +82,7 @@ namespace FallingSand.Screens.Menus
             if (highlighted)
             {
                 //show that its highlighted
-                this.textColor = Color.Black;
+                this.textColor = Color.Yellow;
                 oscScale.Update(gameTime);
             }
             else

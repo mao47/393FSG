@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using FallingSand.Screens;
 using FallingSand.Inputs;
+using FallingSand.Particles;
 
 namespace FallingSand
 {
@@ -23,14 +24,17 @@ namespace FallingSand
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
         public static ScreenContainer screens;
+        public static ParticleManager partMan;
         public static SpriteFont Font;
         private static Texture2D pointer;
+        public static Texture2D white;
         public static Controller controller;
         public FSGGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             screens = new ScreenContainer();
+            partMan = new ParticleManager(graphics.GraphicsDevice, 10000, 1f);
             controller = new Controller(PlayerIndex.One);
             this.Components.Add(new GamerServicesComponent(this));
         }
@@ -60,6 +64,7 @@ namespace FallingSand
             // TODO: use this.Content to load your game content here
             Font = Content.Load<SpriteFont>("Font1");
             pointer = Content.Load<Texture2D>("TestPointer");
+            white = Content.Load<Texture2D>("1x1white");
         }
 
         /// <summary>
@@ -97,7 +102,7 @@ namespace FallingSand
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(testColors[testColorIndex % testColors.Count]);
+            GraphicsDevice.Clear(Color.Black);//testColors[testColorIndex % testColors.Count]);
 
             // TODO: Add your drawing code here
             screens.Draw();

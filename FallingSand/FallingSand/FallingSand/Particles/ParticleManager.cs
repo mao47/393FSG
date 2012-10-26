@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace FallingSand.Particles
 {
-    class ParticleManager
+    public class ParticleManager
     {
         ArrayList particles = new ArrayList();
         ArrayList sources = new ArrayList();
@@ -22,6 +22,8 @@ namespace FallingSand.Particles
         static int roundTime = 100;//ms
         static float Gravity = 1;
 
+        public Texture2D white;
+
         public ParticleManager(GraphicsDevice gd, int maxPart, float particleSize)
         {
             graphicsDevice = gd;
@@ -29,6 +31,7 @@ namespace FallingSand.Particles
             size = particleSize;
 
             vertexDeclaration = new VertexDeclaration(Particle.vertexElements);
+            white = FSGGame.white;
         }
 
         public void Update(GameTime gameTime)
@@ -65,8 +68,10 @@ namespace FallingSand.Particles
 
         public void Draw()
         {
-            //This line is from the book, PoinList isn't there for some reason
-            //graphicsDevice.DrawUserPrimitives<Particle>(PrimitiveType.PointList, particles.ToArray(), 0, particles.Count);
+            FSGGame.spriteBatch.Begin();
+            foreach (Particle p in particles)
+                FSGGame.spriteBatch.Draw(white, p.position, Color.White);
+            FSGGame.spriteBatch.End();
         }
 
         public void addSource(Vector2 position, int period, Particle_Type type)
