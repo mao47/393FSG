@@ -17,11 +17,11 @@ namespace FallingSand.Screens
             : base(container)
         {
             pm = new ParticleManager(new Rectangle(0, 0, 800, 400), FSGGame.graphics.GraphicsDevice, 100000, 1);
-            pm.addSource(new Vector2(400, 0), 1, Particle_Type.Sand);
-            pm.addSource(new Vector2(450, 0), 2, Particle_Type.Sand);
-            pm.addSource(new Vector2(500, 0), 3, Particle_Type.Sand);
+            //pm.addSource(new Vector2(400, 0), 1, Particle_Type.Sand);
+            //pm.addSource(new Vector2(450, 0), 2, Particle_Type.Sand);
+            //pm.addSource(new Vector2(500, 0), 3, Particle_Type.Sand);
             pm.addSource(new Vector2(550, 0), 4, Particle_Type.Sand);
-            pm.addSource(new Vector2(600, 0), 5, Particle_Type.Sand);
+            //pm.addSource(new Vector2(600, 0), 5, Particle_Type.Sand);
             currentParticle = Particle_Type.Sand;
         }
 

@@ -10,7 +10,7 @@ namespace FallingSand.Particles
 {
     public class ParticleManager
     {
-        ArrayList particles = new ArrayList();
+        List<Particle> particles = new List<Particle>();
         ArrayList sources = new ArrayList();
         int maxParticles;//Max Number
         float size;
@@ -54,7 +54,8 @@ namespace FallingSand.Particles
                 {
                     Particle p = (Particle)particles[i];
                     if (p.type != Particle_Type.Wall)//If not not (not a typo) affected by gravity
-                        p.direction.Y += Gravity;
+                        if(!this.checkCollisions(p))  //if it's not colliding 
+                            p.direction.Y += Gravity;
                     p.position += p.direction;
                     //Check if p is still in the viewing box
                     Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
@@ -98,9 +99,22 @@ namespace FallingSand.Particles
                 particles.Add(p);
         }
 
-        private void checkCollisions(Particle p)
+        private bool checkCollisions(Particle colP)
         {
-            
+            IEnumerable<Particle> collQuery =
+            from p in particles
+            where Math.Abs(p.position.X - colP.position.X) < 50 && Math.Abs(p.position.Y - colP.position.Y) < 50 && p.type == Particle_Type.Wall
+            select p;
+
+            foreach (Particle p in collQuery)
+            {
+                    if (p.position.Y - colP.position.Y < 2)
+                    {
+                        colP.direction.Y = -100;
+                        return true;
+                    }
+            }
+            return false;
         }
 
     }
