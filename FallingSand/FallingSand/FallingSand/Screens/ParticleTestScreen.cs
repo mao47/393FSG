@@ -75,7 +75,7 @@ namespace FallingSand.Screens
         public override void Draw()
         {
             FSGGame.spriteBatch.Begin();
-            FSGGame.spriteBatch.DrawString(FSGGame.Font, "LIKE A BAOWSSS", Vector2.One * 100f, Color.White);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Particles Demo", Vector2.One * 100f, Color.White);
             FSGGame.spriteBatch.End();
 
             pm.Draw();

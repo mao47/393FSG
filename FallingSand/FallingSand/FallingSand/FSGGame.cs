@@ -36,7 +36,9 @@ namespace FallingSand
             screens = new ScreenContainer();
             //partMan = new ParticleManager(graphics.GraphicsDevice, 10000, 1f);
             controller = new Controller(PlayerIndex.One);
+#if XBOX
             this.Components.Add(new GamerServicesComponent(this));
+#endif
         }
 
         /// <summary>
