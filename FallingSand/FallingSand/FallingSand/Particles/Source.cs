@@ -13,6 +13,9 @@ namespace FallingSand.Particles
         int period, counter;
         public Particle_Type type;
 
+        static Random rnd = new Random();
+        static float radius = 10;
+
         public Source(Vector2 pos, int cyclesBetween, Particle_Type outputType)
         {
             position = pos;
@@ -28,6 +31,11 @@ namespace FallingSand.Particles
                 return false;
             counter = 0;
             return true;
+        }
+
+        public Vector2 getNewParticlePosition()
+        {
+            return new Vector2(position.X + radius * ((float)rnd.NextDouble() - 5f), position.Y + radius * ((float)rnd.NextDouble()) - .5f);
         }
     }
 }
