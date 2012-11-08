@@ -54,8 +54,12 @@ namespace FallingSand.Particles
                 {
                     Particle p = (Particle)particles[i];
                     if (p.type != Particle_Type.Wall)//If not not (not a typo) affected by gravity
-                        if(!this.checkCollisions(p))  //if it's not colliding 
-                            p.direction.Y += Gravity;
+                    {
+                        p.direction.Y += Gravity;
+                        if (this.checkCollisions(p))  //if it's not colliding 
+                            p.direction.Y = 0;
+                           
+                    }
                     p.position += p.direction;
                     //Check if p is still in the viewing box
                     Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
@@ -108,9 +112,8 @@ namespace FallingSand.Particles
 
             foreach (Particle p in collQuery)
             {
-                    if (p.position.Y - colP.position.Y < 2)
+                    if (p.position.Y - colP.position.Y <= 1 && p.position.X -colP.position.X <= 1)
                     {
-                        colP.direction.Y = -100;
                         return true;
                     }
             }
