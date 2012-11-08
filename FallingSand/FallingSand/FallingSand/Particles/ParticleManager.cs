@@ -10,11 +10,9 @@ namespace FallingSand.Particles
 {
     public class ParticleManager
     {
-        List<Particle> particles = new List<Particle>();
+        ArrayList particles = new ArrayList();
         ArrayList sources = new ArrayList();
         int maxParticles;//Max Number
-        float size;
-        VertexDeclaration vertexDeclaration;//May not be needed
         GraphicsDevice graphicsDevice;
         int lastRound = 0;
         Rectangle boundry;
@@ -31,9 +29,7 @@ namespace FallingSand.Particles
             boundry = boundries;
             graphicsDevice = gd;
             maxParticles = maxPart;//Not Currently used
-            size = particleSize;//Not Currently used
 
-            vertexDeclaration = new VertexDeclaration(Particle.vertexElements);
             white = FSGGame.white;
         }
 
@@ -47,20 +43,15 @@ namespace FallingSand.Particles
                 {
                     Source s = (Source)sources[i];
                     if (s.isTimeForNewParticle())
-                        addParticle(s.position, new Vector2(0), size, s.type);
+                        addParticle(s.getNewParticlePosition(), new Vector2(0), s.type);
                     sources[i] = s;
                 }
                 for (int i = 0; i < particles.Count; i++)//Update the particles
                 {
                     Particle p = (Particle)particles[i];
                     if (p.type != Particle_Type.Wall)//If not not (not a typo) affected by gravity
-                    {
-                        p.direction.Y += Gravity;
-                        if (this.checkCollisions(p))  //if it's not colliding 
-                            p.direction.Y = 0;
-                           
-                    }
-                    p.position += p.direction;
+                        p.velocity.Y += Gravity;
+                    p.position += p.velocity;
                     //Check if p is still in the viewing box
                     Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
                     if (!boundry.Intersects(surround))
@@ -77,10 +68,10 @@ namespace FallingSand.Particles
         }
 
         public void Draw()
-        {//TODO: Different textrue/color for each particle
+        {
             FSGGame.spriteBatch.Begin();
             foreach (Particle p in particles)
-                FSGGame.spriteBatch.Draw(white, p.position, Color.White);
+                FSGGame.spriteBatch.Draw(white, p.position, p.getColor());
             FSGGame.spriteBatch.End();
         }
 
@@ -90,34 +81,13 @@ namespace FallingSand.Particles
             sources.Add(source);
         }
 
-        public void addParticle(Vector2 position, Vector2 direction, float size, Particle_Type type)
+        public void addParticle(Vector2 position, Vector2 velocity, Particle_Type type)
         {
-            Particle p;
-            p.position = position;
-            p.direction = direction;
-            p.pointSize = size;
-            p.type = type;
+            Particle p = new Particle(position, velocity, type);
             //Check if p is in the viewing box
             Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
             if (boundry.Intersects(surround))
                 particles.Add(p);
-        }
-
-        private bool checkCollisions(Particle colP)
-        {
-            IEnumerable<Particle> collQuery =
-            from p in particles
-            where Math.Abs(p.position.X - colP.position.X) < 50 && Math.Abs(p.position.Y - colP.position.Y) < 50 && p.type == Particle_Type.Wall
-            select p;
-
-            foreach (Particle p in collQuery)
-            {
-                    if (p.position.Y - colP.position.Y <= 1 && p.position.X -colP.position.X <= 1)
-                    {
-                        return true;
-                    }
-            }
-            return false;
         }
 
     }

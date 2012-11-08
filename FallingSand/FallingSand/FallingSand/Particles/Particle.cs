@@ -11,19 +11,27 @@ namespace FallingSand.Particles
         Sand,
         Wall
     }
-    //If the Particle will be drawn using textures, than there is no advantage of not making it a class
-    struct Particle
+    public class Particle
     {
         public Vector2 position;
-        public Vector2 direction;//Velocity
-        public float pointSize;
+        public Vector2 velocity;
         public Particle_Type type;
 
-        //From XNA book Chapter 14, unsure if needed.
-        public static readonly VertexElement[] vertexElements =
+        public Particle (Vector2 pos, Vector2 vel, Particle_Type ptype)
         {
-            new VertexElement(0, VertexElementFormat.Vector2, VertexElementUsage.Position,0),
-            new VertexElement(16, VertexElementFormat.Single, VertexElementUsage.PointSize,0),
-        };
+            position = pos;
+            velocity = vel;
+            type = ptype;
+        }
+
+        public Color getColor()
+        {
+            if (type == Particle_Type.Sand)
+                return Color.SandyBrown;
+            else if (type == Particle_Type.Wall)
+                return Color.Gray;
+            else
+                return Color.White;
+        }
     }
 }

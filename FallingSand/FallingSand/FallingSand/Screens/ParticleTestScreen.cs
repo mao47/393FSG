@@ -53,7 +53,7 @@ namespace FallingSand.Screens
                     {
                         temp2.X = temp.X + x;
                         temp2.Y = temp.Y + y;
-                        pm.addParticle(temp2, Vector2.Zero, 1, currentParticle);
+                        pm.addParticle(temp2, Vector2.Zero, currentParticle);
                     }
                 }
             }
