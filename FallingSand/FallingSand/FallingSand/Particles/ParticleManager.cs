@@ -52,12 +52,9 @@ namespace FallingSand.Particles
                     if (p.type != Particle_Type.Wall)//If not not (not a typo) affected by gravity
                     {
                         p.velocity.Y += Gravity;
-                        if (this.checkCollisions(p))  //if it's not colliding 
-                            p.velocity.Y = 0;
-                           
+                        this.checkCollisions(p);  //check collisions
                     }
-                    p.position += p.velocity;
-                        p.velocity.Y += Gravity;
+
                     p.position += p.velocity;
                     //Check if p is still in the viewing box
                     Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
@@ -101,17 +98,31 @@ namespace FallingSand.Particles
         {
             IEnumerable<Particle> collQuery =
             from p in particles
-            where Math.Abs(p.position.X - colP.position.X) < 50 && Math.Abs(p.position.Y - colP.position.Y) < 50 && p.type == Particle_Type.Wall
+            where Math.Abs(p.position.X - colP.position.X) < 2 && Math.Abs(p.position.Y - colP.position.Y) < 2// && p.type == Particle_Type.Wall
             select p;
 
             foreach (Particle p in collQuery)
             {
                     if (p.position.Y - colP.position.Y <= 1 && p.position.X -colP.position.X <= 1)
                     {
+                        isColliding(colP, p);
                         return true;
                     }
             }
             return false;
+        }
+
+        private bool isColliding(Particle pOrig, Particle collider)
+        {
+            if (collider.position.X == pOrig.position.X) //when the 2 particles are in a verticle line
+            {
+                if ((collider.position.Y - 1) == pOrig.position.Y)
+                {
+                    pOrig.velocity.Y = -1;
+                }
+            }
+
+            return true;
         }
 
     }
