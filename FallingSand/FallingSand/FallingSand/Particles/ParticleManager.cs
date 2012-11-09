@@ -20,7 +20,7 @@ namespace FallingSand.Particles
         static Random rnd = new Random();
         static int roundTime = 100;//ms
         static int boundryBuffer = 10;//Buffer outside the boundry where the particles are still tracked
-        static float Gravity = 1;//arbitrary, adjust as needed
+        static float Gravity = 2;//arbitrary, adjust as needed
 
         public Texture2D white;
 
@@ -51,7 +51,7 @@ namespace FallingSand.Particles
                     Particle p = (Particle)particles[i];
                     if (p.type != Particle_Type.Wall)//If not not (not a typo) affected by gravity
                     {
-                        p.velocity.Y += Gravity;
+                        p.velocity.Y = Gravity;
                         this.checkCollisions(p);  //check collisions
                     }
 
@@ -98,30 +98,24 @@ namespace FallingSand.Particles
         {
             IEnumerable<Particle> collQuery =
             from p in particles
-            where Math.Abs(p.position.X - colP.position.X) < 2 && Math.Abs(p.position.Y - colP.position.Y) < 2// && p.type == Particle_Type.Wall
+            where Math.Abs(p.position.X - colP.position.X) < 1 && Math.Abs(p.position.Y - colP.position.Y) < 1 && p.type == Particle_Type.Wall
             select p;
 
             foreach (Particle p in collQuery)
             {
-                    if (p.position.Y - colP.position.Y <= 1 && p.position.X -colP.position.X <= 1)
-                    {
+                p.setColor(Color.Red);
+                    //if (p.position.Y - colP.position.Y <= 1 && p.position.X -colP.position.X <= 1)
+                    //{
                         isColliding(colP, p);
-                        return true;
-                    }
+                        //return true;
+                    //}
             }
-            return false;
+            return true;
         }
 
         private bool isColliding(Particle pOrig, Particle collider)
         {
-            if (collider.position.X == pOrig.position.X) //when the 2 particles are in a verticle line
-            {
-                if ((collider.position.Y - 1) == pOrig.position.Y)
-                {
-                    pOrig.velocity.Y = -1;
-                    pOrig.setColor(Color.Red);
-                }
-            }
+            pOrig.velocity.Y = 0;
 
             return true;
         }
