@@ -54,11 +54,9 @@ namespace FallingSand.Screens
 
         private void getInput()
         {
-            var mouseState = Mouse.GetState();
-
-            if (mouseState.LeftButton == ButtonState.Pressed)//FSGGame.controller.ContainsBool(Inputs.ActionType.Select))
+            if (FSGGame.controller.ContainsBool(Inputs.ActionType.AButton))//mouseState.LeftButton == ButtonState.Pressed)//FSGGame.controller.ContainsBool(Inputs.ActionType.Select))
             {
-                Vector2 temp = new Vector2(mouseState.X, mouseState.Y);//FSGGame.controller.CursorPosition();
+                Vector2 temp = FSGGame.controller.CursorPosition();
                 temp.X -= brushSize;
                 temp.Y -= brushSize;
                 Vector2 temp2;

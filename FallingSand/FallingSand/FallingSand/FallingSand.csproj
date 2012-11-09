@@ -137,8 +137,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FallingSandContent\FallingSandContent.contentproj">
-      <Name>FallingSandContent</Name>
+      <Name>FallingSandContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{5339079B-D88F-4C6A-BFC8-449B760C83FD}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
