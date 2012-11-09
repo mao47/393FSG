@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using FallingSand.Particles;
+using Microsoft.Xna.Framework.Input;
+
 
 namespace FallingSand.Screens
 {
@@ -11,8 +13,7 @@ namespace FallingSand.Screens
     {
         private ParticleManager pm;
         private Particle_Type currentParticle;
-        private int brushSize = 5;
-
+        private int brushSize = 1;
         public ParticleTestScreen(ScreenContainer container)
             : base(container)
         {
@@ -32,14 +33,9 @@ namespace FallingSand.Screens
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
-
-
-
-
+            var mouseState = Mouse.GetState();
             pm.Update(gameTime);
-            
-            if (FSGGame.controller.ContainsBool(Inputs.ActionType.Select))
+            if (mouseState.LeftButton == ButtonState.Pressed)//FSGGame.controller.ContainsBool(Inputs.ActionType.Select))
             {
                 Vector2 temp = FSGGame.controller.CursorPosition();
                 temp.X -= brushSize;
@@ -80,5 +76,6 @@ namespace FallingSand.Screens
 
             pm.Draw();
         }
+
     }
 }
