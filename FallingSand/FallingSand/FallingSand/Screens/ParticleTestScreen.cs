@@ -11,17 +11,20 @@ namespace FallingSand.Screens
 {
     class ParticleTestScreen : Screen
     {
+        private Random rand;
         private ParticleManager pm;
         private Particle_Type currentParticle;
-        private int brushSize = 1;
+        private int brushSize = 3;
         public ParticleTestScreen(ScreenContainer container)
             : base(container)
         {
             pm = new ParticleManager(new Rectangle(0, 0, 800, 400), FSGGame.graphics.GraphicsDevice, 100000, 1);
+
+            rand = new Random(Environment.TickCount);
             //pm.addSource(new Vector2(400, 0), 1, Particle_Type.Sand);
             //pm.addSource(new Vector2(450, 0), 2, Particle_Type.Sand);
             //pm.addSource(new Vector2(500, 0), 3, Particle_Type.Sand);
-            pm.addSource(new Vector2(550, 0), 4, Particle_Type.Sand);
+            pm.addSource(new Vector2(550, 0), 1, Particle_Type.Sand);
             //pm.addSource(new Vector2(600, 0), 5, Particle_Type.Sand);
             currentParticle = Particle_Type.Sand;
         }
@@ -33,36 +36,8 @@ namespace FallingSand.Screens
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            var mouseState = Mouse.GetState();
             pm.Update(gameTime);
-            if (mouseState.LeftButton == ButtonState.Pressed)//FSGGame.controller.ContainsBool(Inputs.ActionType.Select))
-            {
-                Vector2 temp = FSGGame.controller.CursorPosition();
-                temp.X -= brushSize;
-                temp.Y -= brushSize;
-                Vector2 temp2;
-
-                for (int x = 0; x < 2 * brushSize; x++)
-                {
-
-                    for (int y = 0; y < 2 * brushSize; y++)
-                    {
-                        temp2.X = temp.X + x;
-                        temp2.Y = temp.Y + y;
-                        pm.addParticle(temp2, Vector2.Zero, currentParticle);
-                    }
-                }
-            }
-
-            if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionLeft))   //if left arrow is pressed
-            {
-                if (currentParticle > 0)
-                    currentParticle--;
-                else
-                    currentParticle = Particle_Type.Wall;
-               
-            }
-             
+            getInput();             
         }
 
         /// <summary>
@@ -77,5 +52,49 @@ namespace FallingSand.Screens
             pm.Draw();
         }
 
+        private void getInput()
+        {
+            var mouseState = Mouse.GetState();
+
+            if (mouseState.LeftButton == ButtonState.Pressed)//FSGGame.controller.ContainsBool(Inputs.ActionType.Select))
+            {
+                Vector2 temp = new Vector2(mouseState.X, mouseState.Y);//FSGGame.controller.CursorPosition();
+                temp.X -= brushSize;
+                temp.Y -= brushSize;
+                Vector2 temp2;
+                if (currentParticle != Particle_Type.Wall)
+                    for (int i = 0; i < brushSize; i++)
+                    {
+                        temp2 = new Vector2(temp.X + 10 * ((float)rand.NextDouble() - .5f), temp.Y + 10 * ((float)rand.NextDouble()) - .5f); //random location for spawning
+                        pm.addParticle(temp2, Vector2.Zero, currentParticle);
+                    }
+                else
+                {
+                    for (int x = 0; x < 2 * brushSize; x++)
+                    {
+
+                        for (int y = 0; y < 2 * brushSize; y++)
+                        {
+                            temp2.X = temp.X + x;
+                            temp2.Y = temp.Y + y;
+                            pm.addParticle(temp2, Vector2.Zero, currentParticle);
+                        }
+                    }
+                }
+            }
+
+            if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionLeft))   //if left arrow is pressed
+            {
+                if (currentParticle > 0)
+                    currentParticle--;
+                else
+                    currentParticle = Particle_Type.Wall;
+            }
+
+            if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionUp) && brushSize <= 100)
+                brushSize++;
+            else if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionDown) && brushSize >= 1)
+                brushSize--;
+        }
     }
 }

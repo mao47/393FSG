@@ -119,6 +119,7 @@ namespace FallingSand.Particles
                 if ((collider.position.Y - 1) == pOrig.position.Y)
                 {
                     pOrig.velocity.Y = -1;
+                    pOrig.setColor(Color.Red);
                 }
             }
 
