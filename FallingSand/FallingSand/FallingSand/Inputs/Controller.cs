@@ -535,7 +535,7 @@ namespace FallingSand.Inputs
             #region AButton
 
 #if !XBOX
-            if (keyboardState.IsKeyDown(Keys.Space))
+            if (keyboardState.IsKeyDown(Keys.Space) || mouseState.LeftButton==ButtonState.Pressed)
             {
                 this.packet.AButton = true;
 

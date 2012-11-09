@@ -33,9 +33,9 @@ namespace FallingSand.Screens
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            var mouseState = Mouse.GetState();
+            //var mouseState = Mouse.GetState();
             pm.Update(gameTime);
-            if (mouseState.LeftButton == ButtonState.Pressed)//FSGGame.controller.ContainsBool(Inputs.ActionType.Select))
+            if (FSGGame.controller.ContainsBool(Inputs.ActionType.AButton))//mouseState.LeftButton == ButtonState.Pressed)//FSGGame.controller.ContainsBool(Inputs.ActionType.Select))
             {
                 Vector2 temp = FSGGame.controller.CursorPosition();
                 temp.X -= brushSize;
