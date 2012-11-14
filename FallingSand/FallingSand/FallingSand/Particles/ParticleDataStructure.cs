@@ -24,13 +24,21 @@ namespace FallingSand.Particles
 
         public void newParticle(Particle p)
         {
-            //todo: check max particles
-            addList.Add(p);
+            if(particles.Count < maxParticles)
+                addList.Add(p);
         }
+
         public void deleteParticle(Particle p)
         {
             deleteList.Add(p);
         }
+
+        /// <summary>
+        /// Call to change the location of a particle. DO NOT set the position manually
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="newX"></param>
+        /// <param name="newY"></param>
         public void moveParticle(Particle p, int newX, int newY)
         {
             particleField[(int)p.position.X, (int)p.position.Y] = null;
@@ -39,6 +47,12 @@ namespace FallingSand.Particles
             p.position.Y = (int)newY;
         }
 
+        /// <summary>
+        /// Returns a list of all the particles within a chebyshev distance of 1 from the given x,y position
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         public List<Particle> withinIndexExcludeSource(int x, int y)
         {
             List<Particle> collList = new List<Particle>();
@@ -58,6 +72,9 @@ namespace FallingSand.Particles
             return collList;
         }
 
+        /// <summary>
+        /// Checks the add and remove lists to officially make the changes to the matrix and list
+        /// </summary>
         public void Update()
         {
             foreach (Particle p in addList)
@@ -88,6 +105,10 @@ namespace FallingSand.Particles
             
         }
 
+        /// <summary>
+        /// Returns the list as an IEnumerable for client code to iterate over
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<Particle> myEnumerable()
         {
             return particles;
