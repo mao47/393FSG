@@ -12,13 +12,13 @@ namespace FallingSand.Screens
     class ParticleTestScreen : Screen
     {
         private Random rand;
-        private ParticleManager pm;
+        private MAOParticleManager pm;
         private Particle_Type currentParticle;
         private int brushSize = 3;
         public ParticleTestScreen(ScreenContainer container)
             : base(container)
         {
-            pm = new ParticleManager(new Rectangle(0, 0, 800, 400), FSGGame.graphics.GraphicsDevice, 100000, 1);
+            pm = new MAOParticleManager(new Rectangle(0, 0, 800, 400), FSGGame.graphics.GraphicsDevice, 100000, 1);
 
             rand = new Random(Environment.TickCount);
             //pm.addSource(new Vector2(400, 0), 1, Particle_Type.Sand);
