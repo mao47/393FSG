@@ -13,13 +13,13 @@ namespace FallingSand.Screens
     {
         private Random rand;
         public  MAOParticleManager pm;
-        private Particle_Type currentParticle;
-        private int brushSize = 3;
+        public Particle_Type currentParticle;
+        public int brushSize;
         public ParticleTestScreen(ScreenContainer container)
             : base(container)
         {
             pm = new MAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 1);
-
+            brushSize = 3;
             rand = new Random(Environment.TickCount);
             //pm.addSource(new Vector2(400, 0), 1, Particle_Type.Sand);
             //pm.addSource(new Vector2(450, 0), 2, Particle_Type.Sand);

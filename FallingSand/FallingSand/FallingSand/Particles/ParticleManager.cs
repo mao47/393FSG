@@ -20,7 +20,7 @@ namespace FallingSand.Particles
         static Random rnd = new Random();
         static int roundTime = 100;//ms
         static int boundryBuffer = 10;//Buffer outside the boundry where the particles are still tracked
-        static float Gravity = 2;//arbitrary, adjust as needed
+        static float Gravity = 1;//arbitrary, adjust as needed
 
         public Texture2D white;
 
@@ -36,8 +36,8 @@ namespace FallingSand.Particles
         public void Update(GameTime gameTime)
         {
             lastRound += gameTime.ElapsedGameTime.Milliseconds;
-            while (lastRound >= roundTime)//updates for the number of rounds needed (possibly should only go once)
-            {
+            //while (lastRound >= roundTime)//updates for the number of rounds needed (possibly should only go once)
+            //{
                 lastRound -= roundTime;
                 for (int i = 0; i < sources.Count; i++)//Add particles from sources
                 {
@@ -68,7 +68,7 @@ namespace FallingSand.Particles
                 }
                 //TODO: Collision
                 //TODO: Remove particles due to intereactions
-            }
+           // }
         }
 
         public void Draw()
@@ -98,17 +98,17 @@ namespace FallingSand.Particles
         {
             IEnumerable<Particle> collQuery =
             from p in particles
-            where Math.Abs(p.position.X - colP.position.X) < 1 && Math.Abs(p.position.Y - colP.position.Y) < 1 && p.type == Particle_Type.Wall
+            where p.position.X - colP.position.X == 0 && p.position.Y - colP.position.Y == 1// && p.type == Particle_Type.Wall
             select p;
 
             foreach (Particle p in collQuery)
             {
-                p.setColor(Color.Red);
-                    //if (p.position.Y - colP.position.Y <= 1 && p.position.X -colP.position.X <= 1)
-                    //{
-                        isColliding(colP, p);
-                        //return true;
-                    //}
+                //if (p.position.Y - colP.position.Y <= 1 && p.position.Y - colP.position.Y >= -1 &&
+                //        p.position.X - colP.position.X <= 1 && p.position.X - colP.position.X >= -1)
+                {
+                    isColliding(colP, p);
+                    return true;
+                }
             }
             return true;
         }

@@ -65,6 +65,55 @@ namespace TestProject.ParticleSystemTests
             Assert.Greater(pm.numberParticles(), 0);
             
         }
+
+        [Test]
+
+        public void TestParticleSizeChange()
+        {
+            var pm = new FakeMAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 1);
+
+            FSGGame.controller = new FakeController();
+            var c = FSGGame.controller as FakeController;
+            c.selectleft = true;
+            GameTime gt = new GameTime(new TimeSpan(0, 0, 0), new TimeSpan(0, 0, 0, 0, 1)); // one millisecond
+
+
+            var screen = new ParticleTestScreen(new ScreenContainer());
+            screen.pm = pm;
+            screen.Update(gt);
+
+            //successfully changed to wall
+            Assert.AreEqual(screen.currentParticle, Particle_Type.Wall);
+
+            screen.Update(gt);
+            //changed back to sand since left is down again
+            Assert.AreEqual(screen.currentParticle, Particle_Type.Sand);
+        }
+
+        [Test]
+
+        public void TestChangeParticleType()
+        {
+            var pm = new FakeMAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 1);
+
+            FSGGame.controller = new FakeController();
+            var c = FSGGame.controller as FakeController;
+            c.selectup = true;
+            GameTime gt = new GameTime(new TimeSpan(0, 0, 0), new TimeSpan(0, 0, 0, 0, 1)); // one millisecond
+
+
+            var screen = new ParticleTestScreen(new ScreenContainer());
+            screen.pm = pm;
+            screen.Update(gt);
+
+            //at least one particle was added (can be more from brush)
+            Assert.Greater(screen.brushSize, 3);
+            c.selectup = false;
+            c.selectdown = true;
+            screen.Update(gt);
+            Assert.AreEqual(screen.brushSize, 3);
+
+        }
         
     }
 
@@ -99,6 +148,9 @@ namespace TestProject.ParticleSystemTests
             switch (action)
             {
                 case ActionType.AButton: return a;
+                case ActionType.SelectionLeft: return selectleft;
+                case ActionType.SelectionDown: return selectdown;
+                case ActionType.SelectionUp: return selectup;
             }
             return false;
         }
