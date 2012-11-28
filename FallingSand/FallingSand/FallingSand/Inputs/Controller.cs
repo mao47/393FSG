@@ -223,7 +223,7 @@ namespace FallingSand.Inputs
             #endregion
         }
 
-        public Vector2 CursorPosition()
+        public virtual Vector2 CursorPosition()
         {
             mousePosition.X = previousMouseX;
             mousePosition.Y = previousMouseY;
@@ -990,7 +990,7 @@ namespace FallingSand.Inputs
         /// <returns>
         /// Returns the float value corresponding to the action type.
         /// </returns>
-        public float ContainsFloat(ActionType actionType)
+        public virtual float ContainsFloat(ActionType actionType)
         {
             this.GetActions();
 
@@ -1016,7 +1016,7 @@ namespace FallingSand.Inputs
         /// <returns>
         /// Returns true if the action has been found.
         /// </returns>
-        public bool ContainsBool(ActionType actionType)
+        public virtual bool ContainsBool(ActionType actionType)
         {
             this.GetActions();
 

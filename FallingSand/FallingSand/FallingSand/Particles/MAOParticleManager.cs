@@ -7,28 +7,26 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace FallingSand.Particles
 {
-    class MAOParticleManager
+    public class MAOParticleManager
     {
         Particle[,] particleField;
-        List<Particle> particles = new List<Particle>();
+        protected List<Particle> particles = new List<Particle>();
         List<Source> sources = new List<Source>();
         int maxParticles;//Max Number
-        GraphicsDevice graphicsDevice;
         int lastRound = 0;
         Rectangle boundry;
 
         static Random rnd = new Random();
         static int roundTime = 100;//ms
-        static int boundryBuffer = 10;//Buffer outside the boundry where the particles are still tracked
+        static int boundryBuffer = 0;//Buffer outside the boundry where the particles are still tracked
         static float Gravity = 2;//arbitrary, adjust as needed
 
         public Texture2D white;
 
-        public MAOParticleManager(Rectangle boundries, GraphicsDevice gd, int maxPart, float particleSize)
+        public MAOParticleManager(Rectangle boundries, int maxPart, float particleSize)
         {
             particleField = new Particle[1800, 1400];
             boundry = boundries;
-            graphicsDevice = gd;
             maxParticles = maxPart;//Not Currently used
 
             white = FSGGame.white;
@@ -89,7 +87,7 @@ namespace FallingSand.Particles
             sources.Add(source);
         }
 
-        public void addParticle(Vector2 position, Vector2 velocity, Particle_Type type)
+        public bool addParticle(Vector2 position, Vector2 velocity, Particle_Type type)
         {
             Particle p = new Particle(position, velocity, type);
             //Check if p is in the viewing box
@@ -98,7 +96,9 @@ namespace FallingSand.Particles
             {
                 particles.Add(p);
                 particleField[(int)p.position.X, (int)p.position.Y] = p;//todo fix
+                return true;
             }
+            return false;
         }
 
         private bool checkCollisions(Particle colP)
