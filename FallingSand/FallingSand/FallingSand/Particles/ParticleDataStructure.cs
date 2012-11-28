@@ -26,6 +26,10 @@ namespace FallingSand.Particles
         {
             return particles.Count;
         }
+        public int particleAddCount()
+        {
+            return addList.Count;
+        }
 
         public bool newParticle(Particle p)
         {

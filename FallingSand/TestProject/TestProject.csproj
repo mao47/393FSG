@@ -49,6 +49,8 @@
     <Compile Include="Class1.cs" />
     <Compile Include="ParticleSystemTests\ParticleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestMockObjects\FakeController.cs" />
+    <Compile Include="TestMockObjects\FakeMAOParticleManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FallingSand\FallingSand\FallingSand.csproj">

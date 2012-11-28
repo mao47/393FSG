@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using FallingSand;
 using FallingSand.Inputs;
 using FallingSand.Screens;
+using TestProject.TestMockObjects;
 
 namespace TestProject.ParticleSystemTests
 {
@@ -44,7 +45,31 @@ namespace TestProject.ParticleSystemTests
         }
 
         [Test]
+        public void TestHoldPlaceParticle()
+        {
+            var pm = new FakeMAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 1);
 
+            FSGGame.controller = new FakeController();
+            var c = FSGGame.controller as FakeController;
+            c.mousex = 50;
+            c.mousey = 50;
+            c.a = true;
+            GameTime gt = new GameTime(new TimeSpan(0, 0, 0), new TimeSpan(0, 0, 0, 0, 1)); // one millisecond
+
+
+            var screen = new ParticleTestScreen(new ScreenContainer());
+            screen.pm = pm;
+            for (int i = 0; i < 5; i++)
+            {
+                //create some movement to avoid clogging the screen
+                c.mousex = 50 + 5*i;
+                c.mousey = 50 + i;
+                screen.Update(gt);
+                Assert.Greater(pm.numberParticlesToAdd(), 0);
+            }
+        }
+
+        [Test]
         public void TestPlaceParticle()
         {
             var pm = new FakeMAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 1);
@@ -60,11 +85,12 @@ namespace TestProject.ParticleSystemTests
             var screen = new ParticleTestScreen(new ScreenContainer());
             screen.pm = pm;
             screen.Update(gt);  //update to put particles on add list
+            Assert.Greater(pm.numberParticlesToAdd(), 0);
+            c.a = false;
             screen.Update(gt);  //update to put particles in data structure
-            
             //at least one particle was added (can be more from brush)
             Assert.Greater(pm.numberParticles(), 0);
-            
+            Assert.AreEqual(0, pm.numberParticlesToAdd());
         }
 
         [Test]
@@ -118,44 +144,6 @@ namespace TestProject.ParticleSystemTests
         
     }
 
-    public class FakeMAOParticleManager : MAOParticleManager
-    {
-        public FakeMAOParticleManager(Rectangle bounds, int max, int particleSize)
-            : base(bounds, max, particleSize)
-        { }
-        public int numberParticles() { return particleStorage.particleCount(); }
-        
-    }
-    public class FakeController : FallingSand.Inputs.Controller {
 
-        public FakeController() : base(PlayerIndex.One) 
-        { }
-        public float mousex { private get; set; }
-        public float mousey { private get; set; }
-        public bool a { private get; set; }
-        public bool b{ private get; set; }
-        public bool select{ private get; set; }
-        public bool back{ private get; set; }
-        public bool mouseleft{ private get; set; }
-        public bool mouseright{ private get; set; }
-        public bool selectleft{ private get; set; } 
-        public bool selectright{ private get; set; }
-        public bool selectup{ private get; set; }
-        public bool selectdown{ private get; set; }
-
-        public override float  ContainsFloat(ActionType action ) { return 1; }
-        public override bool ContainsBool(ActionType action)
-        {
-            switch (action)
-            {
-                case ActionType.AButton: return a;
-                case ActionType.SelectionLeft: return selectleft;
-                case ActionType.SelectionDown: return selectdown;
-                case ActionType.SelectionUp: return selectup;
-            }
-            return false;
-        }
-        public override Vector2 CursorPosition() { return new Vector2(mousex, mousey); }
-
-    }
+    
 }
