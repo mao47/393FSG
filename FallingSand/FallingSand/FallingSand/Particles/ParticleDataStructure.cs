@@ -31,6 +31,13 @@ namespace FallingSand.Particles
             return addList.Count;
         }
 
+        public Particle particleAt(int x, int y)
+        {
+            if (x > 0 && x < particleField.GetLength(0)
+                && y > 0 && y < particleField.GetLength(1))
+                return particleField[x, y];
+            return null;
+        }
         public bool newParticle(Particle p)
         {
             if (particles.Count < maxParticles)

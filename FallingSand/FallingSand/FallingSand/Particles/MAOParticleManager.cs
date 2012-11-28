@@ -26,8 +26,8 @@ namespace FallingSand.Particles
         static Random rnd = new Random();
         static int roundTime = 100;//ms
         static int boundryBuffer = 0;//Buffer outside the boundry where the particles are still tracked
-        static float Gravity = 2;//arbitrary, adjust as needed
-        static float epsilon = 0.001;
+        static float Gravity = 1;//arbitrary, adjust as needed
+        static float epsilon = 0.001f;
         public Texture2D white;
 
         public MAOParticleManager(Rectangle boundries, int maxPart, float particleSize)
@@ -63,6 +63,7 @@ namespace FallingSand.Particles
                     //Particle p = (Particle)particles[i];
                     if (p.type != Particle_Type.Wall)//If not not (not a typo) affected by gravity
                     {
+                        p.velocity.X = 0;
                         p.velocity.Y = Gravity;
                         this.checkCollisions(p);  //check collisions
                     }
@@ -146,23 +147,69 @@ namespace FallingSand.Particles
             //    }
             //}
 
+            //var under = from p in collList
+            //            where (colP.position.Y - 1) - p.position.Y < -epsilon 
+            //            select p;
+            //foreach (Particle p in under)
+            //{
+            //}
+            if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)
+            {
+                colP.velocity.Y = 0;
+                if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y + 1) != null)
+                {
+                    if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y + 1) == null)
+                    {
+                        colP.velocity.X = 1;
+                        colP.velocity.Y = 1;
+                    }
+                }
+                else if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y + 1) != null)
+                {
+                    if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y + 1) == null)
+                    {
+                        colP.velocity.X = -1;
+                        colP.velocity.Y = 1;
+                    }
+                }
+            }
+            //if (collList.Any(p => (int)p.position.X == (int)colP.position.X && (int)p.position.Y - 1 - (int)colP.position.Y <= 0))
+            //{
+            //    colP.velocity.Y = 0;
 
+            //    if (collList.Any(p1 => (int)p1.position.X - 1 == (int)colP.position.X && (int)p1.position.Y - 1 == (int)colP.position.Y))
+            //    {
+            //        if (!collList.Any(p2 => (int)p2.position.X + 1 == (int)colP.position.X && (int)p2.position.Y - 1 == (int)colP.position.Y))
+            //        {
+            //            colP.velocity.X = 1;
+            //            colP.velocity.Y = 1;
+            //        }
+            //    }
+            //    else if (collList.Any(p1 => (int)p1.position.X + 1 == (int)colP.position.X && (int)p1.position.Y - 1 == (int)colP.position.Y))
+            //    {
+            //        if (!collList.Any(p2 => (int)p2.position.X - 1 == (int)colP.position.X && (int)p2.position.Y - 1 == (int)colP.position.Y))
+            //        {
+            //            colP.velocity.X = -1;
+            //            colP.velocity.Y = 1;
+            //        }
+            //    }
+            //}
             foreach (Particle p in collList)
             {
-                p.setColor(Color.Red);
-                    //if (p.position.Y - colP.position.Y <= 1 && p.position.X -colP.position.X <= 1)
-                    //{
-                        isColliding(colP, p);
-                        if ((colP.position.Y - 1) - p.position.Y < -epsilon)//colP is above p
-                        {
-                        }
+                //p.setColor(Color.Red);
+                //if (p.position.Y - colP.position.Y <= 1 && p.position.X -colP.position.X <= 1)
+
+                isColliding(colP, p);
+                if ((colP.position.Y - 1) - p.position.Y < -epsilon)//colP is above p
+                {
+                }
             }
             return true;
         }
 
         private bool isColliding(Particle pOrig, Particle collider)
         {
-            pOrig.velocity.Y = 0;
+            //pOrig.velocity.Y = 0;
 
             return true;
         }
