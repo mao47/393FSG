@@ -24,7 +24,7 @@ namespace FallingSand.Particles
         Rectangle boundry;
         protected ParticleDataStructure particleStorage;
         static Random rnd = new Random();
-        static int roundTime = 100;//ms
+        static int roundTime = 40;//ms
         static int boundryBuffer = 0;//Buffer outside the boundry where the particles are still tracked
         static float Gravity = 1;//arbitrary, adjust as needed
         static float epsilon = 0.001f;
