@@ -9,13 +9,20 @@ namespace FallingSand.Particles
 {
     public class MAOParticleManager
     {
+
         Particle[,] particleField;
         protected List<Particle> particles = new List<Particle>();
-        List<Source> sources = new List<Source>();
-        int maxParticles;//Max Number
-        int lastRound = 0;
-        Rectangle boundry;
 
+        int maxParticles;//Max Number
+
+
+
+        List<Source> sources;
+
+        int lastRound;
+
+        Rectangle boundry;
+        ParticleDataStructure particleStorage;
         static Random rnd = new Random();
         static int roundTime = 100;//ms
         static int boundryBuffer = 0;//Buffer outside the boundry where the particles are still tracked
@@ -25,9 +32,13 @@ namespace FallingSand.Particles
 
         public MAOParticleManager(Rectangle boundries, int maxPart, float particleSize)
         {
-            particleField = new Particle[1800, 1400];
+            lastRound = 0;
+            sources = new List<Source>();
             boundry = boundries;
+
             maxParticles = maxPart;//Not Currently used
+
+            particleStorage = new ParticleDataStructure(1800, 1400, maxPart);
 
             white = FSGGame.white;
         }
@@ -45,38 +56,43 @@ namespace FallingSand.Particles
                         addParticle(s.getNewParticlePosition(), new Vector2(0), s.type);
                     sources[i] = s;
                 }
-                for (int i = 0; i < particles.Count; i++)//Update the particles
+                foreach(Particle p in particleStorage.myEnumerable())
                 {
-                    Particle p = (Particle)particles[i];
+                //for (int i = 0; i < particles.Count; i++)//Update the particles
+                //{
+                    //Particle p = (Particle)particles[i];
                     if (p.type != Particle_Type.Wall)//If not not (not a typo) affected by gravity
                     {
                         p.velocity.Y = Gravity;
                         this.checkCollisions(p);  //check collisions
                     }
-
-                    p.position += p.velocity;
+                    Vector2 newPosition = p.position + p.velocity;
+                    particleStorage.moveParticle(p, (int)newPosition.X, (int)newPosition.Y);
+                    //p.position += p.velocity;
                     //Check if p is still in the viewing box
                     Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
                     if (!boundry.Intersects(surround))
                     {
-                        particles.RemoveAt(i);
-                        i--;
+                        particleStorage.deleteParticle(p);
+                        //particles.RemoveAt(i);
+                        //i--;
                     }
                     else
                     {
-                        particleField[(int)p.position.X, (int)p.position.Y] = p;
-                        particles[i] = p;
+                        //particleField[(int)p.position.X, (int)p.position.Y] = p;
+                        //particles[i] = p;
                     }
                 }
                 //TODO: Collision
                 //TODO: Remove particles due to intereactions
             }
+            particleStorage.Update();
         }
 
         public void Draw()
         {
             FSGGame.spriteBatch.Begin();
-            foreach (Particle p in particles)
+            foreach (Particle p in particleStorage.myEnumerable())
                 FSGGame.spriteBatch.Draw(white, p.position, p.getColor());
             FSGGame.spriteBatch.End();
         }
@@ -94,9 +110,15 @@ namespace FallingSand.Particles
             Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
             if (boundry.Intersects(surround))
             {
-                particles.Add(p);
-                particleField[(int)p.position.X, (int)p.position.Y] = p;//todo fix
-                return true;
+//<<<<<<< HEAD
+                //particles.Add(p);
+                //particleField[(int)p.position.X, (int)p.position.Y] = p;//todo fix
+                //return true;
+//=======
+                particleStorage.newParticle(p);
+                //particles.Add(p);
+                //particleField[(int)p.position.X, (int)p.position.Y] = p;//todo fix
+
             }
             return false;
         }
@@ -108,20 +130,20 @@ namespace FallingSand.Particles
             //where Math.Abs(p.position.X - colP.position.X) < 1 && Math.Abs(p.position.Y - colP.position.Y) < 1 && p.type == Particle_Type.Wall
             //select p;
 
-            List<Particle> collList = new List<Particle>();
-            for (int r = (int)colP.position.X - 1; r <= (int)colP.position.X + 1; r++)
-            {
-                if (r < 0 || r > particleField.GetLength(0))
-                    continue;
-                for (int c = (int)colP.position.Y - 1; c <= (int)colP.position.Y + 1; c++)
-                {
-                    if (c < 0 || c > particleField.GetLength(1))
-                        continue;
-                    if (particleField[r, c] != null && (r != (int)colP.position.X && c != (int)colP.position.Y))
-                        collList.Add(particleField[r, c]);
+            List<Particle> collList = particleStorage.withinIndexExcludeSource((int)colP.position.X, (int)colP.position.Y);// new List<Particle>();
+            //for (int r = (int)colP.position.X - 1; r <= (int)colP.position.X + 1; r++)
+            //{
+            //    if (r < 0 || r > particleField.GetLength(0))
+            //        continue;
+            //    for (int c = (int)colP.position.Y - 1; c <= (int)colP.position.Y + 1; c++)
+            //    {
+            //        if (c < 0 || c > particleField.GetLength(1))
+            //            continue;
+            //        if (particleField[r, c] != null && (r != (int)colP.position.X && c != (int)colP.position.Y))
+            //            collList.Add(particleField[r, c]);
 
-                }
-            }
+            //    }
+            //}
 
 
             foreach (Particle p in collList)

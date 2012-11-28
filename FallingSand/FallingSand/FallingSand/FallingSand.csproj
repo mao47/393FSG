@@ -112,6 +112,7 @@
     <Compile Include="Inputs\ControllerPacket.cs" />
     <Compile Include="Inputs\RumblePack.cs" />
     <Compile Include="Particles\MAOParticleManager.cs" />
+    <Compile Include="Particles\ParticleDataStructure.cs" />
     <Compile Include="Particles\ParticleManager.cs" />
     <Compile Include="Particles\Particle.cs" />
     <Compile Include="GameElements\GameWorldREFERENCE.cs" />
