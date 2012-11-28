@@ -54,7 +54,7 @@ namespace TestProject.ParticleSystemTests
             c.mousex = 50;
             c.mousey = 50;
             c.a = true;
-            GameTime gt = new GameTime(new TimeSpan(0, 0, 0), new TimeSpan(0, 0, 0, 0, 1)); // one millisecond
+            GameTime gt = new GameTime(new TimeSpan(0, 0, 0), new TimeSpan(0, 0, 0, 0, 100)); // one millisecond
 
 
             var screen = new ParticleTestScreen(new ScreenContainer());
@@ -79,7 +79,7 @@ namespace TestProject.ParticleSystemTests
             c.mousex = 50;
             c.mousey = 50;
             c.a = true;
-            GameTime gt = new GameTime(new TimeSpan(0, 0, 0), new TimeSpan(0,0,0,0,1)); // one millisecond
+            GameTime gt = new GameTime(new TimeSpan(0, 0, 0), new TimeSpan(0,0,0,0,100)); // one millisecond
 
             
             var screen = new ParticleTestScreen(new ScreenContainer());
@@ -102,7 +102,7 @@ namespace TestProject.ParticleSystemTests
             FSGGame.controller = new FakeController();
             var c = FSGGame.controller as FakeController;
             c.selectleft = true;
-            GameTime gt = new GameTime(new TimeSpan(0, 0, 0), new TimeSpan(0, 0, 0, 0, 1)); // one millisecond
+            GameTime gt = new GameTime(new TimeSpan(0, 0, 0), new TimeSpan(0, 0, 0, 0, 100)); // one millisecond
 
 
             var screen = new ParticleTestScreen(new ScreenContainer());
@@ -126,7 +126,7 @@ namespace TestProject.ParticleSystemTests
             FSGGame.controller = new FakeController();
             var c = FSGGame.controller as FakeController;
             c.selectup = true;
-            GameTime gt = new GameTime(new TimeSpan(0, 0, 0), new TimeSpan(0, 0, 0, 0, 1)); // one millisecond
+            GameTime gt = new GameTime(new TimeSpan(0, 0, 0), new TimeSpan(0, 0, 0, 0, 100)); // one millisecond
 
 
             var screen = new ParticleTestScreen(new ScreenContainer());
