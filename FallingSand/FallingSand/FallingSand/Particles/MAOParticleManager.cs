@@ -27,7 +27,7 @@ namespace FallingSand.Particles
         static int roundTime = 100;//ms
         static int boundryBuffer = 0;//Buffer outside the boundry where the particles are still tracked
         static float Gravity = 2;//arbitrary, adjust as needed
-
+        static float epsilon = 0.001;
         public Texture2D white;
 
         public MAOParticleManager(Rectangle boundries, int maxPart, float particleSize)
@@ -153,8 +153,9 @@ namespace FallingSand.Particles
                     //if (p.position.Y - colP.position.Y <= 1 && p.position.X -colP.position.X <= 1)
                     //{
                         isColliding(colP, p);
-                        //return true;
-                    //}
+                        if ((colP.position.Y - 1) - p.position.Y < -epsilon)//colP is above p
+                        {
+                        }
             }
             return true;
         }

@@ -15,6 +15,10 @@ namespace TestProject.ParticleSystemTests
     [TestFixture]
     public class ParticleTests
     {
+
+        /// <summary>
+        /// Test getColor method functions
+        /// </summary>
         [Test]
         public void TestGetColor()
         {
@@ -29,7 +33,9 @@ namespace TestProject.ParticleSystemTests
             Assert.AreNotEqual(wallc, Color.White);
         }
 
-
+        /// <summary>
+        /// Test particles will be added only when within bounds of array
+        /// </summary>
         [Test]
         public void TestAddParticle()
         {
@@ -44,10 +50,15 @@ namespace TestProject.ParticleSystemTests
 
         }
 
+        /// <summary>
+        /// Test that when "A" button is held, particles are continuously added to screen
+        /// </summary>
         [Test]
         public void TestHoldPlaceParticle()
         {
             var pm = new FakeMAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 1);
+            int lastCount = 0;
+            int lastAdd = 0;
 
             FSGGame.controller = new FakeController();
             var c = FSGGame.controller as FakeController;
@@ -64,8 +75,17 @@ namespace TestProject.ParticleSystemTests
                 //create some movement to avoid clogging the screen
                 c.mousex = 50 + 5*i;
                 c.mousey = 50 + i;
+                lastAdd = pm.numberParticlesToAdd();
+                lastCount = pm.numberParticles();
                 screen.Update(gt);
                 Assert.Greater(pm.numberParticlesToAdd(), 0);
+                /*
+                 * total particles should be less than or equal the amount contained + added in the
+                 * last step. (there may be overlap in random placement or particles drifting
+                 * offscreen to decrease below this number)
+                 */
+                Assert.LessOrEqual( pm.numberParticles(),lastAdd+lastCount);
+
             }
         }
 
