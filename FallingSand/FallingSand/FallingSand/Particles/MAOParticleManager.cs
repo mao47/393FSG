@@ -63,8 +63,7 @@ namespace FallingSand.Particles
                     //Particle p = (Particle)particles[i];
                     if (p.type != Particle_Type.Wall)//If not not (not a typo) affected by gravity
                     {
-                        p.velocity.X = 0;
-                        p.velocity.Y = Gravity;
+                        p.velocity = new Vector2(0, Gravity);
                         this.checkCollisions(p);  //check collisions
                     }
                     Vector2 newPosition = p.position + p.velocity;
@@ -94,7 +93,7 @@ namespace FallingSand.Particles
         {
             FSGGame.spriteBatch.Begin();
             foreach (Particle p in particleStorage.myEnumerable())
-                FSGGame.spriteBatch.Draw(white, p.position, p.getColor());
+                FSGGame.spriteBatch.Draw(white, p.position, p.pColor);
             FSGGame.spriteBatch.End();
         }
 
@@ -106,7 +105,13 @@ namespace FallingSand.Particles
 
         public bool addParticle(Vector2 position, Vector2 velocity, Particle_Type type)
         {
-            Particle p = new Particle(position, velocity, type);
+            Particle p;
+            if(type.Equals(Particle_Type.Sand))
+                p = new Particle_Sand(position, velocity);
+            else if (type.Equals(Particle_Type.Wall))
+                p = new Particle_Wall(position, velocity);
+            else
+                p = new Particle_Sand(position, velocity);
             //Check if p is in the viewing box
             Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
             if (boundry.Intersects(surround))
@@ -155,21 +160,19 @@ namespace FallingSand.Particles
             //}
             if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)
             {
-                colP.velocity.Y = 0;
+                colP.velocity = new Vector2(colP.velocity.X, 0);
                 if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y + 1) != null)
                 {
                     if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y + 1) == null)
                     {
-                        colP.velocity.X = 1;
-                        colP.velocity.Y = 1;
+                        colP.velocity = new Vector2(1, 1);
                     }
                 }
                 else if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y + 1) != null)
                 {
                     if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y + 1) == null)
                     {
-                        colP.velocity.X = -1;
-                        colP.velocity.Y = 1;
+                        colP.velocity = new Vector2(-1, 1);
                     }
                 }
             }

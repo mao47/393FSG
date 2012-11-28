@@ -111,6 +111,8 @@
     <Compile Include="Inputs\Controller.cs" />
     <Compile Include="Inputs\ControllerPacket.cs" />
     <Compile Include="Inputs\RumblePack.cs" />
+    <Compile Include="Particles\Particle_Wall.cs" />
+    <Compile Include="Particles\Particle_Sand.cs" />
     <Compile Include="Particles\MAOParticleManager.cs" />
     <Compile Include="Particles\ParticleDataStructure.cs" />
     <Compile Include="Particles\ParticleManager.cs" />

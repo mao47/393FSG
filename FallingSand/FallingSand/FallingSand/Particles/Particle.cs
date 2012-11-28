@@ -11,34 +11,23 @@ namespace FallingSand.Particles
         Sand,
         Wall
     }
-    public class Particle
+    public abstract class Particle
     {
-        public Vector2 position;
-        public Vector2 velocity;
-        public Particle_Type type;
-        private Color pColor;
+        public Vector2 position { get; set; }
+        public Vector2 velocity {  get; set; }
+        public Particle_Type type {  get; private set; }
+        public Color pColor {  get; private set; }
 
-        public Particle (Vector2 pos, Vector2 vel, Particle_Type ptype)
+        public Particle (Vector2 pos, Vector2 vel, Particle_Type ptype, Color partColor)
         {
             position = pos;
             velocity = vel;
             type = ptype;
-            if (ptype == Particle_Type.Sand)
-                pColor = Color.SandyBrown;
-            else if (type == Particle_Type.Wall)
-                pColor = Color.Gray;
-            else
-                pColor = Color.White;
+            pColor = partColor;
         }
 
-        public Color getColor()
+        public virtual void Update()
         {
-            return pColor;
-        }
-
-        public void setColor(Color collColor)//only for collision detection
-        {
-            pColor = collColor;
         }
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace FallingSand.Particles
 {
@@ -63,8 +65,7 @@ namespace FallingSand.Particles
         {
             particleField[(int)p.position.X, (int)p.position.Y] = null;
             particleField[newX, newY] = p;
-            p.position.X = (int)newX;
-            p.position.Y = (int)newY;
+            p.position = new Vector2(newX, newY);
         }
 
         /// <summary>

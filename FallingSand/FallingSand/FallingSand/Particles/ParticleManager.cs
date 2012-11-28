@@ -51,7 +51,7 @@ namespace FallingSand.Particles
                     Particle p = (Particle)particles[i];
                     if (p.type != Particle_Type.Wall)//If not not (not a typo) affected by gravity
                     {
-                        p.velocity.Y = Gravity;
+                        p.velocity = new Vector2(p.velocity.X, Gravity);
                         this.checkCollisions(p);  //check collisions
                     }
 
@@ -75,7 +75,7 @@ namespace FallingSand.Particles
         {
             FSGGame.spriteBatch.Begin();
             foreach (Particle p in particles)
-                FSGGame.spriteBatch.Draw(white, p.position, p.getColor());
+                FSGGame.spriteBatch.Draw(white, p.position, p.pColor);
             FSGGame.spriteBatch.End();
         }
 
@@ -87,7 +87,13 @@ namespace FallingSand.Particles
 
         public void addParticle(Vector2 position, Vector2 velocity, Particle_Type type)
         {
-            Particle p = new Particle(position, velocity, type);
+            Particle p;
+            if (type.Equals(Particle_Type.Sand))
+                p = new Particle_Sand(position, velocity);
+            else if (type.Equals(Particle_Type.Wall))
+                p = new Particle_Wall(position, velocity);
+            else
+                p = new Particle_Sand(position, velocity);
             //Check if p is in the viewing box
             Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
             if (boundry.Intersects(surround))
@@ -115,8 +121,7 @@ namespace FallingSand.Particles
 
         private bool isColliding(Particle pOrig, Particle collider)
         {
-            pOrig.velocity.Y = 0;
-
+            pOrig.velocity = new Vector2(pOrig.velocity.X, 0);
             return true;
         }
 
