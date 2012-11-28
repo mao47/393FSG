@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FallingSand.Particles
 {
-    class ParticleDataStructure
+    public class ParticleDataStructure
     {
         Particle[,] particleField;
         List<Particle> particles;
@@ -22,10 +22,19 @@ namespace FallingSand.Particles
             maxParticles = max;
         }
 
-        public void newParticle(Particle p)
+        public int particleCount()
         {
-            if(particles.Count < maxParticles)
+            return particles.Count;
+        }
+
+        public bool newParticle(Particle p)
+        {
+            if (particles.Count < maxParticles)
+            {
                 addList.Add(p);
+                return true;
+            }
+            return false;
         }
 
         public void deleteParticle(Particle p)

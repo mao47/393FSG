@@ -10,8 +10,8 @@ namespace FallingSand.Particles
     public class MAOParticleManager
     {
 
-        Particle[,] particleField;
-        protected List<Particle> particles = new List<Particle>();
+        //Particle[,] particleField;
+        //protected List<Particle> particles = new List<Particle>();
 
         int maxParticles;//Max Number
 
@@ -22,7 +22,7 @@ namespace FallingSand.Particles
         int lastRound;
 
         Rectangle boundry;
-        ParticleDataStructure particleStorage;
+        protected ParticleDataStructure particleStorage;
         static Random rnd = new Random();
         static int roundTime = 100;//ms
         static int boundryBuffer = 0;//Buffer outside the boundry where the particles are still tracked
@@ -115,7 +115,8 @@ namespace FallingSand.Particles
                 //particleField[(int)p.position.X, (int)p.position.Y] = p;//todo fix
                 //return true;
 //=======
-                particleStorage.newParticle(p);
+                if (particleStorage.newParticle(p))
+                    return true;
                 //particles.Add(p);
                 //particleField[(int)p.position.X, (int)p.position.Y] = p;//todo fix
 

@@ -56,11 +56,12 @@ namespace TestProject.ParticleSystemTests
             c.a = true;
             GameTime gt = new GameTime(new TimeSpan(0, 0, 0), new TimeSpan(0,0,0,0,1)); // one millisecond
 
-
+            
             var screen = new ParticleTestScreen(new ScreenContainer());
             screen.pm = pm;
-            screen.Update(gt);
-
+            screen.Update(gt);  //update to put particles on add list
+            screen.Update(gt);  //update to put particles in data structure
+            
             //at least one particle was added (can be more from brush)
             Assert.Greater(pm.numberParticles(), 0);
             
@@ -122,7 +123,7 @@ namespace TestProject.ParticleSystemTests
         public FakeMAOParticleManager(Rectangle bounds, int max, int particleSize)
             : base(bounds, max, particleSize)
         { }
-        public int numberParticles() { return particles.Count; }
+        public int numberParticles() { return particleStorage.particleCount(); }
         
     }
     public class FakeController : FallingSand.Inputs.Controller {
