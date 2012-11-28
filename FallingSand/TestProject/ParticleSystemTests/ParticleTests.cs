@@ -141,6 +141,72 @@ namespace TestProject.ParticleSystemTests
             Assert.AreEqual(screen.brushSize, 3);
 
         }
+
+        [Test]
+        public void TestPlaceParticleOutsideX()
+        {
+            var pm = new FakeMAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 1);
+
+            FSGGame.controller = new FakeController();
+            var c = FSGGame.controller as FakeController;
+            c.mousex = 850;
+            c.mousey = 350;
+            c.a = true;
+            GameTime gt = new GameTime(new TimeSpan(0, 0, 0), new TimeSpan(0, 0, 0, 0, 1)); // one millisecond
+
+
+            var screen = new ParticleTestScreen(new ScreenContainer());
+            screen.pm = pm;
+            screen.Update(gt);  //update to put particles on add list
+            screen.Update(gt);  //update to put particles in data structure
+
+            //no particles should be placed
+            Assert.AreEqual (0,pm.numberParticles());
+
+        }
+
+        [Test]
+        public void TestPlaceParticleOutsideY()
+        {
+            var pm = new FakeMAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 1);
+
+            FSGGame.controller = new FakeController();
+            var c = FSGGame.controller as FakeController;
+            c.mousex = 750;
+            c.mousey = 450;
+            c.a = true;
+            GameTime gt = new GameTime(new TimeSpan(0, 0, 0), new TimeSpan(0, 0, 0, 0, 1)); // one millisecond
+
+
+            var screen = new ParticleTestScreen(new ScreenContainer());
+            screen.pm = pm;
+            screen.Update(gt);  //update to put particles on add list
+            screen.Update(gt);  //update to put particles in data structure
+
+            //no particles should be placed
+            Assert.AreEqual(0,pm.numberParticles());
+
+        }
+
+        [Test]
+        public void TestPlaceParticleFall()
+        {
+            GameTime gt = new GameTime(new TimeSpan(0, 0, 0), new TimeSpan(0, 0, 0, 0, 1)); // one millisecond
+
+            var pm = new FakeMAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 1);
+
+            pm.addParticle(new Vector2(400, 399), Vector2.Zero, Particle_Type.Sand);
+
+            //loop to run update method and update the gametime, this one only needs to be run twice
+            for (int i = 0; i < 2; i++)
+            {
+                gt = new GameTime(new TimeSpan(0, 0, 0), new TimeSpan(0, 0, 0, 0, i * 100)); // 100 millisecond
+                pm.Update(gt);
+            }
+            //no particles should be there
+            Assert.AreEqual(0,pm.numberParticles());
+
+        }
         
     }
 
