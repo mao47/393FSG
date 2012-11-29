@@ -23,11 +23,12 @@ namespace FallingSand.Particles
 
         Rectangle boundry;
         protected ParticleDataStructure particleStorage;
-        static Random rnd = new Random();
+        //static Random rnd = new Random();
         static int roundTime = 40;//ms
         static int boundryBuffer = 0;//Buffer outside the boundry where the particles are still tracked
         static float Gravity = 1;//arbitrary, adjust as needed
         static float epsilon = 0.001f;
+        Random rnd;
         public Texture2D white;
 
         public MAOParticleManager(Rectangle boundries, int maxPart, float particleSize)
@@ -45,6 +46,7 @@ namespace FallingSand.Particles
 
         public void Update(GameTime gameTime)
         {
+            rnd = new Random(gameTime.ElapsedGameTime.Milliseconds);
             lastRound += gameTime.ElapsedGameTime.Milliseconds;
             while (lastRound >= roundTime)//updates for the number of rounds needed (possibly should only go once)
             {
@@ -110,6 +112,8 @@ namespace FallingSand.Particles
                 p = new Particle_Sand(position, velocity);
             else if (type.Equals(Particle_Type.Wall))
                 p = new Particle_Wall(position, velocity);
+            else if (type.Equals(Particle_Type.Water))
+                p = new Particle_Water(position, velocity);
             else
                 p = new Particle_Sand(position, velocity);
             //Check if p is in the viewing box
@@ -137,7 +141,6 @@ namespace FallingSand.Particles
             bool leftObstacle = false;
             bool checkRight = false;
             bool rightObstacle = false;
-
             int counter = 1;    //used for incrementing where dips are checked
             List<Particle> collList = particleStorage.withinIndexExcludeSource((int)colP.position.X, (int)colP.position.Y);// new List<Particle>();
 
@@ -145,20 +148,23 @@ namespace FallingSand.Particles
             if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)
             {
                 colP.velocity = new Vector2(colP.velocity.X, 0);
-                if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y + 1) != null)
+                if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y + 1) != null) //there is a particle to the bottom left
                 {
-                    if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y + 1) == null)
+                    if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y + 1) == null) //there is no particle to the right
                     {
                         colP.velocity = new Vector2(1, 1);
                     }
+                        //used to make particles behave more liquidlike and less powder like
                     else
                         while ((!checkLeft && !checkRight) && (!rightObstacle || !leftObstacle))  //if the bottom three particle spaces check all exist, loop until we find the first dip UNLESS both end in a wall
                         {
                             //if there is an obstacle in line with the particle, it will stop checking that side for a dip
-                            if(particleStorage.particleAt((int)colP.position.X + counter, (int)colP.position.Y) != null)
-                                rightObstacle = true;
+                            if (particleStorage.particleAt((int)colP.position.X + counter, (int)colP.position.Y) != null)
+                                    //if(particleStorage.particleAt((int)colP.position.X + counter, (int)colP.position.Y).type == Particle_Type.Wall) //this drastically slows performance but speeds up liquid behavior
+                                        rightObstacle = true;
                             if (particleStorage.particleAt((int)colP.position.X - counter, (int)colP.position.Y) != null)
-                                leftObstacle = true;
+                                    //if(particleStorage.particleAt((int)colP.position.X - counter, (int)colP.position.Y).type == Particle_Type.Wall) //this drastically slows performance but speeds up liquid behavior
+                                        leftObstacle = true;
 
                             if(particleStorage.particleAt((int)colP.position.X + counter, (int)colP.position.Y + 1) == null && !rightObstacle)
                             {
@@ -179,12 +185,20 @@ namespace FallingSand.Particles
                     if (checkLeft)
                         colP.velocity = new Vector2(-1, 0);
                 }
-                else if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y + 1) != null)
+                else if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y + 1) != null)    //there is a particle to the right
                 {
-                    if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y + 1) == null)
+                    if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y + 1) == null) //there is no particle to the left
                     {
                         colP.velocity = new Vector2(-1, 1);
                     }
+                }
+                else if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)
+                //there is a particle directly underneath, but no particles to either side underneath (solves pillar problem)
+                {
+                    if(rnd.Next(1) == 0)
+                        colP.velocity = new Vector2(1, 1);
+                    else
+                        colP.velocity = new Vector2(-1, 1);
                 }
             }
 
