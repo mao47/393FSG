@@ -32,6 +32,10 @@ namespace FallingSand.Particles
         {
             return addList.Count;
         }
+        public int particleDeleteCount()
+        {
+            return deleteList.Count;
+        }
 
         public Particle particleAt(int x, int y)
         {
@@ -97,7 +101,19 @@ namespace FallingSand.Particles
         /// Checks the add and remove lists to officially make the changes to the matrix and list
         /// </summary>
         public void Update()
-        {
+        { 
+            //assume the delete list is much smaller than the list of all particles
+            for (int i = 0; i < particles.Count; i++)
+            {
+                var p = particles[i];
+                if (deleteList.Contains(p) && particleField[(int)p.position.X, (int)p.position.Y] == p)
+                {
+                    particleField[(int)p.position.X, (int)p.position.Y] = null;
+                    particles.RemoveAt(i);
+                    i--;
+                }
+            }
+            deleteList.Clear();
             foreach (Particle p in addList)
             {
                 if (particleField[(int)p.position.X, (int)p.position.Y] == null)
@@ -111,18 +127,7 @@ namespace FallingSand.Particles
                 }
             }
             addList.Clear();
-            //assume the delete list is much smaller than the list of all particles
-            for (int i = 0; i < particles.Count; i++)
-            {
-                var p = particles[i];
-                if (deleteList.Contains(p) && particleField[(int)p.position.X, (int)p.position.Y] == p)
-                {
-                    particleField[(int)p.position.X, (int)p.position.Y] = null;
-                    particles.RemoveAt(i);
-                    i--;
-                }
-            }
-            deleteList.Clear();
+           
             
         }
 

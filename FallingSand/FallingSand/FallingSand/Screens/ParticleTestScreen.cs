@@ -60,7 +60,7 @@ namespace FallingSand.Screens
                 temp.X -= brushSize;
                 temp.Y -= brushSize;
                 Vector2 temp2;
-                if (currentParticle != Particle_Type.Wall)
+                if (currentParticle != Particle_Type.Wall && currentParticle != Particle_Type.Plant)
                     for (int i = 0; i < brushSize; i++)
                     {
                         temp2 = new Vector2(temp.X + 10 * ((float)rand.NextDouble() - .5f), temp.Y + 10 * ((float)rand.NextDouble()) - .5f); //random location for spawning

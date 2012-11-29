@@ -63,7 +63,7 @@ namespace FallingSand.Particles
                 //for (int i = 0; i < particles.Count; i++)//Update the particles
                 //{
                     //Particle p = (Particle)particles[i];
-                    if (p.type != Particle_Type.Wall)//If not not (not a typo) affected by gravity
+                    if (p.type != Particle_Type.Wall && p.type != Particle_Type.Plant)//If not not (not a typo) affected by gravity
                     {
                         p.velocity = new Vector2(0, Gravity);
                         this.checkCollisions(p);  //check collisions
@@ -114,17 +114,17 @@ namespace FallingSand.Particles
                 p = new Particle_Wall(position, velocity);
             else if (type.Equals(Particle_Type.Water))
                 p = new Particle_Water(position, velocity);
+            else if (type.Equals(Particle_Type.Plant))
+                p = new Particle_Plant(position, velocity);
             else
                 p = new Particle_Sand(position, velocity);
             //Check if p is in the viewing box
             Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
             if (boundry.Intersects(surround))
             {
-//<<<<<<< HEAD
                 //particles.Add(p);
                 //particleField[(int)p.position.X, (int)p.position.Y] = p;//todo fix
                 //return true;
-//=======
                 if (particleStorage.newParticle(p))
                     return true;
                 //particles.Add(p);
@@ -145,9 +145,22 @@ namespace FallingSand.Particles
             List<Particle> collList = particleStorage.withinIndexExcludeSource((int)colP.position.X, (int)colP.position.Y);// new List<Particle>();
 
 
+            checkTurnToPlant(colP);
             if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)
             {
                 colP.velocity = new Vector2(colP.velocity.X, 0);
+
+                //future acid particle interaction?
+                //if (colP.type == Particle_Type.Acid && rnd.Next(2) == 0)
+                //{
+                //    Vector2 tempPos = particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1).position;
+                //    particleStorage.deleteParticle(particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1));
+                //    addParticle(tempPos, new Vector2(0), Particle_Type.Plant);
+                //}
+
+                //turns water into plant.
+                
+
                 if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y + 1) != null) //there is a particle to the bottom left
                 {
                     if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y + 1) == null) //there is no particle to the right
@@ -210,6 +223,47 @@ namespace FallingSand.Particles
                 }
             }
             return true;
+        }
+
+        private void checkTurnToPlant(Particle colP)
+        {
+            int deleteSize = particleStorage.particleDeleteCount();
+            if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)//beleow
+            {
+                if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1).type == Particle_Type.Plant && colP.type == Particle_Type.Water && rnd.Next(10) == 0)
+                {
+                    Vector2 tempPos = colP.position;
+                    particleStorage.deleteParticle(colP);
+                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant);
+                }
+            }
+            //if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1) != null && deleteSize == particleStorage.particleDeleteCount())  //above
+            //{
+            //    if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1).type == Particle_Type.Plant && colP.type == Particle_Type.Water && rnd.Next(10) == 0)
+            //    {
+            //        Vector2 tempPos = colP.position;
+            //        particleStorage.deleteParticle(colP);
+            //        addParticle(tempPos, new Vector2(0), Particle_Type.Plant);
+            //    }
+            //}
+            if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y) != null && deleteSize == particleStorage.particleDeleteCount())  //right
+            {
+                if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y).type == Particle_Type.Plant && colP.type == Particle_Type.Water && rnd.Next(6) == 0)
+                {
+                    Vector2 tempPos = colP.position;
+                    particleStorage.deleteParticle(colP);
+                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant);
+                }
+            }
+            if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y) != null && deleteSize == particleStorage.particleDeleteCount())  //left
+            {
+                if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y).type == Particle_Type.Plant && colP.type == Particle_Type.Water && rnd.Next(6) == 0)
+                {
+                    Vector2 tempPos = colP.position;
+                    particleStorage.deleteParticle(colP);
+                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant);
+                }
+            }
         }
 
         private bool isColliding(Particle pOrig, Particle collider)
