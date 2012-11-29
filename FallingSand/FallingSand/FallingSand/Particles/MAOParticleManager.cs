@@ -132,32 +132,16 @@ namespace FallingSand.Particles
 
         private bool checkCollisions(Particle colP)
         {
-            //IEnumerable<Particle> collQuery =
-            //from p in particles
-            //where Math.Abs(p.position.X - colP.position.X) < 1 && Math.Abs(p.position.Y - colP.position.Y) < 1 && p.type == Particle_Type.Wall
-            //select p;
+            // these are used as flags for checking the first dip and checking for a wall which would block a particle
+            bool checkLeft = false;
+            bool leftObstacle = false;
+            bool checkRight = false;
+            bool rightObstacle = false;
 
+            int counter = 1;    //used for incrementing where dips are checked
             List<Particle> collList = particleStorage.withinIndexExcludeSource((int)colP.position.X, (int)colP.position.Y);// new List<Particle>();
-            //for (int r = (int)colP.position.X - 1; r <= (int)colP.position.X + 1; r++)
-            //{
-            //    if (r < 0 || r > particleField.GetLength(0))
-            //        continue;
-            //    for (int c = (int)colP.position.Y - 1; c <= (int)colP.position.Y + 1; c++)
-            //    {
-            //        if (c < 0 || c > particleField.GetLength(1))
-            //            continue;
-            //        if (particleField[r, c] != null && (r != (int)colP.position.X && c != (int)colP.position.Y))
-            //            collList.Add(particleField[r, c]);
 
-            //    }
-            //}
 
-            //var under = from p in collList
-            //            where (colP.position.Y - 1) - p.position.Y < -epsilon 
-            //            select p;
-            //foreach (Particle p in under)
-            //{
-            //}
             if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)
             {
                 colP.velocity = new Vector2(colP.velocity.X, 0);
@@ -167,6 +151,33 @@ namespace FallingSand.Particles
                     {
                         colP.velocity = new Vector2(1, 1);
                     }
+                    else
+                        while ((!checkLeft && !checkRight) && (!rightObstacle || !leftObstacle))  //if the bottom three particle spaces check all exist, loop until we find the first dip UNLESS both end in a wall
+                        {
+                            //if there is an obstacle in line with the particle, it will stop checking that side for a dip
+                            if(particleStorage.particleAt((int)colP.position.X + counter, (int)colP.position.Y) != null)
+                                rightObstacle = true;
+                            if (particleStorage.particleAt((int)colP.position.X - counter, (int)colP.position.Y) != null)
+                                leftObstacle = true;
+
+                            if(particleStorage.particleAt((int)colP.position.X + counter, (int)colP.position.Y + 1) == null && !rightObstacle)
+                            {
+                                checkRight = true;
+                                colP.lockedDirection = true;
+                                break;
+                            }
+                            if (particleStorage.particleAt((int)colP.position.X - counter, (int)colP.position.Y + 1) == null && !leftObstacle)
+                            {
+                                checkLeft = true;
+                                colP.lockedDirection = true;
+                                break;
+                            }
+                            counter++;
+                        }
+                    if (checkRight)
+                        colP.velocity = new Vector2(1, 0);
+                    if (checkLeft)
+                        colP.velocity = new Vector2(-1, 0);
                 }
                 else if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y + 1) != null)
                 {
@@ -176,32 +187,9 @@ namespace FallingSand.Particles
                     }
                 }
             }
-            //if (collList.Any(p => (int)p.position.X == (int)colP.position.X && (int)p.position.Y - 1 - (int)colP.position.Y <= 0))
-            //{
-            //    colP.velocity.Y = 0;
 
-            //    if (collList.Any(p1 => (int)p1.position.X - 1 == (int)colP.position.X && (int)p1.position.Y - 1 == (int)colP.position.Y))
-            //    {
-            //        if (!collList.Any(p2 => (int)p2.position.X + 1 == (int)colP.position.X && (int)p2.position.Y - 1 == (int)colP.position.Y))
-            //        {
-            //            colP.velocity.X = 1;
-            //            colP.velocity.Y = 1;
-            //        }
-            //    }
-            //    else if (collList.Any(p1 => (int)p1.position.X + 1 == (int)colP.position.X && (int)p1.position.Y - 1 == (int)colP.position.Y))
-            //    {
-            //        if (!collList.Any(p2 => (int)p2.position.X - 1 == (int)colP.position.X && (int)p2.position.Y - 1 == (int)colP.position.Y))
-            //        {
-            //            colP.velocity.X = -1;
-            //            colP.velocity.Y = 1;
-            //        }
-            //    }
-            //}
             foreach (Particle p in collList)
             {
-                //p.setColor(Color.Red);
-                //if (p.position.Y - colP.position.Y <= 1 && p.position.X -colP.position.X <= 1)
-
                 isColliding(colP, p);
                 if ((colP.position.Y - 1) - p.position.Y < -epsilon)//colP is above p
                 {

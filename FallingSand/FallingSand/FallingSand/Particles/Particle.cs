@@ -17,6 +17,7 @@ namespace FallingSand.Particles
         public Vector2 velocity {  get; set; }
         public Particle_Type type {  get; private set; }
         public Color pColor {  get; private set; }
+        public bool lockedDirection { get; set; }
 
         public Particle (Vector2 pos, Vector2 vel, Particle_Type ptype, Color partColor)
         {
@@ -24,6 +25,7 @@ namespace FallingSand.Particles
             velocity = vel;
             type = ptype;
             pColor = partColor;
+            lockedDirection = false;
         }
 
         public virtual void Update()
