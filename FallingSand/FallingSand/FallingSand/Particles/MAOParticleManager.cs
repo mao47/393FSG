@@ -181,9 +181,9 @@ namespace FallingSand.Particles
                             counter++;
                         }
                     if (checkRight)
-                        colP.velocity = new Vector2(1, 0);
+                        colP.velocity = new Vector2(3, 0);
                     if (checkLeft)
-                        colP.velocity = new Vector2(-1, 0);
+                        colP.velocity = new Vector2(-3, 0);
                 }
                 else if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y + 1) != null)    //there is a particle to the right
                 {
