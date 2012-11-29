@@ -24,7 +24,7 @@ namespace FallingSand.Screens
             //pm.addSource(new Vector2(400, 0), 1, Particle_Type.Sand);
             //pm.addSource(new Vector2(450, 0), 2, Particle_Type.Sand);
             //pm.addSource(new Vector2(500, 0), 3, Particle_Type.Sand);
-            pm.addSource(new Vector2(550, 0), 1, Particle_Type.Sand);
+            pm.addSource(new Vector2(550, 0), 1, Particle_Type.Water);
             //pm.addSource(new Vector2(600, 0), 5, Particle_Type.Sand);
             currentParticle = Particle_Type.Sand;
         }

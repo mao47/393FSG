@@ -54,8 +54,16 @@ namespace FallingSand.Particles
                 for (int i = 0; i < sources.Count; i++)//Add particles from sources
                 {
                     Source s = (Source)sources[i];
-                    if (s.isTimeForNewParticle())
-                        addParticle(s.getNewParticlePosition(), new Vector2(0), s.type);
+                    //if (s.isTimeForNewParticle())
+                     //   addParticle(s.getNewParticlePosition(), new Vector2(0), s.type);
+                    for (int x = 0; x < 2 * s.period; x++)
+                    {
+
+                        for (int y = 0; y < 2 * s.period; y++)
+                        {
+                            addParticle(s.getNewParticlePosition(), Vector2.Zero, s.type);
+                        }
+                    }
                     sources[i] = s;
                 }
                 foreach(Particle p in particleStorage.myEnumerable())
@@ -146,72 +154,75 @@ namespace FallingSand.Particles
 
 
             checkTurnToPlant(colP);
-            if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)
+            //if (!surrounded(colP))    //if the particle is surrounded by other particles, it shouldn't check for collisions   //work in progress
             {
-                colP.velocity = new Vector2(colP.velocity.X, 0);
-
-                //future acid particle interaction?
-                //if (colP.type == Particle_Type.Acid && rnd.Next(2) == 0)
-                //{
-                //    Vector2 tempPos = particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1).position;
-                //    particleStorage.deleteParticle(particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1));
-                //    addParticle(tempPos, new Vector2(0), Particle_Type.Plant);
-                //}
-
-                //turns water into plant.
-                
-
-                if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y + 1) != null) //there is a particle to the bottom left
+                if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)
                 {
-                    if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y + 1) == null) //there is no particle to the right
+                    colP.velocity = new Vector2(colP.velocity.X, 0);
+
+                    //future acid particle interaction?
+                    //if (colP.type == Particle_Type.Acid && rnd.Next(2) == 0)
+                    //{
+                    //    Vector2 tempPos = particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1).position;
+                    //    particleStorage.deleteParticle(particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1));
+                    //    addParticle(tempPos, new Vector2(0), Particle_Type.Plant);
+                    //}
+
+                    //turns water into plant.
+
+
+                    if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y + 1) != null) //there is a particle to the bottom left
                     {
-                        colP.velocity = new Vector2(1, 1);
-                    }
-                        //used to make particles behave more liquidlike and less powder like
-                    else
-                        while ((!checkLeft && !checkRight) && (!rightObstacle || !leftObstacle))  //if the bottom three particle spaces check all exist, loop until we find the first dip UNLESS both end in a wall
+                        if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y + 1) == null) //there is no particle to the right
                         {
-                            //if there is an obstacle in line with the particle, it will stop checking that side for a dip
-                            if (particleStorage.particleAt((int)colP.position.X + counter, (int)colP.position.Y) != null)
-                                    //if(particleStorage.particleAt((int)colP.position.X + counter, (int)colP.position.Y).type == Particle_Type.Wall) //this drastically slows performance but speeds up liquid behavior
-                                        rightObstacle = true;
-                            if (particleStorage.particleAt((int)colP.position.X - counter, (int)colP.position.Y) != null)
-                                    //if(particleStorage.particleAt((int)colP.position.X - counter, (int)colP.position.Y).type == Particle_Type.Wall) //this drastically slows performance but speeds up liquid behavior
-                                        leftObstacle = true;
-
-                            if(particleStorage.particleAt((int)colP.position.X + counter, (int)colP.position.Y + 1) == null && !rightObstacle)
-                            {
-                                checkRight = true;
-                                colP.lockedDirection = true;
-                                break;
-                            }
-                            if (particleStorage.particleAt((int)colP.position.X - counter, (int)colP.position.Y + 1) == null && !leftObstacle)
-                            {
-                                checkLeft = true;
-                                colP.lockedDirection = true;
-                                break;
-                            }
-                            counter++;
+                            colP.velocity = new Vector2(1, 1);
                         }
-                    if (checkRight)
-                        colP.velocity = new Vector2(3, 0);
-                    if (checkLeft)
-                        colP.velocity = new Vector2(-3, 0);
-                }
-                else if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y + 1) != null)    //there is a particle to the right
-                {
-                    if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y + 1) == null) //there is no particle to the left
-                    {
-                        colP.velocity = new Vector2(-1, 1);
+                        //used to make particles behave more liquidlike and less powder like
+                        else
+                            while ((!checkLeft && !checkRight) && (!rightObstacle || !leftObstacle))  //if the bottom three particle spaces check all exist, loop until we find the first dip UNLESS both end in a wall
+                            {
+                                //if there is an obstacle in line with the particle, it will stop checking that side for a dip
+                                if (particleStorage.particleAt((int)colP.position.X + counter, (int)colP.position.Y) != null)
+                                    //if(particleStorage.particleAt((int)colP.position.X + counter, (int)colP.position.Y).type == Particle_Type.Wall) //this drastically slows performance but speeds up liquid behavior
+                                    rightObstacle = true;
+                                if (particleStorage.particleAt((int)colP.position.X - counter, (int)colP.position.Y) != null)
+                                    //if(particleStorage.particleAt((int)colP.position.X - counter, (int)colP.position.Y).type == Particle_Type.Wall) //this drastically slows performance but speeds up liquid behavior
+                                    leftObstacle = true;
+
+                                if (particleStorage.particleAt((int)colP.position.X + counter, (int)colP.position.Y + 1) == null && !rightObstacle)
+                                {
+                                    checkRight = true;
+                                    colP.lockedDirection = true;
+                                    break;
+                                }
+                                if (particleStorage.particleAt((int)colP.position.X - counter, (int)colP.position.Y + 1) == null && !leftObstacle)
+                                {
+                                    checkLeft = true;
+                                    colP.lockedDirection = true;
+                                    break;
+                                }
+                                counter++;
+                            }
+                        if (checkRight)
+                            colP.velocity = new Vector2(3, 0);
+                        if (checkLeft)
+                            colP.velocity = new Vector2(-3, 0);
                     }
-                }
-                else if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)
-                //there is a particle directly underneath, but no particles to either side underneath (solves pillar problem)
-                {
-                    if(rnd.Next(1) == 0)
-                        colP.velocity = new Vector2(1, 1);
-                    else
-                        colP.velocity = new Vector2(-1, 1);
+                    else if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y + 1) != null)    //there is a particle to the right
+                    {
+                        if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y + 1) == null) //there is no particle to the left
+                        {
+                            colP.velocity = new Vector2(-1, 1);
+                        }
+                    }
+                    else if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)
+                    //there is a particle directly underneath, but no particles to either side underneath (solves pillar problem)
+                    {
+                        if (rnd.Next(1) == 0)
+                            colP.velocity = new Vector2(1, 1);
+                        else
+                            colP.velocity = new Vector2(-1, 1);
+                    }
                 }
             }
 
@@ -237,15 +248,15 @@ namespace FallingSand.Particles
                     addParticle(tempPos, new Vector2(0), Particle_Type.Plant);
                 }
             }
-            //if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1) != null && deleteSize == particleStorage.particleDeleteCount())  //above
-            //{
-            //    if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1).type == Particle_Type.Plant && colP.type == Particle_Type.Water && rnd.Next(10) == 0)
-            //    {
-            //        Vector2 tempPos = colP.position;
-            //        particleStorage.deleteParticle(colP);
-            //        addParticle(tempPos, new Vector2(0), Particle_Type.Plant);
-            //    }
-            //}
+            if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1) != null && deleteSize == particleStorage.particleDeleteCount())  //above
+            {
+                if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1).type == Particle_Type.Plant && colP.type == Particle_Type.Water && rnd.Next(10) == 0)
+                {
+                    Vector2 tempPos = colP.position;
+                    particleStorage.deleteParticle(colP);
+                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant);
+                }
+            }
             if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y) != null && deleteSize == particleStorage.particleDeleteCount())  //right
             {
                 if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y).type == Particle_Type.Plant && colP.type == Particle_Type.Water && rnd.Next(6) == 0)
@@ -265,6 +276,18 @@ namespace FallingSand.Particles
                 }
             }
         }
+
+        //private bool surrounded(Particle colP)
+        //{
+        //    if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null && particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null &&//beleow
+        //        particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1) != null && particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1) != null &&//above
+        //        particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y) != null && particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y) != null && //right
+        //        particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y) != null && particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y) != null)//left
+        //        return true;
+        //    else
+        //        return false;
+
+        //}
 
         private bool isColliding(Particle pOrig, Particle collider)
         {
