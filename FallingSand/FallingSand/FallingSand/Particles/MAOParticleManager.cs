@@ -154,8 +154,8 @@ namespace FallingSand.Particles
 
 
             checkTurnToPlant(colP);
-            //if (!surrounded(colP))    //if the particle is surrounded by other particles, it shouldn't check for collisions   //work in progress
-            {
+           
+
                 if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)
                 {
                     colP.velocity = new Vector2(colP.velocity.X, 0);
@@ -178,7 +178,7 @@ namespace FallingSand.Particles
                             colP.velocity = new Vector2(1, 1);
                         }
                         //used to make particles behave more liquidlike and less powder like
-                        else
+                        else  if (!surrounded(colP))    //if the particle is surrounded by other particles, it shouldn't check
                             while ((!checkLeft && !checkRight) && (!rightObstacle || !leftObstacle))  //if the bottom three particle spaces check all exist, loop until we find the first dip UNLESS both end in a wall
                             {
                                 //if there is an obstacle in line with the particle, it will stop checking that side for a dip
@@ -224,7 +224,6 @@ namespace FallingSand.Particles
                             colP.velocity = new Vector2(-1, 1);
                     }
                 }
-            }
 
             foreach (Particle p in collList)
             {
@@ -277,17 +276,17 @@ namespace FallingSand.Particles
             }
         }
 
-        //private bool surrounded(Particle colP)
-        //{
-        //    if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null && particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null &&//beleow
-        //        particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1) != null && particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1) != null &&//above
-        //        particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y) != null && particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y) != null && //right
-        //        particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y) != null && particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y) != null)//left
-        //        return true;
-        //    else
-        //        return false;
+        private bool surrounded(Particle colP)
+        {
+            if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null && particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null &&//beleow
+                particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1) != null && particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1) != null &&//above
+                particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y) != null && particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y) != null && //right
+                particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y) != null && particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y) != null)//left
+                return true;
+            else
+                return false;
 
-        //}
+        }
 
         private bool isColliding(Particle pOrig, Particle collider)
         {
