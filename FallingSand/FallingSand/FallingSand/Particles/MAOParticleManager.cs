@@ -154,9 +154,17 @@ namespace FallingSand.Particles
 
 
             checkTurnToPlant(colP);
-           
 
-                if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)
+            if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)
+            {
+                //if particle is sand, and water is below, switch to cause sand to fall in water
+                if (colP.type == Particle_Type.Sand && particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1).type == Particle_Type.Water)
+                {
+                    particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1).position = colP.position;
+                    colP.position = new Vector2(colP.position.X, colP.position.Y + 1);
+                }
+
+                else
                 {
                     colP.velocity = new Vector2(colP.velocity.X, 0);
 
@@ -178,7 +186,7 @@ namespace FallingSand.Particles
                             colP.velocity = new Vector2(1, 1);
                         }
                         //used to make particles behave more liquidlike and less powder like
-                        else  if (!surrounded(colP))    //if the particle is surrounded by other particles, it shouldn't check
+                        else if (!surrounded(colP))    //if the particle is surrounded by other particles, it shouldn't check
                             while ((!checkLeft && !checkRight) && (!rightObstacle || !leftObstacle))  //if the bottom three particle spaces check all exist, loop until we find the first dip UNLESS both end in a wall
                             {
                                 //if there is an obstacle in line with the particle, it will stop checking that side for a dip
@@ -224,6 +232,7 @@ namespace FallingSand.Particles
                             colP.velocity = new Vector2(-1, 1);
                     }
                 }
+            }
 
             foreach (Particle p in collList)
             {
