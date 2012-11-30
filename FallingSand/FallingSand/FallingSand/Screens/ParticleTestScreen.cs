@@ -60,22 +60,32 @@ namespace FallingSand.Screens
                 temp.X -= brushSize;
                 temp.Y -= brushSize;
                 Vector2 temp2;
-                if (currentParticle != Particle_Type.Wall && currentParticle != Particle_Type.Plant)
+
+                if (currentParticle == Particle_Type.Remove)
+                    for (int x = 0; x < 2 * brushSize; x++)
+                    {
+                        for (int y = 0; y < 2 * brushSize; y++)
+                        {
+                            temp2.X = temp.X + x;
+                            temp2.Y = temp.Y + y;
+                            pm.removeParticle(temp2);
+                        }
+                    }
+                else if (currentParticle != Particle_Type.Wall && currentParticle != Particle_Type.Plant)
                     for (int i = 0; i < brushSize; i++)
                     {
                         temp2 = new Vector2(temp.X + 10 * ((float)rand.NextDouble() - .5f), temp.Y + 10 * ((float)rand.NextDouble()) - .5f); //random location for spawning
-                        pm.addParticle(temp2, Vector2.Zero, currentParticle);
+                        pm.addParticle(temp2, Vector2.Zero, currentParticle, true);
                     }
                 else
                 {
                     for (int x = 0; x < 2 * brushSize; x++)
                     {
-
                         for (int y = 0; y < 2 * brushSize; y++)
                         {
                             temp2.X = temp.X + x;
                             temp2.Y = temp.Y + y;
-                            pm.addParticle(temp2, Vector2.Zero, currentParticle);
+                            pm.addParticle(temp2, Vector2.Zero, currentParticle, false);
                         }
                     }
                 }

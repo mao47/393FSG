@@ -11,6 +11,7 @@ namespace FallingSand.Particles
         Sand,
         Water,
         Plant,
+        Remove,
         Wall
     }
     public abstract class Particle
