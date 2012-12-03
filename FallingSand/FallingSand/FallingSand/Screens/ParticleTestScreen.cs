@@ -15,6 +15,7 @@ namespace FallingSand.Screens
         public  MAOParticleManager pm;
         public Particle_Type currentParticle;
         public int brushSize;
+        private int[] selectPositions;
         public ParticleTestScreen(ScreenContainer container)
             : base(container)
         {
@@ -27,6 +28,13 @@ namespace FallingSand.Screens
             pm.addSource(new Vector2(550, 0), 1, Particle_Type.Water);
             //pm.addSource(new Vector2(600, 0), 5, Particle_Type.Sand);
             currentParticle = Particle_Type.Sand;
+
+            selectPositions = new int [5];
+            selectPositions[0] = 35;
+            selectPositions[1] = 135;
+            selectPositions[2] = 235;
+            selectPositions[3] = 340;
+            selectPositions[4] = 445;
         }
 
         /// <summary>
@@ -47,6 +55,12 @@ namespace FallingSand.Screens
         {
             FSGGame.spriteBatch.Begin();
             FSGGame.spriteBatch.DrawString(FSGGame.Font, "Particles Demo", Vector2.One * 100f, Color.White);
+            FSGGame.spriteBatch.Draw(FSGGame.select, new Vector2(selectPositions[(int)currentParticle], 425), Color.White);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Sand", new Vector2(50, 425), Color.SandyBrown);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Water", new Vector2(150, 425), Color.Aqua);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Wall", new Vector2(250, 425), Color.Gray);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Plant", new Vector2(350, 425), Color.YellowGreen);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Remove", new Vector2(450, 425), Color.White);
             FSGGame.spriteBatch.End();
 
             pm.Draw();
@@ -91,12 +105,19 @@ namespace FallingSand.Screens
                 }
             }
 
-            if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionLeft))   //if left arrow is pressed
+            if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionRight))   //if right arrow is pressed
+            {
+                if (currentParticle != Particle_Type.Remove)
+                    currentParticle++;
+                else
+                    currentParticle = Particle_Type.Sand;
+            }
+            else if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionLeft))   //if left arrow is pressed
             {
                 if (currentParticle > 0)
                     currentParticle--;
                 else
-                    currentParticle = Particle_Type.Wall;
+                    currentParticle = Particle_Type.Remove;
             }
 
             if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionUp) && brushSize <= 100)
