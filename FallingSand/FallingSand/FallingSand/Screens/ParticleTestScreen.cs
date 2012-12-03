@@ -61,6 +61,8 @@ namespace FallingSand.Screens
             FSGGame.spriteBatch.DrawString(FSGGame.Font, "Wall", new Vector2(250, 425), Color.Gray);
             FSGGame.spriteBatch.DrawString(FSGGame.Font, "Plant", new Vector2(350, 425), Color.YellowGreen);
             FSGGame.spriteBatch.DrawString(FSGGame.Font, "Remove", new Vector2(450, 425), Color.White);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Size:", new Vector2(600, 425), Color.White);
+            FSGGame.spriteBatch.Draw(FSGGame.white, new Rectangle(700, 425, 2 * brushSize, 2 * brushSize), Color.White);
             FSGGame.spriteBatch.End();
 
             pm.Draw();
@@ -120,9 +122,9 @@ namespace FallingSand.Screens
                     currentParticle = Particle_Type.Remove;
             }
 
-            if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionUp) && brushSize <= 100)
+            if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionUp) && brushSize <= 20)
                 brushSize++;
-            else if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionDown) && brushSize >= 1)
+            else if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionDown) && brushSize >= 3)
                 brushSize--;
         }
     }
