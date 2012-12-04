@@ -32,12 +32,13 @@ namespace FallingSand.Screens
             //pm.addSource(new Vector2(600, 0), 5, Particle_Type.Sand);
             currentParticle = Particle_Type.Sand;
 
-            selectPositions = new int [5];
+            selectPositions = new int [6];
             selectPositions[0] = 35;
             selectPositions[1] = 135;
             selectPositions[2] = 235;
             selectPositions[3] = 340;
             selectPositions[4] = 445;
+            selectPositions[5] = 545;
         }
 
         /// <summary>

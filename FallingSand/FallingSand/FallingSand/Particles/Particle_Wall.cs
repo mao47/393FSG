@@ -13,7 +13,7 @@ namespace FallingSand.Particles
             : base(pos, vel, Particle_Type.Wall, Color.Gray)
         {        }
 
-        public override void Update()
+        public override void Update(ParticleDataStructure particleStorage)
         {
             base.Update();
         }

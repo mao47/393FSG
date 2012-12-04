@@ -71,13 +71,18 @@ namespace FallingSand.Particles
                 //for (int i = 0; i < particles.Count; i++)//Update the particles
                 //{
                     //Particle p = (Particle)particles[i];
-                    if (p.type != Particle_Type.Wall && p.type != Particle_Type.Plant)//If not not (not a typo) affected by gravity
+                    if (p.type != Particle_Type.Wall && p.type != Particle_Type.Plant && p.type != Particle_Type.Fire)//If not not (not a typo) affected by gravity
                     {
                         p.velocity = new Vector2(0, Gravity);
                         this.checkCollisions(p);  //check collisions
                     }
-                    Vector2 newPosition = p.position + p.velocity;
-                    particleStorage.moveParticle(p, (int)newPosition.X, (int)newPosition.Y);
+                    else if (p.type == Particle_Type.Fire)
+                        handleFire(p);
+                    p.Update(particleStorage);
+
+                    if (p.remove)
+                        removeParticle(p.position);
+                        //particleStorage.deleteParticle(particleStorage.particleAt((int)p.position.X, (int)p.position.Y));
                     //p.position += p.velocity;
                     //Check if p is still in the viewing box
                     //Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
@@ -135,6 +140,8 @@ namespace FallingSand.Particles
                 p = new Particle_Water(position, velocity);
             else if (type.Equals(Particle_Type.Plant))
                 p = new Particle_Plant(position, velocity);
+            else if (type.Equals(Particle_Type.Fire))
+                p = new Particle_Fire(position, velocity);
             else
                 p = new Particle_Sand(position, velocity);
             //Check if p is in the viewing box
@@ -267,6 +274,45 @@ namespace FallingSand.Particles
             return true;
         }
 
+        private bool handleFire(Particle p)
+        {
+            Vector2[] positionList = new Vector2[8];
+            positionList[0] = new Vector2(p.position.X, p.position.Y - 1);//Right above first
+            positionList[1] = new Vector2(p.position.X -1, p.position.Y - 1);//Then top corners
+            positionList[2] = new Vector2(p.position.X + 1, p.position.Y - 1);
+            positionList[3] = new Vector2(p.position.X - 1, p.position.Y);//Left and Right
+            positionList[4] = new Vector2(p.position.X + 1, p.position.Y - 1);
+            positionList[5] = new Vector2(p.position.X, p.position.Y + 1);//Right Below
+            positionList[6] = new Vector2(p.position.X - 1, p.position.Y + 1);//Bottom corners
+            positionList[7] = new Vector2(p.position.X + 1, p.position.Y + 1);
+
+            bool isRemoved = false;
+            foreach(Vector2 pos in positionList)
+                if (!isRemoved && particleStorage.particleAt((int)pos.X, (int)pos.Y) != null)
+                {
+                    Particle other = particleStorage.particleAt((int)pos.X, (int)pos.Y);
+                    double random = rnd.NextDouble();
+                    if (other.type == Particle_Type.Water)
+                    {
+                        removeParticle(p.position);
+                        removeParticle(other.position);
+                        isRemoved = true;
+                    }
+                    else if (other.type == Particle_Type.Plant)
+                    {
+                        removeParticle(other.position);
+                        addParticle(other.position, Vector2.Zero, Particle_Type.Fire);
+                    }
+                    else if (other.type == Particle_Type.Wall || other.type == Particle_Type.Sand)
+                    {
+                        removeParticle(other.position);
+                        if (random < .2)//20% chance to propigate fire
+                            addParticle(other.position, Vector2.Zero, Particle_Type.Fire);
+                    }
+                }
+            return true;
+        }
+        
         private void checkTurnToPlant(Particle colP)
         {
             if (colP.type != Particle_Type.Water)
