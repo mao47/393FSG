@@ -147,7 +147,7 @@ namespace FallingSand.Particles
                 }
                 else
                 {
-                    deleteList.Add(p);
+                    //deleteList.Add(p);
                 }
             }
             addList.Clear();

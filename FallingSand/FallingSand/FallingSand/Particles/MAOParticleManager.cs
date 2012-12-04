@@ -137,7 +137,8 @@ namespace FallingSand.Particles
         {
             if(screenCoord)
                 position = (position + new Vector2(boundry.X, boundry.Y)) / particleSize;
-
+            position.X = (int)position.X;
+            position.Y = (int)position.Y;
             Particle p;
             if(type.Equals(Particle_Type.Sand))
                 p = new Particle_Sand(position, velocity);
@@ -295,7 +296,7 @@ namespace FallingSand.Particles
 
             bool isRemoved = false;
             foreach(Vector2 pos in positionList)
-                if (!isRemoved && particleStorage.particleAt((int)pos.X, (int)pos.Y) != null)
+                if (/*!isRemoved &&*/ particleStorage.particleAt((int)pos.X, (int)pos.Y) != null)
                 {
                     Particle other = particleStorage.particleAt((int)pos.X, (int)pos.Y);
                     double random = rnd.NextDouble();
