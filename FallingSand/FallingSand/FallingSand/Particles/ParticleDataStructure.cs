@@ -59,8 +59,12 @@ namespace FallingSand.Particles
 
         public void deleteParticle(Particle p)
         {
-            if(p != null)
+            if (p != null)
+            {
+                p.Dead = true;
+                particleField[(int)p.position.X, (int)p.position.Y] = null;
                 deleteList.Add(p);
+            }
         }
 
         /// <summary>
@@ -130,13 +134,15 @@ namespace FallingSand.Particles
         public void Update()
         { 
             //remove particles in deletelist in one pass
-            particles.RemoveAll(p => deleteList.Contains(p));
-            foreach (Particle p in deleteList)
-            {
-                particleField[(int)p.position.X, (int)p.position.Y] = null;
-            }
-            deleteList.Clear();
-
+            int particlesToRemove = 100;
+            var remove = deleteList.Take(particlesToRemove);
+            particles.RemoveAll(p => remove.Contains(p));
+            //foreach (Particle p in deleteList)
+            //{
+            //    particleField[(int)p.position.X, (int)p.position.Y] = null;
+            //}
+            //deleteList.Clear();
+            deleteList = deleteList.Skip(particlesToRemove).ToList();
             
             foreach (Particle p in addList)
             {

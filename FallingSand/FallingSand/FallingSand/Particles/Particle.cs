@@ -23,9 +23,11 @@ namespace FallingSand.Particles
         public Color pColor {  get; private set; }
         public bool lockedDirection { get; set; }
         public bool remove { get; set; }
+        public bool Dead { get; set; }
 
         public Particle (Vector2 pos, Vector2 vel, Particle_Type ptype, Color partColor)
         {
+            Dead = false;
             position = pos;
             velocity = vel;
             type = ptype;

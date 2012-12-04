@@ -68,6 +68,8 @@ namespace FallingSand.Particles
                 }
                 foreach(Particle p in particleStorage.myEnumerable())
                 {
+                    if (p.Dead)
+                        continue;
                 //for (int i = 0; i < particles.Count; i++)//Update the particles
                 //{
                     //Particle p = (Particle)particles[i];
@@ -109,8 +111,12 @@ namespace FallingSand.Particles
         {
             FSGGame.spriteBatch.Begin();
             foreach (Particle p in particleStorage.myEnumerable())
-                FSGGame.spriteBatch.Draw(white, p.position*particleSize + new Vector2(boundry.X, boundry.Y), null, p.pColor, 0, Vector2.Zero, particleSize, SpriteEffects.None, 0);
+            {
+                if (p.Dead) continue;
+                FSGGame.spriteBatch.Draw(white, p.position * particleSize + new Vector2(boundry.X, boundry.Y), null, p.pColor, 0, Vector2.Zero, particleSize, SpriteEffects.None, 0);
+            }
             FSGGame.spriteBatch.End();
+            //Console.WriteLine("total: " + particleStorage.particleCount() + ", add: " + particleStorage.particleAddCount() + ", delete: " + particleStorage.particleDeleteCount());
         }
 
         public void addSource(Vector2 position, int period, Particle_Type type, bool screenCoord)
