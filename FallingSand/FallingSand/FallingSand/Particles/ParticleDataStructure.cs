@@ -75,6 +75,7 @@ namespace FallingSand.Particles
         /// <param name="newY"></param>
         public void moveParticle(Particle p, int newX, int newY)
         {
+            if (p.Dead) return;
             particleField[(int)p.position.X, (int)p.position.Y] = null;
             if (newX < 0 || newX >= width || newY < 0 || newY >= height)
             {
@@ -90,6 +91,7 @@ namespace FallingSand.Particles
 
         public void moveSwapParticle(Particle p, int newX, int newY)
         {
+            if (p.Dead) return;
             if (newX < 0 || newX >= width || newY < 0 || newY >= height)
             {
                 particleField[(int)p.position.X, (int)p.position.Y] = null;

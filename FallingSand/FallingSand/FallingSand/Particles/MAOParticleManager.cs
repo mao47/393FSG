@@ -70,9 +70,7 @@ namespace FallingSand.Particles
                 {
                     if (p.Dead)
                         continue;
-                //for (int i = 0; i < particles.Count; i++)//Update the particles
-                //{
-                    //Particle p = (Particle)particles[i];
+
                     if (p.type != Particle_Type.Wall && p.type != Particle_Type.Plant && p.type != Particle_Type.Fire)//If not not (not a typo) affected by gravity
                     {
                         p.velocity = new Vector2(0, Gravity);
@@ -84,25 +82,7 @@ namespace FallingSand.Particles
 
                     if (p.remove)
                         particleStorage.deleteParticle(p);
-                        //removeParticle(p.position);
-                        //particleStorage.deleteParticle(particleStorage.particleAt((int)p.position.X, (int)p.position.Y));
-                    //p.position += p.velocity;
-                    //Check if p is still in the viewing box
-                    //Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
-                    //if (!boundry.Intersects(surround))
-                    //{
-                    //    particleStorage.deleteParticle(p);
-                    //    //particles.RemoveAt(i);
-                    //    //i--;
-                    //}
-                    //else
-                    //{
-                    //    //particleField[(int)p.position.X, (int)p.position.Y] = p;
-                    //    //particles[i] = p;
-                    //}
                 }
-                //TODO: Collision
-                //TODO: Remove particles due to intereactions
             }
             particleStorage.Update();
         }
@@ -193,7 +173,7 @@ namespace FallingSand.Particles
             bool checkRight = false;
             bool rightObstacle = false;
             int counter = 1;    //used for incrementing where dips are checked
-            List<Particle> collList = particleStorage.withinIndexExcludeSource((int)colP.position.X, (int)colP.position.Y);// new List<Particle>();
+           // List<Particle> collList = particleStorage.withinIndexExcludeSource((int)colP.position.X, (int)colP.position.Y);// new List<Particle>();
 
             checkTurnToPlant(colP);
 
@@ -278,13 +258,13 @@ namespace FallingSand.Particles
                 }
             }
 
-            foreach (Particle p in collList)
-            {
-                isColliding(colP, p);
-                if ((colP.position.Y - 1) - p.position.Y < -epsilon)//colP is above p
-                {
-                }
-            }
+            //foreach (Particle p in collList)
+            //{
+            //    isColliding(colP, p);
+            //    if ((colP.position.Y - 1) - p.position.Y < -epsilon)//colP is above p
+            //    {
+            //    }
+            //}
             return true;
         }
 
