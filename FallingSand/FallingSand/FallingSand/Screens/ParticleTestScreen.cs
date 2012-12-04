@@ -19,7 +19,7 @@ namespace FallingSand.Screens
         public ParticleTestScreen(ScreenContainer container)
             : base(container)
         {
-            pm = new MAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 1);
+            pm = new MAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 4);
             brushSize = 3;
             rand = new Random(Environment.TickCount);
             //pm.addSource(new Vector2(400, 0), 1, Particle_Type.Sand);
@@ -94,7 +94,7 @@ namespace FallingSand.Screens
                     for (int i = 0; i < brushSize; i++)
                     {
                         temp2 = new Vector2(temp.X + 10 * ((float)rand.NextDouble() - .5f), temp.Y + 10 * ((float)rand.NextDouble()) - .5f); //random location for spawning
-                        pm.addParticle(temp2, Vector2.Zero, currentParticle, true);
+                        pm.addParticle(temp2, Vector2.Zero, currentParticle, true, true);
                     }
                 }
                 else
@@ -105,7 +105,7 @@ namespace FallingSand.Screens
                         {
                             temp2.X = temp.X + x;
                             temp2.Y = temp.Y + y;
-                            pm.addParticle(temp2, Vector2.Zero, currentParticle, false);
+                            pm.addParticle(temp2, Vector2.Zero, currentParticle, true, false);
                         }
                     }
                 }

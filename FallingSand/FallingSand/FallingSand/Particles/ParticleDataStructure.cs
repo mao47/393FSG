@@ -14,12 +14,15 @@ namespace FallingSand.Particles
         List<Particle> addList;
         List<Particle> deleteList;
         int maxParticles;//Max Number
+        int width, height;
 
-        public ParticleDataStructure(int length, int width, int max)
+        public ParticleDataStructure(int width, int height, int max)
         {
+            this.width = width;
+            this.height = height;
             addList = new List<Particle>();
             deleteList = new List<Particle>();
-            particleField = new Particle[length, width];
+            particleField = new Particle[width, height];
             particles = new List<Particle>(max);
             maxParticles = max;
         }
@@ -68,6 +71,11 @@ namespace FallingSand.Particles
         /// <param name="newY"></param>
         public void moveParticle(Particle p, int newX, int newY)
         {
+            if (newX < 0 || newX >= width || newY < 0 || newY >= height)
+            {
+                deleteList.Add(p);
+                return;
+            }
             particleField[(int)p.position.X, (int)p.position.Y] = null;
             particleField[newX, newY] = p;
             p.position = new Vector2(newX, newY);
@@ -84,11 +92,13 @@ namespace FallingSand.Particles
             List<Particle> collList = new List<Particle>();
             for (int r = x - 1; r <= x + 1; r++)
             {
-                if (r < 0 || r > particleField.GetLength(0))
+                //var w = particleField.GetLength(0);
+                if (r < 0 || r >= particleField.GetLength(0))
                     continue;
                 for (int c = y - 1; c <= y + 1; c++)
                 {
-                    if (c < 0 || c > particleField.GetLength(1))
+                    //var h = particleField.GetLength(1);
+                    if (c < 0 || c >= particleField.GetLength(1))
                         continue;
                     if (particleField[r, c] != null && (r != x && c != y))
                         collList.Add(particleField[r, c]);

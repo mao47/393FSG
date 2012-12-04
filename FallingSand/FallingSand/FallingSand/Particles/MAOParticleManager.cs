@@ -20,7 +20,7 @@ namespace FallingSand.Particles
         List<Source> sources;
 
         int lastRound;
-
+        int particleSize;
         Rectangle boundry;
         protected ParticleDataStructure particleStorage;
         //static Random rnd = new Random();
@@ -31,15 +31,15 @@ namespace FallingSand.Particles
         Random rnd;
         public Texture2D white;
 
-        public MAOParticleManager(Rectangle boundries, int maxPart, float particleSize)
+        public MAOParticleManager(Rectangle boundries, int maxPart, int particleSize)
         {
             lastRound = 0;
             sources = new List<Source>();
             boundry = boundries;
+            this.particleSize = particleSize;
+            maxParticles = maxPart;
 
-            maxParticles = maxPart;//Not Currently used
-
-            particleStorage = new ParticleDataStructure(1800, 1400, maxPart);
+            particleStorage = new ParticleDataStructure(boundries.Width/particleSize, boundries.Height/particleSize, maxPart);
 
             white = FSGGame.white;
         }
@@ -61,7 +61,7 @@ namespace FallingSand.Particles
 
                         for (int y = 0; y < 2 * s.period; y++)
                         {
-                            addParticle(s.getNewParticlePosition(), Vector2.Zero, s.type, false);
+                            addParticle(s.getNewParticlePosition(), Vector2.Zero, s.type, false, false);
                         }
                     }
                     sources[i] = s;
@@ -80,18 +80,18 @@ namespace FallingSand.Particles
                     particleStorage.moveParticle(p, (int)newPosition.X, (int)newPosition.Y);
                     //p.position += p.velocity;
                     //Check if p is still in the viewing box
-                    Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
-                    if (!boundry.Intersects(surround))
-                    {
-                        particleStorage.deleteParticle(p);
-                        //particles.RemoveAt(i);
-                        //i--;
-                    }
-                    else
-                    {
-                        //particleField[(int)p.position.X, (int)p.position.Y] = p;
-                        //particles[i] = p;
-                    }
+                    //Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
+                    //if (!boundry.Intersects(surround))
+                    //{
+                    //    particleStorage.deleteParticle(p);
+                    //    //particles.RemoveAt(i);
+                    //    //i--;
+                    //}
+                    //else
+                    //{
+                    //    //particleField[(int)p.position.X, (int)p.position.Y] = p;
+                    //    //particles[i] = p;
+                    //}
                 }
                 //TODO: Collision
                 //TODO: Remove particles due to intereactions
@@ -103,24 +103,29 @@ namespace FallingSand.Particles
         {
             FSGGame.spriteBatch.Begin();
             foreach (Particle p in particleStorage.myEnumerable())
-                FSGGame.spriteBatch.Draw(white, p.position, p.pColor);
+                FSGGame.spriteBatch.Draw(white, p.position*particleSize + new Vector2(boundry.X, boundry.Y), null, p.pColor, 0, Vector2.Zero, particleSize, SpriteEffects.None, 0);
             FSGGame.spriteBatch.End();
         }
 
         public void addSource(Vector2 position, int period, Particle_Type type)
         {
+            position = (position + new Vector2(boundry.X, boundry.Y)) / particleSize;
             Source source = new Source(position, period, type);
             sources.Add(source);
         }
 
         public bool removeParticle(Vector2 position)
         {
+            position = (position + new Vector2(boundry.X, boundry.Y)) / particleSize;
             particleStorage.deleteParticle(particleStorage.particleAt((int)position.X, (int)position.Y));
             return true;
         }
 
-        public bool addParticle(Vector2 position, Vector2 velocity, Particle_Type type, bool overlay = true)
+        public bool addParticle(Vector2 position, Vector2 velocity, Particle_Type type, bool screenCoord = true, bool overlay = true)
         {
+            if(screenCoord)
+                position = (position + new Vector2(boundry.X, boundry.Y)) / particleSize;
+
             Particle p;
             if(type.Equals(Particle_Type.Sand))
                 p = new Particle_Sand(position, velocity);
@@ -260,7 +265,7 @@ namespace FallingSand.Particles
                 {
                     Vector2 tempPos = colP.position;
                     particleStorage.deleteParticle(colP);
-                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false);
+                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false, false);
                 }
             }
             if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1) != null && deleteSize == particleStorage.particleDeleteCount())  //above
@@ -269,7 +274,7 @@ namespace FallingSand.Particles
                 {
                     Vector2 tempPos = colP.position;
                     particleStorage.deleteParticle(colP);
-                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false);
+                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false, false);
                 }
             }
             if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y) != null && deleteSize == particleStorage.particleDeleteCount())  //right
@@ -278,7 +283,7 @@ namespace FallingSand.Particles
                 {
                     Vector2 tempPos = colP.position;
                     particleStorage.deleteParticle(colP);
-                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false);
+                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false, false);
                 }
             }
             if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y) != null && deleteSize == particleStorage.particleDeleteCount())  //left
@@ -287,7 +292,7 @@ namespace FallingSand.Particles
                 {
                     Vector2 tempPos = colP.position;
                     particleStorage.deleteParticle(colP);
-                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false);
+                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false, false);
                 }
             }
         }
