@@ -20,7 +20,7 @@ namespace FallingSand.Particles
             addList = new List<Particle>();
             deleteList = new List<Particle>();
             particleField = new Particle[length, width];
-            particles = new List<Particle>();
+            particles = new List<Particle>(max);
             maxParticles = max;
         }
 
@@ -56,7 +56,8 @@ namespace FallingSand.Particles
 
         public void deleteParticle(Particle p)
         {
-            deleteList.Add(p);
+            if(p != null)
+                deleteList.Add(p);
         }
 
         /// <summary>
@@ -102,18 +103,15 @@ namespace FallingSand.Particles
         /// </summary>
         public void Update()
         { 
-            //assume the delete list is much smaller than the list of all particles
-            for (int i = 0; i < particles.Count; i++)
+            //remove particles in deletelist in one pass
+            particles.RemoveAll(p => deleteList.Contains(p));
+            foreach (Particle p in deleteList)
             {
-                var p = particles[i];
-                if (deleteList.Contains(p) && particleField[(int)p.position.X, (int)p.position.Y] == p)
-                {
-                    particleField[(int)p.position.X, (int)p.position.Y] = null;
-                    particles.RemoveAt(i);
-                    i--;
-                }
+                particleField[(int)p.position.X, (int)p.position.Y] = null;
             }
             deleteList.Clear();
+
+            
             foreach (Particle p in addList)
             {
                 if (particleField[(int)p.position.X, (int)p.position.Y] == null)
@@ -127,8 +125,6 @@ namespace FallingSand.Particles
                 }
             }
             addList.Clear();
-           
-            
         }
 
         /// <summary>

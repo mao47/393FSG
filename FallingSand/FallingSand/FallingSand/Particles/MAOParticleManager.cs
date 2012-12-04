@@ -119,7 +119,7 @@ namespace FallingSand.Particles
             return true;
         }
 
-        public bool addParticle(Vector2 position, Vector2 velocity, Particle_Type type, bool overlay)
+        public bool addParticle(Vector2 position, Vector2 velocity, Particle_Type type, bool overlay = true)
         {
             Particle p;
             if(type.Equals(Particle_Type.Sand))
