@@ -10,8 +10,9 @@ namespace FallingSand.Particles
     public enum Particle_Type{
         Sand,
         Water,
+        Wall,
         Plant,
-        Wall
+        Remove
     }
     public abstract class Particle
     {

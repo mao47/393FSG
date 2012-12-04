@@ -61,7 +61,7 @@ namespace FallingSand.Particles
 
                         for (int y = 0; y < 2 * s.period; y++)
                         {
-                            addParticle(s.getNewParticlePosition(), Vector2.Zero, s.type);
+                            addParticle(s.getNewParticlePosition(), Vector2.Zero, s.type, false);
                         }
                     }
                     sources[i] = s;
@@ -113,7 +113,13 @@ namespace FallingSand.Particles
             sources.Add(source);
         }
 
-        public bool addParticle(Vector2 position, Vector2 velocity, Particle_Type type)
+        public bool removeParticle(Vector2 position)
+        {
+            particleStorage.deleteParticle(particleStorage.particleAt((int)position.X, (int)position.Y));
+            return true;
+        }
+
+        public bool addParticle(Vector2 position, Vector2 velocity, Particle_Type type, bool overlay)
         {
             Particle p;
             if(type.Equals(Particle_Type.Sand))
@@ -133,6 +139,8 @@ namespace FallingSand.Particles
                 //particles.Add(p);
                 //particleField[(int)p.position.X, (int)p.position.Y] = p;//todo fix
                 //return true;
+                if(!overlay)
+                    particleStorage.deleteParticle(particleStorage.particleAt((int)p.position.X, (int)p.position.Y));
                 if (particleStorage.newParticle(p))
                     return true;
                 //particles.Add(p);
@@ -152,11 +160,18 @@ namespace FallingSand.Particles
             int counter = 1;    //used for incrementing where dips are checked
             List<Particle> collList = particleStorage.withinIndexExcludeSource((int)colP.position.X, (int)colP.position.Y);// new List<Particle>();
 
-
             checkTurnToPlant(colP);
-           
 
-                if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)
+            if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)
+            {
+                //if particle is sand, and water is below, switch to cause sand to fall in water
+                if (colP.type == Particle_Type.Sand && particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1).type == Particle_Type.Water)
+                {
+                    particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1).position = colP.position;
+                    colP.position = new Vector2(colP.position.X, colP.position.Y + 1);
+                }
+
+                else
                 {
                     colP.velocity = new Vector2(colP.velocity.X, 0);
 
@@ -178,7 +193,7 @@ namespace FallingSand.Particles
                             colP.velocity = new Vector2(1, 1);
                         }
                         //used to make particles behave more liquidlike and less powder like
-                        else  if (!surrounded(colP))    //if the particle is surrounded by other particles, it shouldn't check
+                        else if (!surrounded(colP))    //if the particle is surrounded by other particles, it shouldn't check
                             while ((!checkLeft && !checkRight) && (!rightObstacle || !leftObstacle))  //if the bottom three particle spaces check all exist, loop until we find the first dip UNLESS both end in a wall
                             {
                                 //if there is an obstacle in line with the particle, it will stop checking that side for a dip
@@ -224,6 +239,7 @@ namespace FallingSand.Particles
                             colP.velocity = new Vector2(-1, 1);
                     }
                 }
+            }
 
             foreach (Particle p in collList)
             {
@@ -244,7 +260,7 @@ namespace FallingSand.Particles
                 {
                     Vector2 tempPos = colP.position;
                     particleStorage.deleteParticle(colP);
-                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant);
+                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false);
                 }
             }
             if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1) != null && deleteSize == particleStorage.particleDeleteCount())  //above
@@ -253,7 +269,7 @@ namespace FallingSand.Particles
                 {
                     Vector2 tempPos = colP.position;
                     particleStorage.deleteParticle(colP);
-                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant);
+                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false);
                 }
             }
             if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y) != null && deleteSize == particleStorage.particleDeleteCount())  //right
@@ -262,7 +278,7 @@ namespace FallingSand.Particles
                 {
                     Vector2 tempPos = colP.position;
                     particleStorage.deleteParticle(colP);
-                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant);
+                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false);
                 }
             }
             if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y) != null && deleteSize == particleStorage.particleDeleteCount())  //left
@@ -271,7 +287,7 @@ namespace FallingSand.Particles
                 {
                     Vector2 tempPos = colP.position;
                     particleStorage.deleteParticle(colP);
-                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant);
+                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false);
                 }
             }
         }
