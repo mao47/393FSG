@@ -49,7 +49,7 @@ namespace FallingSand.Particles
         }
         public bool newParticle(Particle p)
         {
-            if (particles.Count < maxParticles)
+            if (!(p.position.X < 0 || p.position.X >= width || p.position.Y < 0 || p.position.Y >= height) && particles.Count < maxParticles)
             {
                 addList.Add(p);
                 return true;
