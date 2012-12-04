@@ -65,6 +65,8 @@ namespace FallingSand.Screens
             FSGGame.spriteBatch.DrawString(FSGGame.Font, "Wall", new Vector2(250, 425), Color.Gray);
             FSGGame.spriteBatch.DrawString(FSGGame.Font, "Plant", new Vector2(350, 425), Color.YellowGreen);
             FSGGame.spriteBatch.DrawString(FSGGame.Font, "Remove", new Vector2(450, 425), Color.White);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "+", new Vector2(570, 410), Color.White);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "-", new Vector2(570, 440), Color.White);
             FSGGame.spriteBatch.DrawString(FSGGame.Font, "Size:", new Vector2(600, 425), Color.White);
             FSGGame.spriteBatch.Draw(FSGGame.white, new Rectangle(700, 425, 2 * brushSize, 2 * brushSize), Color.White);
             FSGGame.spriteBatch.End();
@@ -78,42 +80,68 @@ namespace FallingSand.Screens
             if (FSGGame.controller.ContainsBool(Inputs.ActionType.AButton))//mouseState.LeftButton == ButtonState.Pressed)//FSGGame.controller.ContainsBool(Inputs.ActionType.Select))
             {
                 Vector2 temp = FSGGame.controller.CursorPosition();
-                temp.X -= brushSize;
-                temp.Y -= brushSize;
-                Vector2 temp2;
-
-                if (currentParticle == Particle_Type.Remove)
-                    for (int x = 0; x < 2 * brushSize; x++)
-                    {
-                        for (int y = 0; y < 2 * brushSize; y++)
-                        {
-                            temp2.X = temp.X + x;
-                            temp2.Y = temp.Y + y;
-                            pm.removeParticle(temp2);
-                        }
-                    }
-                else if (currentParticle != Particle_Type.Wall && currentParticle != Particle_Type.Plant)
+                
+                //mouse selection of particle type
+                if (temp.Y >= 415)
                 {
-                    temp.X += brushSize;
-                    temp.Y += brushSize;
-                    for (int i = 0; i < brushSize; i++)
+                    if (temp.X > 50 && temp.X < 150)
+                        currentParticle = Particle_Type.Sand;
+                    else if (temp.X > 150 && temp.X < 250)
+                        currentParticle = Particle_Type.Water;
+                    else if (temp.X > 250 && temp.X < 350)
+                        currentParticle = Particle_Type.Wall;
+                    else if (temp.X > 350 && temp.X < 450)
+                        currentParticle = Particle_Type.Plant;
+                    else if (temp.X > 450 && temp.X < 550)
+                        currentParticle = Particle_Type.Remove;
+                    else if (temp.X > 565 && temp.X < 585)
                     {
-                        temp2 = new Vector2(temp.X + 10 * ((float)rand.NextDouble() - .5f), temp.Y + 10 * ((float)rand.NextDouble()) - .5f); //random location for spawning
-                        pm.addParticle(temp2, Vector2.Zero, currentParticle, true, true);
+                        if (temp.Y > 440 && temp.Y < 460 && brushSize >= 3)
+                            brushSize--;
+                        else if (temp.Y < 435 && temp.Y > 415 && brushSize <= 20)
+                            brushSize++;
                     }
                 }
+
                 else
                 {
-                    for (int x = 0; x < 2 * brushSize; x++)
-                    {
-                        for (int y = 0; y < 2 * brushSize; y++)
+                    temp.X -= brushSize;
+                    temp.Y -= brushSize;
+                    Vector2 temp2;
+                    if (currentParticle == Particle_Type.Remove)
+                        for (int x = 0; x < 2 * brushSize; x++)
                         {
-                            temp2.X = temp.X + x;
-                            temp2.Y = temp.Y + y;
-                            pm.addParticle(temp2, Vector2.Zero, currentParticle, true, false);
+                            for (int y = 0; y < 2 * brushSize; y++)
+                            {
+                                temp2.X = temp.X + x;
+                                temp2.Y = temp.Y + y;
+                                pm.removeParticle(temp2);
+                            }
+                        }
+                    else if (currentParticle != Particle_Type.Wall && currentParticle != Particle_Type.Plant)
+                    {
+                        temp.X += brushSize;
+                        temp.Y += brushSize;
+                        for (int i = 0; i < brushSize; i++)
+                        {
+                            temp2 = new Vector2(temp.X + 10 * ((float)rand.NextDouble() - .5f), temp.Y + 10 * ((float)rand.NextDouble()) - .5f); //random location for spawning
+                            pm.addParticle(temp2, Vector2.Zero, currentParticle, true, true);
+                        }
+                    }
+                    else
+                    {
+                        for (int x = 0; x < 2 * brushSize; x++)
+                        {
+                            for (int y = 0; y < 2 * brushSize; y++)
+                            {
+                                temp2.X = temp.X + x;
+                                temp2.Y = temp.Y + y;
+                                pm.addParticle(temp2, Vector2.Zero, currentParticle, true, false);
+                            }
                         }
                     }
                 }
+
             }
 
             if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionRight))   //if right arrow is pressed
