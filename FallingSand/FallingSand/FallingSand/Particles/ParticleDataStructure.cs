@@ -81,6 +81,22 @@ namespace FallingSand.Particles
             p.position = new Vector2(newX, newY);
         }
 
+
+        public void moveSwapParticle(Particle p, int newX, int newY)
+        {
+            if (newX < 0 || newX >= width || newY < 0 || newY >= height)
+            {
+                deleteList.Add(p);
+                return;
+            }
+            Particle old = particleField[newX, newY];
+            old.position = new Vector2(p.position.X, p.position.Y);
+            particleField[(int)p.position.X, (int)p.position.Y] = old;
+            
+            particleField[newX, newY] = p;
+            p.position = new Vector2(newX, newY);
+        }
+
         /// <summary>
         /// Returns a list of all the particles within a chebyshev distance of 1 from the given x,y position
         /// </summary>

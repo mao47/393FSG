@@ -181,8 +181,9 @@ namespace FallingSand.Particles
                 //if particle is sand, and water is below, switch to cause sand to fall in water
                 if (colP.type == Particle_Type.Sand && particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1).type == Particle_Type.Water)
                 {
-                    particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1).position = colP.position;
-                    colP.position = new Vector2(colP.position.X, colP.position.Y + 1);
+                    //particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1).position = colP.position;
+                    //BAD, me no likey: colP.position = new Vector2(colP.position.X, colP.position.Y + 1);
+                    particleStorage.moveSwapParticle(colP, (int)colP.position.X, (int)colP.position.Y + 1);
                 }
 
                 else
