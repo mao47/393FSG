@@ -181,9 +181,10 @@ namespace FallingSand.Particles
                 //if particle is sand, and water is below, switch to cause sand to fall in water
                 if (colP.type == Particle_Type.Sand && particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1).type == Particle_Type.Water)
                 {
-                    //particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1).position = colP.position;
+                    
                     //BAD, me no likey: colP.position = new Vector2(colP.position.X, colP.position.Y + 1);
                     particleStorage.moveSwapParticle(colP, (int)colP.position.X, (int)colP.position.Y + 1);
+                    colP.velocity = Vector2.Zero;
                 }
 
                 else
@@ -268,41 +269,43 @@ namespace FallingSand.Particles
 
         private void checkTurnToPlant(Particle colP)
         {
+            if (colP.type != Particle_Type.Water)
+                return;
             int deleteSize = particleStorage.particleDeleteCount();
             if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1) != null)//beleow
             {
-                if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1).type == Particle_Type.Plant && colP.type == Particle_Type.Water && rnd.Next(10) == 0)
+                if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y + 1).type == Particle_Type.Plant && rnd.Next(10) == 0)
                 {
                     Vector2 tempPos = colP.position;
                     particleStorage.deleteParticle(colP);
-                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false, false);
+                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false, true);
                 }
             }
             if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1) != null && deleteSize == particleStorage.particleDeleteCount())  //above
             {
-                if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1).type == Particle_Type.Plant && colP.type == Particle_Type.Water && rnd.Next(10) == 0)
+                if (particleStorage.particleAt((int)colP.position.X, (int)colP.position.Y - 1).type == Particle_Type.Plant && rnd.Next(10) == 0)
                 {
                     Vector2 tempPos = colP.position;
                     particleStorage.deleteParticle(colP);
-                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false, false);
+                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false, true);
                 }
             }
             if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y) != null && deleteSize == particleStorage.particleDeleteCount())  //right
             {
-                if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y).type == Particle_Type.Plant && colP.type == Particle_Type.Water && rnd.Next(6) == 0)
+                if (particleStorage.particleAt((int)colP.position.X + 1, (int)colP.position.Y).type == Particle_Type.Plant && rnd.Next(6) == 0)
                 {
                     Vector2 tempPos = colP.position;
                     particleStorage.deleteParticle(colP);
-                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false, false);
+                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false, true);
                 }
             }
             if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y) != null && deleteSize == particleStorage.particleDeleteCount())  //left
             {
-                if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y).type == Particle_Type.Plant && colP.type == Particle_Type.Water && rnd.Next(6) == 0)
+                if (particleStorage.particleAt((int)colP.position.X - 1, (int)colP.position.Y).type == Particle_Type.Plant && rnd.Next(6) == 0)
                 {
                     Vector2 tempPos = colP.position;
                     particleStorage.deleteParticle(colP);
-                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false, false);
+                    addParticle(tempPos, new Vector2(0), Particle_Type.Plant, false, true);
                 }
             }
         }
