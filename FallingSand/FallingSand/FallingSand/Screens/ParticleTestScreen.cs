@@ -76,8 +76,23 @@ namespace FallingSand.Screens
                 temp.X -= brushSize;
                 temp.Y -= brushSize;
                 Vector2 temp2;
+                
+                //mouse selection of particle type
+                if (temp.Y >= 425)
+                {
+                    if (temp.X > 50 && temp.X < 150)
+                        currentParticle = Particle_Type.Sand;
+                    else if (temp.X > 150 && temp.X < 250)
+                        currentParticle = Particle_Type.Water;
+                    else if (temp.X > 250 && temp.X < 350)
+                        currentParticle = Particle_Type.Wall;
+                    else if (temp.X > 350 && temp.X < 450)
+                        currentParticle = Particle_Type.Plant;
+                    else if (temp.X > 450 && temp.X < 600)
+                        currentParticle = Particle_Type.Remove;
+                }
 
-                if (currentParticle == Particle_Type.Remove)
+                else if (currentParticle == Particle_Type.Remove)
                     for (int x = 0; x < 2 * brushSize; x++)
                     {
                         for (int y = 0; y < 2 * brushSize; y++)
@@ -109,6 +124,8 @@ namespace FallingSand.Screens
                         }
                     }
                 }
+
+
             }
 
             if (FSGGame.controller.ContainsBool(Inputs.ActionType.SelectionRight))   //if right arrow is pressed
