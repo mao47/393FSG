@@ -314,15 +314,23 @@ namespace FallingSand.Particles
                     }
                     else if (other.type == Particle_Type.Plant)
                     {
-                        particleStorage.deleteParticle(other);
-                        if (rnd.Next(2) == 0)//50% chance to propigate fire
-                            addParticle(other.position, Vector2.Zero, Particle_Type.Fire, false, true);
+                        
+                        if (rnd.Next(10) == 0)//10% chance to delete plant
+                        {
+                            particleStorage.deleteParticle(other);
+                            if(rnd.NextDouble() < 0.9)//90% chance to propagate
+                                addParticle(other.position, Vector2.Zero, Particle_Type.Fire, false, true);
+                        }
                     }
                     else if (other.type == Particle_Type.Wall || other.type == Particle_Type.Sand)
                     {
-                        particleStorage.deleteParticle(other);
-                        if (rnd.Next(10) == 0)//10% chance to propigate fire
-                            addParticle(other.position, Vector2.Zero, Particle_Type.Fire, false, true);
+                        
+                        if (rnd.Next(10) == 0)//10% chance to delete wall
+                        {
+                            particleStorage.deleteParticle(other);
+                            if(rnd.Next(4) == 0) //25% chance to propagate
+                                addParticle(other.position, Vector2.Zero, Particle_Type.Fire, false, true);
+                        }
                     }
                 }
             return true;
