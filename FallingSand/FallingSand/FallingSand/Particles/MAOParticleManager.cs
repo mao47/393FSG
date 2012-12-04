@@ -305,7 +305,7 @@ namespace FallingSand.Particles
                 if (/*!isRemoved &&*/ particleStorage.particleAt((int)pos.X, (int)pos.Y) != null)
                 {
                     Particle other = particleStorage.particleAt((int)pos.X, (int)pos.Y);
-                    double random = rnd.NextDouble();
+                    //double random = rnd.NextDouble();
                     if (other.type == Particle_Type.Water)
                     {
                         particleStorage.deleteParticle(p);
@@ -315,12 +315,13 @@ namespace FallingSand.Particles
                     else if (other.type == Particle_Type.Plant)
                     {
                         particleStorage.deleteParticle(other);
-                        addParticle(other.position, Vector2.Zero, Particle_Type.Fire, false, true);
+                        if (rnd.Next(2) == 0)//50% chance to propigate fire
+                            addParticle(other.position, Vector2.Zero, Particle_Type.Fire, false, true);
                     }
                     else if (other.type == Particle_Type.Wall || other.type == Particle_Type.Sand)
                     {
                         particleStorage.deleteParticle(other);
-                        if (random < .2)//20% chance to propigate fire
+                        if (rnd.Next(10) == 0)//10% chance to propigate fire
                             addParticle(other.position, Vector2.Zero, Particle_Type.Fire, false, true);
                     }
                 }
