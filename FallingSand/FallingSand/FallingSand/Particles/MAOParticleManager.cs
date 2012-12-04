@@ -81,7 +81,8 @@ namespace FallingSand.Particles
                     p.Update(particleStorage);
 
                     if (p.remove)
-                        removeParticle(p.position);
+                        particleStorage.deleteParticle(p);
+                        //removeParticle(p.position);
                         //particleStorage.deleteParticle(particleStorage.particleAt((int)p.position.X, (int)p.position.Y));
                     //p.position += p.velocity;
                     //Check if p is still in the viewing box
@@ -112,21 +113,27 @@ namespace FallingSand.Particles
             FSGGame.spriteBatch.End();
         }
 
-        public void addSource(Vector2 position, int period, Particle_Type type)
+        public void addSource(Vector2 position, int period, Particle_Type type, bool screenCoord)
         {
-            position = (position + new Vector2(boundry.X, boundry.Y)) / particleSize;
+            if(screenCoord)
+                position = (position + new Vector2(boundry.X, boundry.Y)) / particleSize;
             Source source = new Source(position, period, type);
             sources.Add(source);
         }
 
-        public bool removeParticle(Vector2 position)
+        public bool removeParticle(Vector2 position, bool screenCoord)
         {
-            position = (position + new Vector2(boundry.X, boundry.Y)) / particleSize;
+            if (screenCoord)
+                position = (position + new Vector2(boundry.X, boundry.Y)) / particleSize;
             particleStorage.deleteParticle(particleStorage.particleAt((int)position.X, (int)position.Y));
             return true;
         }
+        public bool removeParticleScreenCoord(Vector2 screenPos)
+        {
+            return removeParticle(screenPos, true);
+        }
 
-        public bool addParticle(Vector2 position, Vector2 velocity, Particle_Type type, bool screenCoord = true, bool overlay = true)
+        public bool addParticle(Vector2 position, Vector2 velocity, Particle_Type type, bool screenCoord, bool overlay)
         {
             if(screenCoord)
                 position = (position + new Vector2(boundry.X, boundry.Y)) / particleSize;
@@ -294,20 +301,20 @@ namespace FallingSand.Particles
                     double random = rnd.NextDouble();
                     if (other.type == Particle_Type.Water)
                     {
-                        removeParticle(p.position);
-                        removeParticle(other.position);
+                        particleStorage.deleteParticle(p);
+                        particleStorage.deleteParticle(other);
                         isRemoved = true;
                     }
                     else if (other.type == Particle_Type.Plant)
                     {
-                        removeParticle(other.position);
-                        addParticle(other.position, Vector2.Zero, Particle_Type.Fire);
+                        particleStorage.deleteParticle(other);
+                        addParticle(other.position, Vector2.Zero, Particle_Type.Fire, false, true);
                     }
                     else if (other.type == Particle_Type.Wall || other.type == Particle_Type.Sand)
                     {
-                        removeParticle(other.position);
+                        particleStorage.deleteParticle(other);
                         if (random < .2)//20% chance to propigate fire
-                            addParticle(other.position, Vector2.Zero, Particle_Type.Fire);
+                            addParticle(other.position, Vector2.Zero, Particle_Type.Fire, false, true);
                     }
                 }
             return true;
