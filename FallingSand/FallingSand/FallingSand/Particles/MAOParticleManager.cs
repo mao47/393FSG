@@ -309,12 +309,13 @@ namespace FallingSand.Particles
                     else if (other.type == Particle_Type.Plant)
                     {
                         particleStorage.deleteParticle(other);
-                        addParticle(other.position, Vector2.Zero, Particle_Type.Fire, false, true);
+                        if (random < .5)//50% chance to propigate fire
+                            addParticle(other.position, Vector2.Zero, Particle_Type.Fire, false, true);
                     }
                     else if (other.type == Particle_Type.Wall || other.type == Particle_Type.Sand)
                     {
                         particleStorage.deleteParticle(other);
-                        if (random < .2)//20% chance to propigate fire
+                        if (random < .1)//10% chance to propigate fire
                             addParticle(other.position, Vector2.Zero, Particle_Type.Fire, false, true);
                     }
                 }
