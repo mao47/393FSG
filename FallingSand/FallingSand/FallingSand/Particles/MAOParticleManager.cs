@@ -139,8 +139,17 @@ namespace FallingSand.Particles
                 //particles.Add(p);
                 //particleField[(int)p.position.X, (int)p.position.Y] = p;//todo fix
                 //return true;
-                if(!overlay)
-                    particleStorage.deleteParticle(particleStorage.particleAt((int)p.position.X, (int)p.position.Y));
+                if (!overlay)
+                {
+                    if (particleStorage.particleAt((int)p.position.X, (int)p.position.Y) != null && particleStorage.particleAt((int)p.position.X, (int)p.position.Y).type == p.type)
+                        return true;
+                    else
+                    {
+                        particleStorage.deleteParticle(particleStorage.particleAt((int)p.position.X, (int)p.position.Y));
+                        particleStorage.newParticle(p);
+                        return true;
+                    }
+                }
                 if (particleStorage.newParticle(p))
                     return true;
                 //particles.Add(p);
