@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using FallingSand.Particles;
 using Microsoft.Xna.Framework.Input;
+using FallingSand.Achievement;
 
 
 namespace FallingSand.Screens
@@ -13,13 +14,15 @@ namespace FallingSand.Screens
     {
         private Random rand;
         public  MAOParticleManager pm;
+        public AchievementManager am;
         public Particle_Type currentParticle;
         public int brushSize;
         private int[] selectPositions;
         public ParticleTestScreen(ScreenContainer container)
             : base(container)
         {
-            pm = new MAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 4);
+            pm = new MAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 2);
+            am = new AchievementManager(new List<AchievementBase>(){new DemoAchievement()});
             brushSize = 3;
             rand = new Random(Environment.TickCount);
             //pm.addSource(new Vector2(400, 0), 1, Particle_Type.Sand);
@@ -45,6 +48,7 @@ namespace FallingSand.Screens
         {
             base.Update(gameTime);
             pm.Update(gameTime);
+            am.Update(gameTime);
             getInput();             
         }
 
@@ -66,6 +70,7 @@ namespace FallingSand.Screens
             FSGGame.spriteBatch.End();
 
             pm.Draw();
+            am.Draw();
         }
 
         private void getInput()

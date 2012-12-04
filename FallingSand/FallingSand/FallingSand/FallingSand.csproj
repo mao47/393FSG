@@ -107,6 +107,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Achievement\Achievement.cs" />
+    <Compile Include="Achievement\AchievementManager.cs" />
+    <Compile Include="Achievement\AchievementNotification.cs" />
+    <Compile Include="Achievement\DemoAchievement.cs" />
     <Compile Include="Inputs\ActionType.cs" />
     <Compile Include="Inputs\Controller.cs" />
     <Compile Include="Inputs\ControllerPacket.cs" />
