@@ -80,12 +80,12 @@ namespace FallingSand.Achievement
 
                 foreach (var n in notifications)
                 { 
-                    Vector2 msgSize = FSGGame.Font.MeasureString(n.Message);
+                    Vector2 msgSize = FSGGame.Font.MeasureString(n.Name);
                     
                     float scale = Math.Min(textSize.X / msgSize.X, 1f);
                     Vector2 position = new Vector2(temp.X + textSize.X / 2f * scale, temp.Y + textSize.Y / 2f);
                     FSGGame.spriteBatch.Draw(FSGGame.white, new Rectangle((int)temp.X, (int)temp.Y, (int)textSize.X, (int)textSize.Y), Color.LightGray);
-                    FSGGame.spriteBatch.DrawString(FSGGame.Font, n.Message, position, Color.Black, 0, textSize / 2f, scale, SpriteEffects.None, .8f);
+                    FSGGame.spriteBatch.DrawString(FSGGame.Font, n.Name, position, Color.Black, 0, textSize / 2f, scale, SpriteEffects.None, .8f);
                     temp.Y = temp.Y + textSize.Y + temp2.Y;
                 }
 

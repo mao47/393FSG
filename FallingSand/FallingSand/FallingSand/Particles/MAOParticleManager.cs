@@ -92,6 +92,7 @@ namespace FallingSand.Particles
 
         public void Draw()
         {
+            Console.WriteLine(particleStorage.particleCount());
             FSGGame.spriteBatch.Begin();
             foreach (Particle p in particleStorage.myEnumerable())
             {

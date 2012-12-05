@@ -111,6 +111,8 @@
     <Compile Include="Achievement\AchievementManager.cs" />
     <Compile Include="Achievement\AchievementNotification.cs" />
     <Compile Include="Achievement\Achievements\PyroAchievement.cs" />
+    <Compile Include="Achievement\Achievements\TotalOfTypeAchievement.cs" />
+    <Compile Include="Achievement\Achievements\TypeOnScreenAchievement.cs" />
     <Compile Include="Achievement\DemoAchievement.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Inputs\ActionType.cs" />
