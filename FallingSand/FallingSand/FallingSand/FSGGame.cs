@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using FallingSand.Screens;
 using FallingSand.Inputs;
 using FallingSand.Particles;
+using FallingSand.Achievement;
 
 namespace FallingSand
 {
@@ -30,8 +31,11 @@ namespace FallingSand
         public static Texture2D white;
         public static Texture2D select;
         public static Controller controller;
+        public static AchievementManager achievementManager;
+
         public FSGGame()
         {
+            achievementManager = new AchievementManager(new List<AchievementBase>() { new DemoAchievement(), new DemoAchievement() });
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             screens = new ScreenContainer();
@@ -51,7 +55,7 @@ namespace FallingSand
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            
             base.Initialize();
         }
 
@@ -66,6 +70,7 @@ namespace FallingSand
 
             // TODO: use this.Content to load your game content here
             Font = Content.Load<SpriteFont>("Font1");
+            achievementManager.Init();
             pointer = Content.Load<Texture2D>("TestPointer");
             white = Content.Load<Texture2D>("1x1white");
             select = Content.Load<Texture2D>("select");

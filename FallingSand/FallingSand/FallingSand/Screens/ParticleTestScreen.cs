@@ -21,7 +21,7 @@ namespace FallingSand.Screens
         public ParticleTestScreen(ScreenContainer container)
             : base(container)
         {
-            am = new AchievementManager(new List<AchievementBase>(){new DemoAchievement(), new DemoAchievement()});
+            am = FSGGame.achievementManager;
             pm = new MAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 3, am.processParticle);
             
             brushSize = 3;

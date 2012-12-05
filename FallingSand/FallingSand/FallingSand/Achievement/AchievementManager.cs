@@ -25,16 +25,19 @@ namespace FallingSand.Achievement
         }
         public AchievementManager()
         {
-            textSize = FSGGame.Font.MeasureString(message);
             achievements = new List<AchievementBase>();
             notifications = new List<AchievementNotification>();
         }
         public AchievementManager(List<AchievementBase> achievements)
         {
             notifications = new List<AchievementNotification>();
-            textSize = FSGGame.Font.MeasureString(message);
             this.achievements = achievements;
         }
+        public void Init()
+        {
+            textSize = FSGGame.Font.MeasureString(message);
+        }
+
         public void Attach(AchievementBase ach)
         {
             achievements.Add(ach);
