@@ -64,7 +64,7 @@ namespace FallingSand.Particles
 
                         for (int y = 0; y < 2 * s.period; y++)
                         {
-                            addParticle(s.getNewParticlePosition(), Vector2.Zero, s.type, false, false);
+                            addParticle(s.getNewParticlePosition(), Vector2.Zero, s.type, true, false);
                         }
                     }
                     sources[i] = s;
