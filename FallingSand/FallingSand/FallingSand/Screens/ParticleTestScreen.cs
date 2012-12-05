@@ -74,7 +74,10 @@ namespace FallingSand.Screens
             FSGGame.spriteBatch.DrawString(FSGGame.Font, "-", new Vector2(625, 440), Color.White);
             FSGGame.spriteBatch.DrawString(FSGGame.Font, "Size:", new Vector2(650, 425), Color.White);
             FSGGame.spriteBatch.Draw(FSGGame.white, new Rectangle(717, 425, 2 * brushSize, 2 * brushSize), Color.White);
-            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Menu", new Vector2(750, 425), Color.White);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "M", new Vector2(765, 415), Color.White);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "e", new Vector2(765, 427), Color.White);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "n", new Vector2(765, 439), Color.White);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "u", new Vector2(765, 451), Color.White);
             FSGGame.spriteBatch.End();
 
             pm.Draw();
@@ -110,7 +113,7 @@ namespace FallingSand.Screens
                         else if (temp.Y < 435 && temp.Y > 415 && brushSize <= 20)
                             brushSize++;
                     }
-                    else if (temp.X > 645)
+                    else if (temp.X > 760 && temp.X < 779)
                     {
                         this.Disposed = true;
                         FSGGame.screens.Play(new TitleScreen(FSGGame.screens));
