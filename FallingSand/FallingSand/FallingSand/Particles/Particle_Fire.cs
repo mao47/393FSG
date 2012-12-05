@@ -18,7 +18,7 @@ namespace FallingSand.Particles
 
         public override void Update(ParticleDataStructure particleStorage)
         {
-            base.Update();
+            base.Update(particleStorage);
             if (roundsLeft > 0)
                 roundsLeft--;
             else

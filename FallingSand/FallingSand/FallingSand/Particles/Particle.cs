@@ -21,7 +21,7 @@ namespace FallingSand.Particles
         public Vector2 velocity {  get; set; }
         public Particle_Type type {  get; private set; }
         public Color pColor {  get; private set; }
-        public bool lockedDirection { get; set; }
+        public bool dontMove { get; set; }
         public bool remove { get; set; }
         public bool Dead { get; set; }
 
@@ -32,7 +32,7 @@ namespace FallingSand.Particles
             velocity = vel;
             type = ptype;
             pColor = partColor;
-            lockedDirection = false;
+            dontMove = false;
             remove = false;
         }
 

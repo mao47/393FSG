@@ -25,12 +25,12 @@ namespace FallingSand.Particles
         protected ParticleDataStructure particleStorage;
 
         //static Random rnd = new Random();
-        //static Random rnd = new Random();
+        static Random rnd = new Random();
         static int roundTime = 40;//ms
         static int boundryBuffer = 0;//Buffer outside the boundry where the particles are still tracked
         static float Gravity = 1;//arbitrary, adjust as needed
         static float epsilon = 0.001f;
-        Random rnd;
+        //Random rnd;
         public Texture2D white;
         Action<Particle> perParticle;
         public MAOParticleManager(Rectangle boundries, int maxPart, int particleSize, Action<Particle> perParticle)
@@ -49,7 +49,7 @@ namespace FallingSand.Particles
 
         public void Update(GameTime gameTime)
         {
-            rnd = new Random(gameTime.ElapsedGameTime.Milliseconds);
+            //rnd = new Random(gameTime.ElapsedGameTime.Milliseconds);
             lastRound += gameTime.ElapsedGameTime.Milliseconds;
             while (lastRound >= roundTime)//updates for the number of rounds needed (possibly should only go once)
             {
@@ -227,13 +227,11 @@ namespace FallingSand.Particles
                                 if (particleStorage.particleAt((int)colP.position.X + counter, (int)colP.position.Y + 1) == null && !rightObstacle)
                                 {
                                     checkRight = true;
-                                    colP.lockedDirection = true;
                                     break;
                                 }
                                 if (particleStorage.particleAt((int)colP.position.X - counter, (int)colP.position.Y + 1) == null && !leftObstacle)
                                 {
                                     checkLeft = true;
-                                    colP.lockedDirection = true;
                                     break;
                                 }
                                 counter++;
@@ -283,38 +281,59 @@ namespace FallingSand.Particles
             positionList[6] = new Vector2(p.position.X - 1, p.position.Y + 1);//Bottom corners
             positionList[7] = new Vector2(p.position.X + 1, p.position.Y + 1);
 
+            bool nearParticle = false;
+            int tempRand = rnd.Next(10);
+
             bool isRemoved = false;
-            foreach(Vector2 pos in positionList)
+            foreach (Vector2 pos in positionList)
                 if (/*!isRemoved &&*/ particleStorage.particleAt((int)pos.X, (int)pos.Y) != null)
                 {
+                    nearParticle = true;
                     Particle other = particleStorage.particleAt((int)pos.X, (int)pos.Y);
                     //double random = rnd.NextDouble();
                     if (other.type == Particle_Type.Water)
                     {
+                        p.velocity = Vector2.Zero;
+                        p.dontMove = true;
                         particleStorage.deleteParticle(p);
                         particleStorage.deleteParticle(other);
                         isRemoved = true;
                     }
                     else if (other.type == Particle_Type.Plant)
                     {
-                        
+                        p.velocity = Vector2.Zero;
+                        p.dontMove = true;
                         if (rnd.Next(10) == 0)//10% chance to delete plant
                         {
                             particleStorage.deleteParticle(other);
-                            if(rnd.NextDouble() < 0.9)//90% chance to propagate
+                            if (rnd.Next(10) < 9)//90% chance to propagate
                                 addParticle(other.position, Vector2.Zero, Particle_Type.Fire, false, true);
                         }
                     }
                     else if (other.type == Particle_Type.Wall || other.type == Particle_Type.Sand)
                     {
-                        
+                        p.velocity = Vector2.Zero;
+                        p.dontMove = true;
                         if (rnd.Next(10) == 0)//10% chance to delete wall
                         {
                             particleStorage.deleteParticle(other);
-                            if(rnd.Next(4) == 0) //25% chance to propagate
+                            if (rnd.Next(4) == 0) //25% chance to propagate
                                 addParticle(other.position, Vector2.Zero, Particle_Type.Fire, false, true);
                         }
                     }
+                }
+                else
+                    p.dontMove = false;
+
+                if (!p.dontMove)
+                {
+
+                    if (tempRand == 0 && p.velocity.X != 1)
+                        p.velocity = new Vector2(1, -1);
+                    else if (tempRand == 1 && p.velocity.X != -1)
+                        p.velocity = new Vector2(-1, -1);
+                    else
+                        p.velocity = new Vector2(0, -1);
                 }
             return true;
         }
