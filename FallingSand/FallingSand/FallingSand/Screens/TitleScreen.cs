@@ -42,7 +42,7 @@ namespace FallingSand.Screens
             pm.addSource(new Vector2(5,200),1,Particle_Type.Fire,true);
             int radius = 175;
             int xo = 0;
-            int yo = 200;
+            int yo = 100;
             for(int x = xo-radius; x < xo+radius; x++)
             {
                 for(int y = yo-radius; y < yo+radius; y++)
