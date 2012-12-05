@@ -10,7 +10,7 @@ namespace FallingSand.Achievement.Achievements
     {
         private int numReq;
         private int counter;
-        private string name;
+        //private string name;
         private string message;
         private Particle_Type type;
         public TypeOnScreenAchievement(int numRequired, Particle_Type type, string name, string message) 

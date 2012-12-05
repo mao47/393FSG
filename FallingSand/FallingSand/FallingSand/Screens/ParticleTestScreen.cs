@@ -74,6 +74,7 @@ namespace FallingSand.Screens
             FSGGame.spriteBatch.DrawString(FSGGame.Font, "-", new Vector2(625, 440), Color.White);
             FSGGame.spriteBatch.DrawString(FSGGame.Font, "Size:", new Vector2(650, 425), Color.White);
             FSGGame.spriteBatch.Draw(FSGGame.white, new Rectangle(717, 425, 2 * brushSize, 2 * brushSize), Color.White);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Menu", new Vector2(750, 425), Color.White);
             FSGGame.spriteBatch.End();
 
             pm.Draw();
@@ -111,7 +112,8 @@ namespace FallingSand.Screens
                     }
                     else if (temp.X > 645)
                     {
-                        FSGGame.ExitStatus = true;
+                        this.Disposed = true;
+                        FSGGame.screens.Play(new TitleScreen(FSGGame.screens));
                     }
                 }
 
