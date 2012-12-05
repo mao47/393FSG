@@ -18,7 +18,7 @@ namespace FallingSand.Particles
         Rectangle boundry;
 
         static Random rnd = new Random();
-        static int roundTime = 10;//ms
+        static int roundTime = 100;//ms
         static int boundryBuffer = 10;//Buffer outside the boundry where the particles are still tracked
         static float Gravity = 1;//arbitrary, adjust as needed
 
@@ -36,8 +36,8 @@ namespace FallingSand.Particles
         public void Update(GameTime gameTime)
         {
             lastRound += gameTime.ElapsedGameTime.Milliseconds;
-            //while (lastRound >= roundTime)//updates for the number of rounds needed (possibly should only go once)
-            //{
+            while (lastRound >= roundTime)//updates for the number of rounds needed (possibly should only go once)
+            {
                 lastRound -= roundTime;
                 for (int i = 0; i < sources.Count; i++)//Add particles from sources
                 {
@@ -51,10 +51,13 @@ namespace FallingSand.Particles
                     Particle p = (Particle)particles[i];
                     if (p.type != Particle_Type.Wall)//If not not (not a typo) affected by gravity
                     {
-                        p.velocity = new Vector2(p.velocity.X, Gravity);
-                        this.checkCollisions(p);  //check collisions
+                        p.direction.Y += Gravity;
+                        if (this.checkCollisions(p))  //if it's not colliding 
+                            p.direction.Y = 0;
+                           
                     }
-
+                    p.position += p.direction;
+                        p.velocity.Y += Gravity;
                     p.position += p.velocity;
                     //Check if p is still in the viewing box
                     Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
@@ -68,14 +71,14 @@ namespace FallingSand.Particles
                 }
                 //TODO: Collision
                 //TODO: Remove particles due to intereactions
-           // }
+            }
         }
 
         public void Draw()
         {
             FSGGame.spriteBatch.Begin();
             foreach (Particle p in particles)
-                FSGGame.spriteBatch.Draw(white, p.position, p.pColor);
+                FSGGame.spriteBatch.Draw(white, p.position, p.getColor());
             FSGGame.spriteBatch.End();
         }
 
@@ -87,13 +90,7 @@ namespace FallingSand.Particles
 
         public void addParticle(Vector2 position, Vector2 velocity, Particle_Type type)
         {
-            Particle p;
-            if (type.Equals(Particle_Type.Sand))
-                p = new Particle_Sand(position, velocity);
-            else if (type.Equals(Particle_Type.Wall))
-                p = new Particle_Wall(position, velocity);
-            else
-                p = new Particle_Sand(position, velocity);
+            Particle p = new Particle(position, velocity, type);
             //Check if p is in the viewing box
             Rectangle surround = new Rectangle((int)p.position.X - boundryBuffer, (int)p.position.Y - boundryBuffer, 2 * boundryBuffer, 2 * boundryBuffer);
             if (boundry.Intersects(surround))
@@ -104,25 +101,17 @@ namespace FallingSand.Particles
         {
             IEnumerable<Particle> collQuery =
             from p in particles
-            where p.position.X - colP.position.X == 0 && p.position.Y - colP.position.Y == 1// && p.type == Particle_Type.Wall
+            where Math.Abs(p.position.X - colP.position.X) < 50 && Math.Abs(p.position.Y - colP.position.Y) < 50 && p.type == Particle_Type.Wall
             select p;
 
             foreach (Particle p in collQuery)
             {
-                //if (p.position.Y - colP.position.Y <= 1 && p.position.Y - colP.position.Y >= -1 &&
-                //        p.position.X - colP.position.X <= 1 && p.position.X - colP.position.X >= -1)
-                {
-                    isColliding(colP, p);
-                    return true;
-                }
+                    if (p.position.Y - colP.position.Y <= 1 && p.position.X -colP.position.X <= 1)
+                    {
+                        return true;
+                    }
             }
-            return true;
-        }
-
-        private bool isColliding(Particle pOrig, Particle collider)
-        {
-            pOrig.velocity = new Vector2(pOrig.velocity.X, 0);
-            return true;
+            return false;
         }
 
     }

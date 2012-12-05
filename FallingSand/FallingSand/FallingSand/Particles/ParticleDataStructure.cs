@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace FallingSand.Particles
 {
@@ -12,13 +14,16 @@ namespace FallingSand.Particles
         List<Particle> addList;
         List<Particle> deleteList;
         int maxParticles;//Max Number
+        int width, height;
 
-        public ParticleDataStructure(int length, int width, int max)
+        public ParticleDataStructure(int width, int height, int max)
         {
+            this.width = width;
+            this.height = height;
             addList = new List<Particle>();
             deleteList = new List<Particle>();
-            particleField = new Particle[length, width];
-            particles = new List<Particle>();
+            particleField = new Particle[width, height];
+            particles = new List<Particle>(max);
             maxParticles = max;
         }
 
@@ -30,6 +35,10 @@ namespace FallingSand.Particles
         {
             return addList.Count;
         }
+        public int particleDeleteCount()
+        {
+            return deleteList.Count;
+        }
 
         public Particle particleAt(int x, int y)
         {
@@ -40,9 +49,16 @@ namespace FallingSand.Particles
         }
         public bool newParticle(Particle p)
         {
-            if (particles.Count < maxParticles)
+            if (!(p.position.X < 0 || p.position.X >= width || p.position.Y < 0 || p.position.Y >= height) && particles.Count < maxParticles)
             {
-                addList.Add(p);
+
+                if (particleField[(int)p.position.X, (int)p.position.Y] == null)
+                {
+                    particleField[(int)p.position.X, (int)p.position.Y] = p;
+                    //particles.Add(p);
+                    addList.Add(p);
+                }
+                //                addList.Add(p);
                 return true;
             }
             return false;
@@ -50,7 +66,12 @@ namespace FallingSand.Particles
 
         public void deleteParticle(Particle p)
         {
-            deleteList.Add(p);
+            if (p != null)
+            {
+                p.Dead = true;
+                particleField[(int)p.position.X, (int)p.position.Y] = null;
+                deleteList.Add(p);
+            }
         }
 
         /// <summary>
@@ -61,10 +82,41 @@ namespace FallingSand.Particles
         /// <param name="newY"></param>
         public void moveParticle(Particle p, int newX, int newY)
         {
+            if (p.Dead) return;
             particleField[(int)p.position.X, (int)p.position.Y] = null;
+            if (newX < 0 || newX >= width || newY < 0 || newY >= height)
+            {
+                p.Dead = true;
+                deleteList.Add(p);
+                return;
+            }
+            var prev = particleField[newX, newY];
+            if (prev != null)
+            {
+                prev.Dead = true;
+                deleteList.Add(prev);
+            }
             particleField[newX, newY] = p;
-            p.position.X = (int)newX;
-            p.position.Y = (int)newY;
+            p.position = new Vector2(newX, newY);
+        }
+
+
+        public void moveSwapParticle(Particle p, int newX, int newY)
+        {
+            if (p.Dead) return;
+            if (newX < 0 || newX >= width || newY < 0 || newY >= height)
+            {
+                particleField[(int)p.position.X, (int)p.position.Y] = null;
+                p.Dead = true;
+                deleteList.Add(p);
+                return;
+            }
+            Particle old = particleField[newX, newY];
+            old.position = new Vector2(p.position.X, p.position.Y);
+            particleField[(int)p.position.X, (int)p.position.Y] = old;
+            
+            particleField[newX, newY] = p;
+            p.position = new Vector2(newX, newY);
         }
 
         /// <summary>
@@ -78,11 +130,13 @@ namespace FallingSand.Particles
             List<Particle> collList = new List<Particle>();
             for (int r = x - 1; r <= x + 1; r++)
             {
-                if (r < 0 || r > particleField.GetLength(0))
+                //var w = particleField.GetLength(0);
+                if (r < 0 || r >= particleField.GetLength(0))
                     continue;
                 for (int c = y - 1; c <= y + 1; c++)
                 {
-                    if (c < 0 || c > particleField.GetLength(1))
+                    //var h = particleField.GetLength(1);
+                    if (c < 0 || c >= particleField.GetLength(1))
                         continue;
                     if (particleField[r, c] != null && (r != x && c != y))
                         collList.Add(particleField[r, c]);
@@ -96,34 +150,32 @@ namespace FallingSand.Particles
         /// Checks the add and remove lists to officially make the changes to the matrix and list
         /// </summary>
         public void Update()
-        {
-            //assume the delete list is much smaller than the list of all particles
-            for (int i = 0; i < particles.Count; i++)
-            {
-                var p = particles[i];
-                if (deleteList.Contains(p) && particleField[(int)p.position.X, (int)p.position.Y] == p)
-                {
-                    particleField[(int)p.position.X, (int)p.position.Y] = null;
-                    particles.RemoveAt(i);
-                    i--;
-                }
-            }
-            deleteList.Clear();
+        { 
+            //remove particles in deletelist in one pass
+            int particlesToRemove = 100;
+            var remove = deleteList.Take(particlesToRemove);
+            particles.RemoveAll(p => remove.Contains(p));
+            //foreach (Particle p in deleteList)
+            //{
+            //    particleField[(int)p.position.X, (int)p.position.Y] = null;
+            //}
+            //deleteList.Clear();
+            deleteList = deleteList.Skip(particlesToRemove).ToList();
+
             
             foreach (Particle p in addList)
             {
-                if (particleField[(int)p.position.X, (int)p.position.Y] == null)
+                if (particleField[(int)p.position.X, (int)p.position.Y] == p)
                 {
-                    particleField[(int)p.position.X, (int)p.position.Y] = p;
+                    //particleField[(int)p.position.X, (int)p.position.Y] = p;
                     particles.Add(p);
                 }
                 else
                 {
-                    deleteList.Add(p);
+                    //deleteList.Add(p);
                 }
             }
             addList.Clear();
-            
         }
 
         /// <summary>

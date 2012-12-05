@@ -10,7 +10,7 @@ namespace TestProject.TestMockObjects
     public class FakeMAOParticleManager : MAOParticleManager
     {
         public FakeMAOParticleManager(Rectangle bounds, int max, int particleSize)
-            : base(bounds, max, particleSize)
+            : base(bounds, max, particleSize, (p) => { })
         { }
         public int numberParticles()
         {

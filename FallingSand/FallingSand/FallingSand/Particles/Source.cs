@@ -10,7 +10,8 @@ namespace FallingSand.Particles
     class Source
     {
         public Vector2 position;
-        int period, counter;
+        public int period;
+        int counter;
         public Particle_Type type;
 
         static Random rnd = new Random();

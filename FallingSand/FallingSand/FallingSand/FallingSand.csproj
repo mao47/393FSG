@@ -107,10 +107,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Achievement\Achievement.cs" />
+    <Compile Include="Achievement\AchievementManager.cs" />
+    <Compile Include="Achievement\AchievementNotification.cs" />
+    <Compile Include="Achievement\DemoAchievement.cs" />
     <Compile Include="Inputs\ActionType.cs" />
     <Compile Include="Inputs\Controller.cs" />
     <Compile Include="Inputs\ControllerPacket.cs" />
     <Compile Include="Inputs\RumblePack.cs" />
+    <Compile Include="Particles\Particle_Fire.cs" />
+    <Compile Include="Particles\Particle_Plant.cs" />
+    <Compile Include="Particles\Particle_Water.cs" />
+    <Compile Include="Particles\Particle_Wall.cs" />
+    <Compile Include="Particles\Particle_Sand.cs" />
     <Compile Include="Particles\MAOParticleManager.cs" />
     <Compile Include="Particles\ParticleDataStructure.cs" />
     <Compile Include="Particles\ParticleManager.cs" />

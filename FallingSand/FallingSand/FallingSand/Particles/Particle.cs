@@ -9,36 +9,41 @@ namespace FallingSand.Particles
 {
     public enum Particle_Type{
         Sand,
-        Wall
+        Water,
+        Wall,
+        Plant,
+        Fire,
+        Remove
     }
-    public class Particle
+    public abstract class Particle
     {
-        public Vector2 position;
-        public Vector2 velocity;
-        public Particle_Type type;
-        private Color pColor;
+        public Vector2 position { get; set; }
+        public Vector2 velocity {  get; set; }
+        public Particle_Type type {  get; private set; }
+        public Color pColor {  get; private set; }
+        public bool lockedDirection { get; set; }
+        public bool remove { get; set; }
+        public bool Dead { get; set; }
 
-        public Particle (Vector2 pos, Vector2 vel, Particle_Type ptype)
+        public Particle (Vector2 pos, Vector2 vel, Particle_Type ptype, Color partColor)
         {
+            Dead = false;
             position = pos;
             velocity = vel;
             type = ptype;
-            if (ptype == Particle_Type.Sand)
-                pColor = Color.SandyBrown;
-            else if (type == Particle_Type.Wall)
-                pColor = Color.Gray;
-            else
-                pColor = Color.White;
+            pColor = partColor;
+            lockedDirection = false;
+            remove = false;
         }
 
-        public Color getColor()
+        public virtual void Update() //For particles that dont move
         {
-            return pColor;
         }
 
-        public void setColor(Color collColor)//only for collision detection
+        public virtual void Update(ParticleDataStructure particleStorage) //For particles that move
         {
-            pColor = collColor;
+            Vector2 newPosition = position + velocity;
+            particleStorage.moveParticle(this, (int)newPosition.X, (int)newPosition.Y);
         }
     }
 }

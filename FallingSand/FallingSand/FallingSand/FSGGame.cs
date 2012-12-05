@@ -28,6 +28,7 @@ namespace FallingSand
         public static SpriteFont Font;
         private static Texture2D pointer;
         public static Texture2D white;
+        public static Texture2D select;
         public static Controller controller;
         public FSGGame()
         {
@@ -67,6 +68,7 @@ namespace FallingSand
             Font = Content.Load<SpriteFont>("Font1");
             pointer = Content.Load<Texture2D>("TestPointer");
             white = Content.Load<Texture2D>("1x1white");
+            select = Content.Load<Texture2D>("select");
         }
 
         /// <summary>
