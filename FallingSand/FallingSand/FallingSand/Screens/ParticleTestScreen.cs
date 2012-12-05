@@ -33,13 +33,14 @@ namespace FallingSand.Screens
             //pm.addSource(new Vector2(600, 0), 5, Particle_Type.Sand);
             currentParticle = Particle_Type.Sand;
 
-            selectPositions = new int [6];
-            selectPositions[0] = 35;
-            selectPositions[1] = 135;
-            selectPositions[2] = 235;
-            selectPositions[3] = 340;
-            selectPositions[4] = 445;
-            selectPositions[5] = 545;
+            selectPositions = new int [7];
+            selectPositions[0] = 17;
+            selectPositions[1] = 117;
+            selectPositions[2] = 217;
+            selectPositions[3] = 317;
+            selectPositions[4] = 417;
+            selectPositions[5] = 517;
+            selectPositions[6] = 617;
         }
 
         /// <summary>
@@ -62,15 +63,16 @@ namespace FallingSand.Screens
             FSGGame.spriteBatch.Begin();
             FSGGame.spriteBatch.DrawString(FSGGame.Font, "Particles Demo", Vector2.One * 100f, Color.White);
             FSGGame.spriteBatch.Draw(FSGGame.select, new Vector2(selectPositions[(int)currentParticle], 425), Color.White);
-            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Sand", new Vector2(50, 425), Color.SandyBrown);
-            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Water", new Vector2(150, 425), Color.Aqua);
-            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Wall", new Vector2(250, 425), Color.Gray);
-            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Plant", new Vector2(350, 425), Color.YellowGreen);
-            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Remove", new Vector2(450, 425), Color.White);
-            FSGGame.spriteBatch.DrawString(FSGGame.Font, "+", new Vector2(570, 410), Color.White);
-            FSGGame.spriteBatch.DrawString(FSGGame.Font, "-", new Vector2(570, 440), Color.White);
-            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Size:", new Vector2(600, 425), Color.White);
-            FSGGame.spriteBatch.Draw(FSGGame.white, new Rectangle(700, 425, 2 * brushSize, 2 * brushSize), Color.White);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Sand", new Vector2(25, 425), Color.SandyBrown);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Water", new Vector2(125, 425), Color.Aqua);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Wall", new Vector2(225, 425), Color.Gray);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Plant", new Vector2(325, 425), Color.YellowGreen);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Fire", new Vector2(425, 425), Color.Firebrick);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Remove", new Vector2(525, 425), Color.White);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "+", new Vector2(625, 410), Color.White);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "-", new Vector2(625, 440), Color.White);
+            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Size:", new Vector2(650, 425), Color.White);
+            FSGGame.spriteBatch.Draw(FSGGame.white, new Rectangle(717, 425, 2 * brushSize, 2 * brushSize), Color.White);
             FSGGame.spriteBatch.End();
 
             pm.Draw();
@@ -86,17 +88,19 @@ namespace FallingSand.Screens
                 //mouse selection of particle type
                 if (temp.Y >= 415)
                 {
-                    if (temp.X > 50 && temp.X < 150)
+                    if (temp.X > 25 && temp.X < 115)
                         currentParticle = Particle_Type.Sand;
-                    else if (temp.X > 150 && temp.X < 250)
+                    else if (temp.X > 125 && temp.X < 215)
                         currentParticle = Particle_Type.Water;
-                    else if (temp.X > 250 && temp.X < 350)
+                    else if (temp.X > 225 && temp.X < 315)
                         currentParticle = Particle_Type.Wall;
-                    else if (temp.X > 350 && temp.X < 450)
+                    else if (temp.X > 325 && temp.X < 415)
                         currentParticle = Particle_Type.Plant;
-                    else if (temp.X > 450 && temp.X < 550)
+                    else if (temp.X > 425 && temp.X < 515)
+                        currentParticle = Particle_Type.Fire;
+                    else if (temp.X > 525 && temp.X < 615)
                         currentParticle = Particle_Type.Remove;
-                    else if (temp.X > 565 && temp.X < 585)
+                    else if (temp.X > 625 && temp.X < 635)
                     {
                         if (temp.Y > 440 && temp.Y < 460 && brushSize >= 3)
                             brushSize--;
