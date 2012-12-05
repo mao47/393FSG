@@ -36,7 +36,7 @@ namespace FallingSand.Particles
 
         public Vector2 getNewParticlePosition()
         {
-            return new Vector2(position.X + radius * ((float)rnd.NextDouble() - 5f), position.Y + radius * ((float)rnd.NextDouble()) - .5f);
+            return new Vector2(position.X + radius * ((float)rnd.NextDouble() - .5f), position.Y + radius * ((float)rnd.NextDouble()) - .5f);
         }
     }
 }

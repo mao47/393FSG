@@ -22,14 +22,15 @@ namespace FallingSand.Screens
             : base(container)
         {
             am = FSGGame.achievementManager;
-            pm = new MAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 2, am.processParticle);
+            pm = new MAOParticleManager(new Rectangle(0, 0, 800, 400), Constants.MaxParticles, Constants.ParticleSize, am.processParticle);
             
             brushSize = 3;
             rand = new Random(Environment.TickCount);
-            //pm.addSource(new Vector2(400, 0), 1, Particle_Type.Sand);
-            //pm.addSource(new Vector2(450, 0), 2, Particle_Type.Sand);
-            //pm.addSource(new Vector2(500, 0), 3, Particle_Type.Sand);
+            //pm.addSource(new Vector2(400, 0), 1, Particle_Type.Sand,true);
+            //pm.addSource(new Vector2(450, 0), 2, Particle_Type.Sand,true);
+            //pm.addSource(new Vector2(500, 0), 3, Particle_Type.Sand,true);
             pm.addSource(new Vector2(550, 0), 1, Particle_Type.Water, true);
+            //pm.addSource(new Vector2(5, 360), 1, Particle_Type.Fire, true);
             //pm.addSource(new Vector2(600, 0), 5, Particle_Type.Sand);
             currentParticle = Particle_Type.Sand;
 
@@ -61,7 +62,7 @@ namespace FallingSand.Screens
         public override void Draw()
         {
             FSGGame.spriteBatch.Begin();
-            FSGGame.spriteBatch.DrawString(FSGGame.Font, "Particles Demo", Vector2.One * 100f, Color.White);
+            //FSGGame.spriteBatch.DrawString(FSGGame.Font, "Particles Demo", Vector2.One * 100f, Color.White);
             FSGGame.spriteBatch.Draw(FSGGame.select, new Vector2(selectPositions[(int)currentParticle], 425), Color.White);
             FSGGame.spriteBatch.DrawString(FSGGame.Font, "Sand", new Vector2(25, 425), Color.SandyBrown);
             FSGGame.spriteBatch.DrawString(FSGGame.Font, "Water", new Vector2(125, 425), Color.Aqua);
@@ -77,6 +78,7 @@ namespace FallingSand.Screens
 
             pm.Draw();
             am.Draw();
+            
         }
 
         private void getInput()

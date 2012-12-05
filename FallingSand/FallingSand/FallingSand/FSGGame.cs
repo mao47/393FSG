@@ -36,7 +36,12 @@ namespace FallingSand
 
         public FSGGame()
         {
-            achievementManager = new AchievementManager(new List<AchievementBase>() { new DemoAchievement(), new PyroAchievement() });
+            achievementManager = new AchievementManager(new List<AchievementBase>() 
+                { //new DemoAchievement(), 
+                new PyroAchievement(),
+                new TypeOnScreenAchievement(30000, Particle_Type.Plant, "Home Tree", "Have 30,000 plants on the screen"),
+                new TypeOnScreenAchievement(20000, Particle_Type.Water, "20,000 Leagues Under the Sea", "Have 20,000 water particles on the screen"),
+                new TypeOnScreenAchievement(2000, Particle_Type.Fire, "Up in Flames", "Have 2,000 fire particles on the screen")});
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             screens = new ScreenContainer();

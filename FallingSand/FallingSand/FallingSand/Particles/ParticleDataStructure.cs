@@ -152,7 +152,7 @@ namespace FallingSand.Particles
         public void Update()
         { 
             //remove particles in deletelist in one pass
-            int particlesToRemove = 100;
+            int particlesToRemove = Constants.RemoveAmt;
             var remove = deleteList.Take(particlesToRemove);
             //particles.RemoveAll(p => remove.Contains(p));
             particles = particles.Except(remove).ToList();
