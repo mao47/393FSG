@@ -9,6 +9,7 @@ namespace FallingSand.Achievement
     {
         public bool Unlocked { get; protected set; }
         public abstract void processParticle(Particles.Particle p);
+        public String name { get; protected set; }
         public AchievementBase()
         {
             Unlocked = false;

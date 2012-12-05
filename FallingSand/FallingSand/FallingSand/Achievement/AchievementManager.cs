@@ -9,7 +9,7 @@ namespace FallingSand.Achievement
 {
     public class AchievementManager
     {
-        private List<AchievementBase> achievements;
+        public List<AchievementBase> achievements;
         private List<AchievementNotification> notifications;
         private int displayTime = 5000;
         private Vector2 origin = new Vector2(0, 0);

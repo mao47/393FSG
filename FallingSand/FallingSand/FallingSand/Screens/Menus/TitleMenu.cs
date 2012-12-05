@@ -21,23 +21,26 @@ namespace FallingSand.Screens.Menus
 
            // MenuEntry howto = new MenuEntry("How to Play", position + new Vector2(0, spacing), new HowToPlayDelegate());
 
+            MenuEntry achievements = new MenuEntry("Achievements", position + new Vector2(0, (int)(spacing * 1.5)), new AchievementDelegate()); 
            // MenuEntry toSettings = new MenuEntry("Settings", position + new Vector2(0, spacing * 2), new SettingsDelegate());
             
             MenuEntry quit = new MenuEntry("Quit", position + new Vector2(0, spacing * 3), new QuitGameDelegate());
 
             resume.UpperMenu = quit;
-            resume.LowerMenu = quit;//howto;
+            resume.LowerMenu = achievements;//howto;
 
             //howto.UpperMenu = resume;
             //howto.LowerMenu = toSettings;
-
+            achievements.UpperMenu = resume;
+            achievements.LowerMenu = quit;
             //toSettings.UpperMenu = howto;
             //toSettings.LowerMenu = quit;
 
-            quit.UpperMenu = resume;// toSettings;
+            quit.UpperMenu = achievements;// toSettings;
             quit.LowerMenu = resume;
 
             this.Add(resume);
+            this.Add(achievements);
             //this.Add(howto);
             //this.Add(toSettings);
             this.Add(quit);

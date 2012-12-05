@@ -107,6 +107,10 @@ namespace FallingSand.Screens
                         else if (temp.Y < 435 && temp.Y > 415 && brushSize <= 20)
                             brushSize++;
                     }
+                    else if (temp.X > 645)
+                    {
+                        FSGGame.ExitStatus = true;
+                    }
                 }
 
                 else

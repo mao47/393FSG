@@ -14,6 +14,7 @@ namespace FallingSand.Achievement
         {
             counter = 0;
             numUpdatesToWait = 30 * 1000 / 40;
+            name = "Demo Achievement";
         }
         public override void processParticle(Particles.Particle p)
         {

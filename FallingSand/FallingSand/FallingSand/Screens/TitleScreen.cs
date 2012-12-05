@@ -36,7 +36,7 @@ namespace FallingSand.Screens
             //Game1.screens.IsPaused = false;
             // Note: Do not use GameClock, it will be paused!
             this.initialTime = DateTime.Now.Ticks;
-            this.menu = new TitleMenu(new Vector2(50, 175), 50);
+            this.menu = new TitleMenu(new Vector2(100, 175), 50);
 
             this.textDrawPosition = new Vector2(50, 100);
 

@@ -91,6 +91,7 @@ namespace FallingSand.Screens.Menus
             
             if (FSGGame.controller.ContainsBool(ActionType.SelectionUp))
             {
+                
                 this.TrySet(this[this.CurrentSelected].UpperMenu);
             }
 

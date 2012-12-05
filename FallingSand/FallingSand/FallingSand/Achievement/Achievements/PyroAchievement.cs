@@ -14,6 +14,7 @@ namespace FallingSand.Achievement.Achievements
             :base()
         {
             fireCount = 0;
+            this.name = "Pyro";
         }
         public override void processParticle(Particles.Particle p)
         {
