@@ -22,7 +22,7 @@ namespace FallingSand.Screens
             : base(container)
         {
             am = FSGGame.achievementManager;
-            pm = new MAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 3, am.processParticle);
+            pm = new MAOParticleManager(new Rectangle(0, 0, 800, 400), 100000, 2, am.processParticle);
             
             brushSize = 3;
             rand = new Random(Environment.TickCount);

@@ -13,7 +13,7 @@ namespace FallingSand.Particles
         public Particle_Fire (Vector2 pos, Vector2 vel)
             : base(pos, vel, Particle_Type.Fire, Color.Firebrick)
         {
-            roundsLeft = 25;//hardcodded for now
+            roundsLeft = Constants.FireDuration;//hardcodded for now
         }
 
         public override void Update(ParticleDataStructure particleStorage)

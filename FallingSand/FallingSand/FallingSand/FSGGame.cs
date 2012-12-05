@@ -12,6 +12,7 @@ using FallingSand.Screens;
 using FallingSand.Inputs;
 using FallingSand.Particles;
 using FallingSand.Achievement;
+using FallingSand.Achievement.Achievements;
 
 namespace FallingSand
 {
@@ -35,7 +36,7 @@ namespace FallingSand
 
         public FSGGame()
         {
-            achievementManager = new AchievementManager(new List<AchievementBase>() { new DemoAchievement(), new DemoAchievement() });
+            achievementManager = new AchievementManager(new List<AchievementBase>() { new DemoAchievement(), new PyroAchievement() });
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             screens = new ScreenContainer();

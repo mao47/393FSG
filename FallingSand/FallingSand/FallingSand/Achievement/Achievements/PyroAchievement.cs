@@ -3,41 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FallingSand.Achievement
+namespace FallingSand.Achievement.Achievements
 {
-    public class DemoAchievement : AchievementBase
+    public class PyroAchievement : AchievementBase
     {
-        private int numUpdatesToWait;
-        private int counter;
-        public DemoAchievement() 
-            : base() 
+        int totalFireReq = Constants.FireDuration * Constants.PyroReq;
+        int fireCount;
+
+        public PyroAchievement()
+            :base()
         {
-            counter = 0;
-            numUpdatesToWait = 30 * 1000 / 40;
+            fireCount = 0;
         }
         public override void processParticle(Particles.Particle p)
         {
-            
             if (p.type == Particles.Particle_Type.Fire)
             {
-                counter++;
+                fireCount++;
             }
         }
+
         public override bool Update()
         {
             if (Unlocked) return false;
-
-            if (counter >= numUpdatesToWait)
+            if (fireCount > totalFireReq)
             {
                 Unlocked = true;
                 return true;
             }
-            counter = 0;
             return false;
         }
+
         public override AchievementNotification GetNotification()
         {
-            return new AchievementNotification { Name = "Up in Flames", Message = "Make a fire larger than 1000 particles" };
+            return new AchievementNotification { Name = "Pyro", Message = "Create a million fire particles" };
         }
     }
 }

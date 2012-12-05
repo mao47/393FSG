@@ -9,6 +9,8 @@ namespace FallingSand.Achievement
     public class AchievementNotification
     {
         public string Message { get; set; }
+        public string Name { get; set; }
+
         public int Counter;
 
         public AchievementNotification()

@@ -154,7 +154,8 @@ namespace FallingSand.Particles
             //remove particles in deletelist in one pass
             int particlesToRemove = 100;
             var remove = deleteList.Take(particlesToRemove);
-            particles.RemoveAll(p => remove.Contains(p));
+            //particles.RemoveAll(p => remove.Contains(p));
+            particles = particles.Except(remove).ToList();
             //foreach (Particle p in deleteList)
             //{
             //    particleField[(int)p.position.X, (int)p.position.Y] = null;
